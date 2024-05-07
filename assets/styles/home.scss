@@ -1,0 +1,55 @@
+#index-body {
+    font-family: "Happy Lucky", sans-serif;
+    background-color: $main-color-yellow;
+    height: 100%;
+    width: 100%;
+}
+
+#anime-title {
+    font-family: "Happy Lucky", sans-serif;
+    visibility: hidden;
+    font-size: 3rem;
+    text-align: center;
+    color: black;
+    letter-spacing: 5px;
+    transition: visibility 2s ease-in-out;
+}
+
+.title-animation{
+    visibility: visible;
+    font-size: 3rem;
+    text-align: center;
+    color: white;
+    margin: 0;
+    line-height: 0;
+    letter-spacing: 5px;
+}
+
+#users-container {
+    font-family: "Happy Lucky", sans-serif;
+    height: 50vh;
+}
+
+.home-user-button {
+    padding: 2rem 4rem;
+    border: 0.3rem solid black;
+    border-radius: 30px;
+    font-size: xx-large;
+    cursor: pointer;
+}
+
+#home-organisation-button {
+color: $main-color-blue;
+border-color: $main-color-green;
+}
+
+#home-volunteer-button {
+    color: $main-color-green;
+    border-color: $main-color-blue;
+}
+
+.presentation-paragraph {
+    font-size: 1.5rem;
+    font-family: Rubik, sans-serif;
+    margin-bottom: 2rem;
+}

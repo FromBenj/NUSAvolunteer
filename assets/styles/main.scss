@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@font-face {
+    font-family: "Happy Lucky";
+    src: url(HappyLucky-gxnZP.ttf) format("truetype");
+}
+
+$main-color-green: #08946D;
+$main-color-blue: #0A6883;
+$main-color-yellow: #F5C677;
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+body {
+    background-color: $main-color-yellow;
+}
+
+
+

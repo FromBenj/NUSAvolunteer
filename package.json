@@ -2,6 +2,9 @@
     "devDependencies": {
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
+        "@hotwired/stimulus": "^3.0.0",
+        "@hotwired/turbo": "^7.1.1 || ^8.0",
+        "@symfony/stimulus-bridge": "^3.2.0",
         "@symfony/webpack-encore": "^4.0.0",
         "core-js": "^3.23.0",
         "node-sass": "^9.0.0",
@@ -19,5 +22,14 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "@popperjs/core": "^2.11.8",
+        "@splinetool/runtime": "^1.2.4",
+        "animejs": "^3.2.2",
+        "bootstrap": "^5.3.3",
+        "gsap": "^3.12.5",
+        "jquery": "^3.7.1",
+        "split-text-js": "^1.0.3"
     }
 }

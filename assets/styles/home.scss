@@ -35,17 +35,40 @@
     border: 0.3rem solid black;
     border-radius: 30px;
     font-size: xx-large;
-    cursor: pointer;
+    transition: outline-offset 200ms ease;
+    &:hover {
+        color: #e0ffff;
+        outline-offset: 3px;
+    }
+    &:active {
+        transform: scale(0.95);
+    }
 }
 
 #home-organisation-button {
 color: $main-color-blue;
 border-color: $main-color-green;
+outline: none;
+outline-color: $main-color-green;
+transition: all 100ms ease;
+    &:hover {
+        outline-color: $main-color-blue;
+        outline: solid 3px;
+        transform: scale(1.1);
+    }
 }
 
 #home-volunteer-button {
     color: $main-color-green;
     border-color: $main-color-blue;
+    outline: none;
+    outline-color: $main-color-blue;
+    transition: all 100ms ease;
+    &:hover {
+        outline-color: $main-color-green;
+        outline: solid 3px;
+        transform: scale(1.1);
+    }
 }
 
 .presentation-paragraph {

@@ -32,11 +32,16 @@ class Organisation
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private ?array $keywords = null;
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $keywords;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private ?array $links = null;
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $links;
+
+    public function __construct() {
+        $this->keywords = [];
+        $this->links = [];
+    }
 
     public function getId(): ?int
     {
@@ -127,14 +132,23 @@ class Organisation
         return $this;
     }
 
-    public function getLinks(): ?array
+    public function getLinks(): array
     {
         return $this->links;
     }
 
-    public function setLinks(?array $links): static
+    public function setLinks(array $links): static
     {
         $this->links = $links;
+
+        return $this;
+    }
+
+    public function addLink(string $link): static
+    {
+        if (!in_array($link, $this->links, true)) {
+            $this->links[] = $link;
+        }
 
         return $this;
     }

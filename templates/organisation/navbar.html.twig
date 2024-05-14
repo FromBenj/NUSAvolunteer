@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OrganisationController!{% endblock %}
+
+{% block body %}
+    <nav id = "organisation-navbar" class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{{ asset('build/images/NUSAvolunteer/NUSAvolunteer_logo_final.svg') }}" alt="NUSAvolunteer logo" width="60" height="auto">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Volunteers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Matches</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ref="#">Profile</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}

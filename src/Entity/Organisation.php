@@ -38,6 +38,9 @@ class Organisation
     #[ORM\Column(type: Types::ARRAY)]
     private array $links;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
     public function __construct() {
         $this->keywords = [];
         $this->links = [];
@@ -149,6 +152,18 @@ class Organisation
         if (!in_array($link, $this->links, true)) {
             $this->links[] = $link;
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

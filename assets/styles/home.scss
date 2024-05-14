@@ -19,7 +19,7 @@
     visibility: visible;
     font-size: 3rem;
     text-align: center;
-    color: white;
+    color: $main-color-green;
     margin: 0;
     line-height: 0;
     letter-spacing: 5px;
@@ -73,6 +73,5 @@ transition: all 100ms ease;
 
 .presentation-paragraph {
     font-size: 1.5rem;
-    font-family: Rubik, sans-serif;
     margin-bottom: 2rem;
 }

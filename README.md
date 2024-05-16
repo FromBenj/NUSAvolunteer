@@ -18,6 +18,7 @@ NUSAvolunteer propose features that help both NGOs and people that want to be in
 - Composer
 - Faker
 - Twig
+- Lorem Orelsum
 - SCSS
 - Vanilla JS
 - Bootstrap

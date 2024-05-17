@@ -41,6 +41,9 @@ class Organisation
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[ORM\OneToOne(mappedBy: 'organisation', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
+
     public function __construct() {
         $this->keywords = [];
         $this->links = [];
@@ -149,7 +152,7 @@ class Organisation
 
     public function addLink(string $link): static
     {
-        if (!in_array($link, $this->links, true)) {
+        if (!in_array($link, $this->links)) {
             $this->links[] = $link;
         }
 
@@ -164,6 +167,28 @@ class Organisation
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setOrganisation(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getOrganisation() !== $this) {
+            $user->setOrganisation($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

@@ -9,39 +9,39 @@
     <h1 class="text-center fw-bold pb-5 pt-5">My informations</h1>
     <div class="d-flex justify-content-center mt-5">
         <div class="w-50 fs-5">
-            <div class="d-flex justify-content-between pb-3">
-                <div class="fw-bold">Name</div>
-                <div>{{ organisation.name }}</div>
+            <div class="mb-4">
+                <div class="text-center fw-bold">Name</div>
+                <div class="text-center">{{ organisation.name }}</div>
             </div>
-            <div class="d-flex justify-content-between mb-4">
-                <div class="fw-bold">Address</div>
-                <div>{{ organisation.address }}</div>
+            <div class="mb-4">
+                <div class="text-center fw-bold">Address</div>
+                <div class="text-center">{{ organisation.address }}</div>
             </div>
-            <div class="d-flex justify-content-between mb-4">
-                <div class="fw-bold">Representative</div>
-                <div>{{ organisation.representative }}</div>
+            <div class="mb-4">
+                <div class="text-center fw-bold">Representative</div>
+                <div class="text-center">{{ organisation.representative }}</div>
             </div>
-            <div class="d-flex justify-content-between mb-4">
-                <div class="fw-bold">Description</div>
-                <div class="text-end">{{ organisation.description }}</div>
+            <div class="mb-4">
+                <div class="text-center fw-bold">Description</div>
+                <div class="text-justify">{{ organisation.description }}</div>
             </div>
-            <div class="d-flex justify-content-between mb-4">
-                <div class="fw-bold">Keywords</div>
-                <div>
+            <div class="mb-4">
+                <div class="text-center fw-bold">Keywords</div>
+                <div class="d-flex justify-content-around">
                     {% for keyword in organisation.keywords  %}
                     <div>{{ keyword }}</div>
                     {% endfor %}
                 </div>
             </div>
-            <div class="d-flex justify-content-between mb-4">
-                <div class="fw-bold">Links</div>
-                <div class="text-end">
+            <div class="mb-4">
+                <div class="text-center fw-bold">Links</div>
+                <div class="text-center">
                     {% for link in organisation.links  %}
                         <div>{{ link }}</div>
                     {% endfor %}
                 </div>
             </div>
-            <div class="mt-5 d-flex justify-content-end">
+            <div class="my-5 d-flex justify-content-end">
                 <button class="validation-button">Modifier</button>
             </div>
         </div>

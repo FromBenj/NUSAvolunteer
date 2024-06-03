@@ -18,7 +18,6 @@ class SecurityController extends AbstractController
             $color = "#08946D";
         } else {
             $color = null;
-
         }
 
         // get the login error if there is one

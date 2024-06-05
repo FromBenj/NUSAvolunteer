@@ -2,13 +2,55 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\User;
+use App\Entity\Volunteer;
+use App\Entity\Organisation;
+use App\Form\RegistrationFormType;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SecurityController extends AbstractController
 {
+    #[Route(path: '/register', name: 'app_register')]
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, ObjectManager $manager): Response
+    {
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // encode the plain password
+            $user->setPassword(
+            $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            if ($form->get('userClass')->getData() === "organisation") {
+                $user->setRoles(["ROLE_ORGANISATION"]);
+                $user->setOrganisation(new Organisation());
+                $manager->persist($user);
+                $manager->flush();
+            } elseif ($form->get('userClass')->getData() === "volunteer") {
+                $user->setRoles(["ROLE_VOLUNTEER"]);
+                $user->setVolunteer(new Volunteer());
+                $manager->persist($user);
+                $manager->flush();
+                return $this->redirectToRoute('organisation_home');
+            } else {
+                return $this->redirectToRoute('app_register');
+            }
+            return $this->redirectToRoute('app_home');
+        }
+        return $this->render('registration/register.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
+    }
+
     #[Route(path: '/login/{userClass}', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, string $userClass): Response
     {

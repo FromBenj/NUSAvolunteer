@@ -13,11 +13,11 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils, string $userClass): Response
     {
         if ($userClass === "organisation") {
-            $color = "#0A6883";
+            $bodyColor = "organisation-login";#0A6883"";
         } elseif ($userClass === "volunteer") {
-            $color = "#08946D";
+            $bodyColor = "volunteer-login";
         } else {
-            $color = null;
+            $bodyColor = null;
         }
 
         // get the login error if there is one
@@ -26,14 +26,15 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        if ($color === null) {
+        if ($bodyColor === null) {
             return $this->redirectToRoute('app_home');
         }
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
-            "color" => $color,
+            "bodyColor" => $bodyColor,
+            "userClass" => $userClass,
         ]);
     }
 

@@ -9,7 +9,9 @@
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
     </head>
-    <body class="ms-4 me-4">
+    {% if bodyColor is defined and bodyColor is not null %}
+    <body class="ps-4 pe-4 {{ bodyColor }}">
+    {% endif %}
     {% block nav %}{% endblock %}
     {% block body %}{% endblock %}
     {% block javascripts %}

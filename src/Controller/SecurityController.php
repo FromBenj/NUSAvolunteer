@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Volunteer;
 use App\Entity\Organisation;
 use App\Form\RegistrationFormType;
+use App\Service\AutomaticLogin;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class SecurityController extends AbstractController
 {
@@ -23,29 +25,30 @@ class SecurityController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
             $user->setPassword(
             $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
-            if ($form->get('userCategory')->getData() === "organisation") {
-                $user->setRoles(["ROLE_ORGANISATION"]);
-                $user->setOrganisation(new Organisation());
+            $userCategory = $form->get('userCategory')->getData();
+            if ( $userCategory === "organisation" || $userCategory === "volunteer") {
                 $entityManager->persist($user);
                 $entityManager->flush();
+                $providerKey = 'secured_area';
+                $token = new UsernamePasswordToken($user, $providerKey, $user->getRoles());
+                $this->container->get('security.token_storage')->setToken($token);                
+            }
+
+            if ($user->getVolunteer() && !$user->getOrganisation()) {
+            return $this->redirectToRoute('volunteer_home');
+            } elseif ($user->getOrganisation() && !$user->getVolunteer()) {
                 return $this->redirectToRoute('organisation_home');
-            } elseif ($form->get('userCategory')->getData() === "volunteer") {
-                $user->setRoles(["ROLE_VOLUNTEER"]);
-                $user->setVolunteer(new Volunteer());
-                $entityManager->persist($user);
-                $entityManager->flush();
-                return $this->redirectToRoute('volunteer_home');
             } else {
-                return $this->redirectToRoute('app_register');
+                return $this->redirectToRoute('app_home');            
             }
         }
+
         return $this->render('security/register.html.twig', [
             'registrationForm' => $form,
         ]);

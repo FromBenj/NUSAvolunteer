@@ -14,11 +14,11 @@ class Volunteer
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $lastNa�me = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lastName = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $address = null;
@@ -29,7 +29,7 @@ class Volunteer
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $disponibilities = [];
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
@@ -55,14 +55,14 @@ class Volunteer
         return $this;
     }
 
-    public function getLastNa�me(): ?string
+    public function getLastName(): ?string
     {
         return $this->lastNa�me;
     }
 
-    public function setLastNa�me(string $lastNa�me): static
+    public function setLastName(string $lastName): static
     {
-        $this->lastNa�me = $lastNa�me;
+        $this->lastName = $lastName;
 
         return $this;
     }

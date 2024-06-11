@@ -12,11 +12,32 @@
     text-align: center;
     color: black;
     letter-spacing: 5px;
-    transition: visibility 2s ease-in-out;
+    visibility: hidden;
 }
+
+#anime-title-appear {
+    font-family: "Happy Lucky", sans-serif;
+    visibility: visible;
+    opacity: 0;
+    font-size: 4rem;
+    text-align: center;
+    color: black;
+    letter-spacing: 5px;
+    animation-name: title-appear;
+    animation-duration: 5s;  
+    animation-fill-mode: forwards;  
+}
+
+@keyframes title-appear {
+    0%   {opacity: 0;}
+    25%   {opacity: 25;}
+    75%   {opacity: 50;}
+    100% {opacity: 100;}
+  }
 
 .title-animation{
     visibility: visible;
+    opacity: 1;
     font-size: 3rem;
     text-align: center;
     color: $main-color-green;
@@ -35,6 +56,13 @@
     border: 0.3rem solid black;
     border-radius: 30px;
     font-size: xx-large;
+}
+
+.home-nav-button {
+    transition: all 200ms ease-in-out;
+    &:hover {
+        transform: scale(1.1);
+    }
 }
 
 #home-organisation-button {

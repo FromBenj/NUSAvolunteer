@@ -137,4 +137,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getUserCategory(): ?string
+    {
+        $userCategory = null;
+        if ($this->organisation) {
+            $userCategory = "organisation";
+        }
+        if ($this->volunteer) {
+            $userCategory = "volunteer";
+        }
+
+        return $userCategory;
+    }
 }

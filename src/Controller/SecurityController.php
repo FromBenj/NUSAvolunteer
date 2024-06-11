@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Entity\Volunteer;
 use App\Entity\Organisation;
 use App\Form\RegistrationFormType;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,7 +17,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, ObjectManager $manager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -30,33 +30,33 @@ class SecurityController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            if ($form->get('userClass')->getData() === "organisation") {
+            if ($form->get('userCategory')->getData() === "organisation") {
                 $user->setRoles(["ROLE_ORGANISATION"]);
                 $user->setOrganisation(new Organisation());
-                $manager->persist($user);
-                $manager->flush();
-            } elseif ($form->get('userClass')->getData() === "volunteer") {
+                $entityManager->persist($user);
+                $entityManager->flush();
+                return $this->redirectToRoute('organisation_home');
+            } elseif ($form->get('userCategory')->getData() === "volunteer") {
                 $user->setRoles(["ROLE_VOLUNTEER"]);
                 $user->setVolunteer(new Volunteer());
-                $manager->persist($user);
-                $manager->flush();
-                return $this->redirectToRoute('organisation_home');
+                $entityManager->persist($user);
+                $entityManager->flush();
+                return $this->redirectToRoute('volunteer_home');
             } else {
                 return $this->redirectToRoute('app_register');
             }
-            return $this->redirectToRoute('app_home');
         }
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
+        return $this->render('security/register.html.twig', [
+            'registrationForm' => $form,
         ]);
     }
 
-    #[Route(path: '/login/{userClass}', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils, string $userClass): Response
+    #[Route(path: '/login/{userCategory}', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils, string $userCategory): Response
     {
-        if ($userClass === "organisation") {
+        if ($userCategory === "organisation") {
             $bodyColor = "organisation-login";#0A6883"";
-        } elseif ($userClass === "volunteer") {
+        } elseif ($userCategory === "volunteer") {
             $bodyColor = "volunteer-login";
         } else {
             $bodyColor = null;
@@ -76,7 +76,7 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
             "bodyColor" => $bodyColor,
-            "userClass" => $userClass,
+            "userCategory" => $userCategory,
         ]);
     }
 

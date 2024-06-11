@@ -10,7 +10,7 @@
         {% endblock %}
     </head>
     {% if bodyColor is defined and bodyColor is not null %}
-    <body class="ps-4 pe-4 {{ bodyColor }}">
+    <body class="{{ bodyColor }}">
     {% endif %}
     {% block nav %}{% endblock %}
     {% block body %}{% endblock %}

@@ -2,8 +2,12 @@
 
 {% block title %}Hello HomeController!{% endblock %}
 
+{% block nav %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
 {% block body %}
-    <div id="anime-title" class="mb-5 mt-2">
+    <div id="anime-title" class="pb-5 pt-5">
         NUSAvolunteer
         <div id="title-animation-container">
             <div class="text-wrapper">
@@ -16,8 +20,8 @@
     </div>
     <div id="users-container" class="container">
         <div class="d-flex justify-content-around align-items-center h-100">
-            <a href="{{ path('app_login', {"userClass": "volunteer"}) }}"><button id="home-volunteer-button" class="home-user-button">Volunteer</button></a>
-            <a href="{{ path('app_login', {"userClass": "organisation"}) }}"><button id="home-organisation-button" class="home-user-button">Organisation</button></a>
+            <a href="{{ path('app_login', {"userCategory": "volunteer"}) }}"><button id="home-volunteer-button" class="home-user-button">Volunteer</button></a>
+            <a href="{{ path('app_login', {"userCategory": "organisation"}) }}"><button id="home-organisation-button" class="home-user-button">Organisation</button></a>
         </div>
     </div>
 

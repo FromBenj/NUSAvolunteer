@@ -29,8 +29,9 @@ function afterAnimation() {
     const container = document.getElementById('title-animation-container');
     const navTitle = document.getElementById("anime-title");
     container.remove();
-    navTitle.style.visibility = "visible";
+    navTitle.id = "anime-title-appear";
 }
+
 tl.eventCallback("onComplete", afterAnimation);
 
 

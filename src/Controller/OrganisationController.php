@@ -13,7 +13,7 @@ class OrganisationController extends AbstractController
     public function index(): Response
     {
         return $this->render('organisation/home.html.twig', [
-            //'organisation' => $this->getUser()->getProfile(),
+            'user' => $this->getUser(),
         ]);
     }
 

@@ -49,7 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -83,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param list<string> $roles
      */
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
@@ -98,7 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -119,7 +119,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->organisation;
     }
 
-    public function setOrganisation(?Organisation $organisation): static
+    public function setOrganisation(?Organisation $organisation): self
     {
         $this->volunteer ? $this->organisation = null : $this->organisation = $organisation;
 
@@ -131,7 +131,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->volunteer;
     }
 
-    public function setVolunteer(?Volunteer $volunteer): static
+    public function setVolunteer(?Volunteer $volunteer): self
     {
         $this->organisation ? $this->volunteer = null : $this->volunteer = $volunteer;
 
@@ -151,7 +151,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $userCategory;
     }
 
-    public function setUserCategory(?string $userCategory): static
+    public function setUserCategory(?string $userCategory): self
     {
         if ($userCategory === "organisation") {
             $this->setRoles(["ROLE_ORGANISATION"]);

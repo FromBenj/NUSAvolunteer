@@ -59,7 +59,7 @@ class Organisation
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -71,7 +71,7 @@ class Organisation
         return $this->address;
     }
 
-    public function setAddress(string $address): static
+    public function setAddress(string $address): self
     {
         $this->address = $address;
 
@@ -83,7 +83,7 @@ class Organisation
         return $this->representative;
     }
 
-    public function setRepresentative(?string $representative): static
+    public function setRepresentative(?string $representative): self
     {
         $this->representative = $representative;
 
@@ -95,7 +95,7 @@ class Organisation
         return $this->organisationPictureName;
     }
 
-    public function setOrganisationPictureName(?string $organisationPictureName): static
+    public function setOrganisationPictureName(?string $organisationPictureName): self
     {
         $this->organisationPictureName = $organisationPictureName;
 
@@ -107,7 +107,7 @@ class Organisation
         return $this->activityPictureName;
     }
 
-    public function setActivityPictureName(?string $activityPictureName): static
+    public function setActivityPictureName(?string $activityPictureName): self
     {
         $this->activityPictureName = $activityPictureName;
 
@@ -119,7 +119,7 @@ class Organisation
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -131,7 +131,7 @@ class Organisation
         return $this->keywords;
     }
 
-    public function setKeywords(?array $keywords): static
+    public function setKeywords(?array $keywords): self
     {
         $this->keywords = $keywords;
 
@@ -143,14 +143,14 @@ class Organisation
         return $this->links;
     }
 
-    public function setLinks(array $links): static
+    public function setLinks(array $links): self
     {
         $this->links = $links;
 
         return $this;
     }
 
-    public function addLink(string $link): static
+    public function addLink(string $link): self
     {
         if (!in_array($link, $this->links)) {
             $this->links[] = $link;
@@ -164,7 +164,7 @@ class Organisation
         return $this->slug;
     }
 
-    public function setSlug(string $slug): static
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -176,7 +176,7 @@ class Organisation
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?User $user): self
     {
         // unset the owning side of the relation if necessary
         if ($user === null && $this->user !== null) {

@@ -9,6 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: VolunteerRepository::class)]
 class Volunteer
 {
+    private const DISPONIBILITYCHOICES = [
+        "sometime",
+        "some hours per week",
+        "some hours per month",
+        "I am flexible"
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -30,7 +37,7 @@ class Volunteer
     private ?string $description = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private array $disponibilities = [];
+    private array $disponibilities = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private ?array $keywords = null;
@@ -48,7 +55,7 @@ class Volunteer
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): static
+    public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
 
@@ -57,10 +64,10 @@ class Volunteer
 
     public function getLastName(): ?string
     {
-        return $this->lastNa�me;
+        return $this->lastName;
     }
 
-    public function setLastName(string $lastName): static
+    public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
 
@@ -72,7 +79,7 @@ class Volunteer
         return $this->address;
     }
 
-    public function setAddress(?string $address): static
+    public function setAddress(?string $address): self
     {
         $this->address = $address;
 
@@ -84,7 +91,7 @@ class Volunteer
         return $this->volunteerPictureName;
     }
 
-    public function setVolunteerPictureName(?string $volunteerPictureName): static
+    public function setVolunteerPictureName(?string $volunteerPictureName): self
     {
         $this->volunteerPictureName = $volunteerPictureName;
 
@@ -96,7 +103,7 @@ class Volunteer
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -108,9 +115,33 @@ class Volunteer
         return $this->disponibilities;
     }
 
-    public function setDisponibilities(array $disponibilities): static
+    public function setDisponibilities(array $disponibilities): self
     {
-        $this->disponibilities = $disponibilities;
+        $this->disponibilities = [];
+        foreach ($disponibilities as $disponibility) {
+            if (in_array($disponibility, self::DISPONIBILITYCHOICES)) {
+                $this->addDisponibility($disponibility);
+            }
+        }
+
+        return $this;
+    }
+
+    public function addDisponibility(string $disponibility): self
+    {
+        if (!in_array($disponibility, $this->disponibilities) && in_array($disponibility, self::DISPONIBILITYCHOICES)) {
+            $this->disponibilities[] = $disponibility;
+        }
+
+        return $this;
+    }
+
+    public function removeDisponibility(string $disponibility): self
+    {
+        if (in_array($disponibility, $this->disponibilities)) {
+            $disponibilityKey = array_search($disponibility, $this->disponibilities);
+            unset($this->disponibilities[$disponibilityKey]);
+        }
 
         return $this;
     }
@@ -120,14 +151,14 @@ class Volunteer
         return $this->keywords;
     }
 
-    public function setKeywords(?array $keywords): static
+    public function setKeywords(?array $keywords): self
     {
         $this->keywords = $keywords;
 
         return $this;
     }
 
-    public function addKeyword(?string $keyword): static
+    public function addKeyword(?string $keyword): self
     {
         if ($keyword !== null && !in_array($keyword, $this->keywords)) {
             $this->keywords[] = $keyword;
@@ -136,7 +167,7 @@ class Volunteer
         return $this;
     }
 
-    public function getFullName(): static
+    public function getFullName(): string
     {
         if ($this->firstName && $this->lastName) {
             $fullName = $this->firstName . ' ' . $this->lastName;
@@ -156,7 +187,7 @@ class Volunteer
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?User $user): self
     {
         // unset the owning side of the relation if necessary
         if ($user === null && $this->user !== null) {
@@ -171,5 +202,10 @@ class Volunteer
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getDisponibilityChoices(): array
+     {
+        return self::DISPONIBILITYCHOICES;
     }
 }

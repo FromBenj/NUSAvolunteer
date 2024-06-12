@@ -6,50 +6,19 @@ use App\Entity\Organisation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Faker;
 use Doctrine\Persistence\ObjectManager;
+use FixturesManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class OrganisationFixtures extends Fixture
 {
-    private const KEYWORDS = [
-        "#international",
-        "#nutrition",
-        "#poverty",
-        "#saveWater",
-        "#wasteManagement",
-        "#medical"
-        ];
-
     private Faker\Generator $faker;
     private SluggerInterface $slugger;
+    private FixturesManager $fixturesManager;
 
     public function __construct(SluggerInterface $slugger) {
-        $this->faker = Faker\Factory::create();
+        $this->faker = Faker\Factory::create('fr_FR');
         $this->slugger = $slugger;
-    }
-
-    public function getFullName(): string
-    {
-        $firstname = $this->faker->firstName;
-        $lastname = $this->faker->lastName;
-
-        return $firstname . ' ' . $lastname;
-
-    }
-
-    public function getKeywords(): array
-    {
-        $keywords = [];
-        $keywordsNumber = random_int(0, count(self::KEYWORDS));
-        if ($keywordsNumber === 1) {
-            $keywords[] = self::KEYWORDS[$keywordsNumber];
-        } elseif ($keywordsNumber > 1) {
-            $keywordsKeys = array_rand(self::KEYWORDS, $keywordsNumber);
-            foreach ($keywordsKeys as $key) {
-                $keywords[] = self::KEYWORDS[$key];
-            }
-        }
-
-        return $keywords;
+        $this->fixturesManager = new FixturesManager();
     }
 
     public function load(ObjectManager $manager): void
@@ -58,15 +27,28 @@ class OrganisationFixtures extends Fixture
             $organisation = new Organisation();
             $organisation->setName($this->faker->company);
             $organisation->setAddress($this->faker->address);
-            $organisation->setRepresentative($this->getFullName());
+            $organisation->setRepresentative($this->fixturesManager->getFullName());
             $organisation->setSlug($this->slugger->slug($organisation->getName()));
             $organisation->setDescription($this->faker->text);
-            $organisation->setKeywords($this->getKeywords());
+            $organisation->setKeywords($this->fixturesManager->getKeywords());
             for ($j=0; $j<4; $j++) {
                 $organisation->addLink($this->faker->url);
             }
             $manager->persist($organisation);
         }
+
+        $organisation = new Organisation();
+        $organisation->setName("ASTI");
+        $organisation->setAddress($this->faker->address);
+        $organisation->setRepresentative("Beatriz Liu");
+        $organisation->setSlug($this->slugger->slug($organisation->getName()));
+        $organisation->setDescription($this->faker->text);
+        $organisation->setKeywords($this->fixturesManager->getKeywords());
+        for ($j=0; $j<4; $j++) {
+            $organisation->addLink($this->faker->url);
+        }
+        $manager->persist($organisation);
+        $this->addReference('organisation_test', $organisation);
 
         $manager->flush();
     }

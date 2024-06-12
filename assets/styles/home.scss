@@ -58,13 +58,6 @@
     font-size: xx-large;
 }
 
-.home-nav-button {
-    transition: all 200ms ease-in-out;
-    &:hover {
-        transform: scale(1.1);
-    }
-}
-
 #home-organisation-button {
 color: $main-color-blue;
 border-color: $main-color-green;

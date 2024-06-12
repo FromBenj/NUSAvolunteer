@@ -17,8 +17,12 @@ a {
     color: black;
 }
 
-.menu-buttons {
+.nav-buttons {
+    transition: all 200ms ease-in-out;
     font-size: 1.5rem;
+    &:hover {
+        transform: scale(1.05);
+    }
 }
 
 .validation-button {

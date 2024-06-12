@@ -1,12 +1,8 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\User;
-use App\Entity\Volunteer;
-use App\Entity\Organisation;
 use App\Form\RegistrationFormType;
-use App\Service\AutomaticLogin;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

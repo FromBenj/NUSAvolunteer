@@ -1,32 +1,36 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Hello OrganisationController!{% endblock %}
-
-{% block body %}
-    <nav id = "organisation-navbar" class="navbar navbar-expand-lg bg-light">
-        <div class="container-fluid p-4">
-            <a class="navbar-brand p-0 m-0" href={{ path('app_home') }}>
-                <img src="{{ asset('build/images/NUSAvolunteer/NUSAvolunteer_logo_final.svg') }}" alt="NUSAvolunteer logo" width="60" height="auto">
+<nav id="" class="navbar navbar-expand-lg">
+    <div class="container-fluid px-5">
+        <div class="navbar-brand p-0 m-0">
+        <a href={{ path('app_home') }}>
+            <img class="rounded-circle p-1" src="{{ asset('build/images/NUSAvolunteer/NUSAvolunteer_logo_final.svg') }}" alt="NUSAvolunteer logo" width="60" height="auto">
+        </a>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-end align-items-center">
+            <div class="nav-item">
+                <a class="nav-link active" href="#">Volunteers</a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link active" href="#">Matches</a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link active" ref="#">Profile</a>
+            </div>
+            <div class="nav-item">
+            <a class="nav-link active nav-buttons" aria-current="page"
+                {% if app.user %} 
+                href="{{path('app_logout')}}">
+                Logout
+                {% else %}
+                href="{{path('app_register')}}">
+                Sign in
+                {% endif %}
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav justify-content-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Volunteers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Matches</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" ref="#">Profile</a>
-                    </li>
-                </ul>
             </div>
         </div>
-    </nav>
-{% endblock %}
+        </div>
+    </div>
+</nav>

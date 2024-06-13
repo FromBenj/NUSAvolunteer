@@ -4,9 +4,15 @@
     src: url(HappyLucky-gxnZP.ttf) format("truetype");
 }
 
+.font-happy {
+    font-family: "Happy Lucky", sans-serif;
+}
+
 $main-color-green: #08946D;
 $main-color-blue: #0A6883;
 $main-color-yellow: #F5C677;
+$main-color-yellow-light: #f5c67780;
+$main-color-red: #FF6B6B;
 
 body {
     font-family: Rubik, sans-serif;

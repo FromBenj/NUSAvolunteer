@@ -2,7 +2,9 @@
 
 {% block title %}Organisation home page{% endblock %}
 
-{% block nav %}{% endblock %}
+{% block nav %}
+    {% include 'organisation/navbar.html.twig' %}
+{% endblock %}
 {% block body %}
 <h3> Hello {{ user.email }} and I am an Organisation</h3>
 {% endblock %}

@@ -37,7 +37,7 @@ class Volunteer
     private ?string $description = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private array $disponibilities = null;
+    private ?array $disponibilities = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private ?array $keywords = null;

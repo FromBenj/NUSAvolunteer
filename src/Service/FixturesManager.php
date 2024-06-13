@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Service;
 use App\Entity\Volunteer;
 
 Class FixturesManager

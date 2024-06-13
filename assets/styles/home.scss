@@ -8,7 +8,7 @@
 #anime-title {
     font-family: "Happy Lucky", sans-serif;
     visibility: hidden;
-    font-size: 3rem;
+    font-size: 4rem;
     text-align: center;
     color: black;
     letter-spacing: 5px;
@@ -26,6 +26,7 @@
     animation-name: title-appear;
     animation-duration: 5s;  
     animation-fill-mode: forwards;  
+    padding-bottom: 4rem;
 }
 
 @keyframes title-appear {
@@ -44,6 +45,11 @@
     margin: 0;
     line-height: 0;
     letter-spacing: 5px;
+}
+
+#home-nav {
+    color: white;
+    background-color: $main-color-yellow-light;
 }
 
 #users-container {

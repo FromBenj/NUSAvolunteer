@@ -41,7 +41,7 @@
                     {% else %}
                         {% set bt_bg = "" %}
                     {% endif %}
-
+                    <input type="hidden" name="_target_path" value="{{ path('app_login_distribution') }}"/>
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-lg {{bt_bg}}" type="submit">
                             Sign in

@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SecurityController extends AbstractController
 {
@@ -54,7 +55,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils, string $userCategory): Response
     {
         if ($userCategory === "organisation") {
-            $bodyColor = "organisation-login";#0A6883"";
+            $bodyColor = "organisation-login";
         } elseif ($userCategory === "volunteer") {
             $bodyColor = "volunteer-login";
         } else {
@@ -77,6 +78,19 @@ class SecurityController extends AbstractController
             "bodyColor" => $bodyColor,
             "userCategory" => $userCategory,
         ]);
+    }
+
+    #[Route(path: '/login/distribution', name: 'app_login_distribution')]
+    public function loginDistribution(): RedirectResponse
+    {
+        dd("stop");
+        if ($this->getUser()->volunteer && !$this->getuser()->organisation) {
+            return $this->redirectToRoute('volunteer_home');
+        } elseif ($this->getUser()->organisation && !$this->getUser()->volunteer) {
+            return $this->redirectToRoute('organisation_home');
+        } else {
+            return $this->redirectToRoute('app_home');            
+        }
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

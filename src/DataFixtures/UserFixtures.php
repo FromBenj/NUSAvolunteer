@@ -30,9 +30,17 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user->setOrganisation($this->getReference("organisation_test"));
         $manager->persist($user);
 
-        // Volunteer user;
 
-        
+        // Volunteer user;
+        $user = new User();
+        $user->setEmail("v@v.com");
+        $user->setPassword(
+            $this->userPasswordHasherInterface->hashPassword(
+                $user, "v")
+            );
+        $user->setRoles(["ROLE_VOLUNTEER"]);
+        $user->setVolunteer($this->getReference("volunteer_test"));
+        $manager->persist($user);     
 
         $manager->flush();
     }
@@ -41,6 +49,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
             OrganisationFixtures::class,
+            VolunteerFixtures::class,
             );
     }
 }

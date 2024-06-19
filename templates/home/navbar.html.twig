@@ -15,12 +15,10 @@
             {% if app.user %}
               {% if app.user.organisation %} 
                 href="{{path('organisation_home')}}">
-              {% elseif app.user.volunteer %}
-                href="{{path('volunteer_home')}}">
               {% else %}
-                href="{{path('app_home')}}">
-                My space
+                href="{{path('volunteer_home')}}">  
               {% endif %}
+              My space
             {% endif %}
           </a>
         </div>

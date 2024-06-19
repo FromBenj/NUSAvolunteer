@@ -55,6 +55,7 @@
 #users-container {
     font-family: "Happy Lucky", sans-serif;
     height: 50vh;
+    padding: 7rem 0.5rem;
 }
 
 .home-user-button {
@@ -93,6 +94,15 @@ transition: all 200ms ease-in-out;
         transform: scale(1.1);
         color: white;
         background-color: $main-color-green;
+    }
+}
+
+#home-space-button {
+    background-color: $main-color-yellow;
+    transition: all 200ms ease-in-out;
+    &:hover {
+        transform: scale(1.1);
+        background-color: $main-color-yellow-light;
     }
 }
 

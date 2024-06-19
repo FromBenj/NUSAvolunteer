@@ -19,10 +19,12 @@ class OrganisationController extends AbstractController
         ]);
     }
 
-    #[Route('/profile/{slug}', name: 'profile')]
-    public function profile(Organisation $organisation): Response
+    #[Route('/edit', name: 'edit')]
+    public function edit(): Response
     {
-        return $this->render('organisation/profile.html.twig', [
+        $organisation = $this->getUser()->getOrganisation();
+        
+        return $this->render('organisation/edit.html.twig', [
             'organisation' => $organisation,
         ]);
     }

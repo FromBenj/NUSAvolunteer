@@ -4,18 +4,25 @@
 
 {% block body %}
     <div class="py-2">
-        <div class="d-flex justify-content-center">
-            <div class="w-50">
+        <div class="navbar-brand px-5 m-0">
+            <a href="{{ path('app_home') }}">
+                <img class="rounded-circle p-1 bg-white" src="{{ asset('build/images/NUSAvolunteer/NUSAvolunteer_logo_final.svg') }}" alt="NUSAvolunteer logo" width="60" height="auto">
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="main-form-container">
                 <form method="post">
                     {% if error %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
 
+                    {# Is it usefull?
                     {% if app.user %}
                         <div class="mb-3">
                             You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
                         </div>
                     {% endif %}
+                    #}
 
                     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
                     <label for="username">Email</label>
@@ -41,9 +48,9 @@
                     {% else %}
                         {% set bt_bg = "" %}
                     {% endif %}
-                    <input type="hidden" name="_target_path" value="{{ path('app_login_distribution') }}"/>
+                    <input type="hidden" name="_target_path" value="{{ path('app_login_distribution') }}">
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-lg {{bt_bg}}" type="submit">
+                        <button class="btn btn-lg hover-login-button {{bt_bg}}" type="submit">
                             Sign in
                         </button>
                     </div>

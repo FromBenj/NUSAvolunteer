@@ -164,4 +164,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         
         return $this;
     }
+
+    public function getUserProfile(): Organisation|Volunteer
+    {
+
+        return $this->organisation ?? $this->volunteer;  
+    }
 }

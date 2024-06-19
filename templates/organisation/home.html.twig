@@ -6,5 +6,15 @@
     {% include 'organisation/navbar.html.twig' %}
 {% endblock %}
 {% block body %}
-<h3> Hello {{ user.email }} and I am an Organisation</h3>
+<h3 class="my-5 text-center"> Hey {{ user.email }}!</h3>
+
+<div class="d-flex flex-column align-items-center position-relative home-images-container">
+    <img class="img-fluid rounded-circle object-fit-cover home-avatar-picture" src="{{ asset('build/images/user-avatars/msf-avatar.png') }}" alt="MSF Avatar" width="150" height="150">
+    <img class="img-fluid rounded object-fit-cover user-background-picture" src="{{ asset('build/images/background-pictures/msf-back.jpg') }}" alt="MSF Background Picture">
+</div>
+<div class="py-5 d-flex justify-content-center">
+<a href={{ path('organisation_edit') }}>
+    <button type="button" class="btn main-btn btn-lg">Modify my profile</button>
+</a>
+
 {% endblock %}

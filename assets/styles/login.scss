@@ -7,3 +7,15 @@
     background-color: $main-color-blue;
     color: white;
 }   
+
+.hover-login-button {
+    transition: all 200ms ease-in-out;
+    &:hover {
+        background-color: $main-color-yellow;
+    }
+}  
+
+.main-form-container {
+    width: 50%;
+    margin-bottom: 15rem;
+}

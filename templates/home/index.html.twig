@@ -18,13 +18,21 @@
             </div>
         </div>
     </div>
-    <div id="users-container" class="container">
-        <div class="font-happy d-flex justify-content-center h2 pt-5">Login</div>
-        <div class="d-flex justify-content-around align-items-center">
-            <a href="{{ path('app_login', {"userCategory": "volunteer"}) }}"><button id="home-volunteer-button" class="home-user-button">Volunteer</button></a>
-            <a href="{{ path('app_login', {"userCategory": "organisation"}) }}"><button id="home-organisation-button" class="home-user-button">Organisation</button></a>
-        </div>
+    <div id="users-container" class="container"> 
+            <div class="font-happy d-flex justify-content-center h2 pb-5">
+                {% if app.user %}
+                    {% set mySpace = app.user.UserCategory() ~ "_home" %}
+                    <a href="{{ path(mySpace) }}"><button id="home-space-button" class="home-user-button">My Space</button></a>
+                {% else %}  
+                Login
+            </div>
+            <div class="d-flex justify-content-around align-items-center">     
+                <a href="{{ path('app_login', {"userCategory": "volunteer"}) }}"><button id="home-volunteer-button" class="home-user-button">Volunteer</button></a>
+                <a href="{{ path('app_login', {"userCategory": "organisation"}) }}"><button id="home-organisation-button" class="home-user-button">Organisation</button></a>
+            </div>
+        {% endif %}
     </div>
+    {% if app.user is not defined %}
     <div class="container-fluid px-5">
         <h2>Qu'est-ce que c'est ?</h2>
         <div class= "presentation-paragraph orel-5"></div>
@@ -39,4 +47,5 @@
             dolor eius eligendi enim, eum ex itaque laudantium magnam, quam reprehenderit suscipit, tenetur voluptates?
         </div>
     </div>
+    {% endif %}
 {% endblock %}

@@ -51,15 +51,29 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/login/distribution', name: 'app_login_distribution')]
+    public function loginDistribution(): RedirectResponse
+    {
+        $user = $this->getUser();
+    
+        if ($user->getVolunteer() && !$user->getOrganisation()) {
+            return $this->redirectToRoute('volunteer_home');
+        } elseif ($user->getOrganisation() && !$user->getVolunteer()) {
+            return $this->redirectToRoute('organisation_home');
+        } else {
+            return $this->redirectToRoute('app_home');            
+        } 
+    }
+
     #[Route(path: '/login/{userCategory}', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils, string $userCategory): Response
+    public function login(AuthenticationUtils $authenticationUtils, ?string $userCategory = null): Response
     {
         if ($userCategory === "organisation") {
             $bodyColor = "organisation-login";
         } elseif ($userCategory === "volunteer") {
             $bodyColor = "volunteer-login";
         } else {
-            $bodyColor = null;
+            return $this->redirectToRoute('app_home');
         }
 
         // get the login error if there is one
@@ -68,9 +82,6 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        if ($bodyColor === null) {
-            return $this->redirectToRoute('app_home');
-        }
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
@@ -78,19 +89,6 @@ class SecurityController extends AbstractController
             "bodyColor" => $bodyColor,
             "userCategory" => $userCategory,
         ]);
-    }
-
-    #[Route(path: '/login/distribution', name: 'app_login_distribution')]
-    public function loginDistribution(): RedirectResponse
-    {
-        dd("stop");
-        if ($this->getUser()->volunteer && !$this->getuser()->organisation) {
-            return $this->redirectToRoute('volunteer_home');
-        } elseif ($this->getUser()->organisation && !$this->getUser()->volunteer) {
-            return $this->redirectToRoute('organisation_home');
-        } else {
-            return $this->redirectToRoute('app_home');            
-        }
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

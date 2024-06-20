@@ -5,45 +5,23 @@
 {% block nav %}
     {% include 'organisation/navbar.html.twig' %}
 {% endblock %}
+
 {% block body %}
-    <h1 class="text-center fw-bold pb-5 pt-5">My informations</h1>
-    <div class="d-flex justify-content-center mt-5">
-        <div class="w-50 fs-5">
-            <div class="mb-4">
-                <div class="text-center fw-bold">Name</div>
-                <div class="text-center">{{ organisation.name }}</div>
-            </div>
-            <div class="mb-4">
-                <div class="text-center fw-bold">Address</div>
-                <div class="text-center">{{ organisation.address }}</div>
-            </div>
-            <div class="mb-4">
-                <div class="text-center fw-bold">Representative</div>
-                <div class="text-center">{{ organisation.representative }}</div>
-            </div>
-            <div class="mb-4">
-                <div class="text-center fw-bold">Description</div>
-                <div class="text-justify">{{ organisation.description }}</div>
-            </div>
-            <div class="mb-4">
-                <div class="text-center fw-bold">Keywords</div>
-                <div class="d-flex justify-content-around">
-                    {% for keyword in organisation.keywords  %}
-                    <div>{{ keyword }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="mb-4">
-                <div class="text-center fw-bold">Links</div>
-                <div class="text-center">
-                    {% for link in organisation.links  %}
-                        <div>{{ link }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="my-5 d-flex justify-content-end">
-                <button class="validation-button">Modifier</button>
+<div id="edit-information-container">
+    <section class="edit-information-title-section vh-100 d-flex justify-content-center align-items-center">
+        <h1 class="text-center fw-bold pb-5 pt-5">My informations</h1>
+        <div id="scroll-down-mouse">
+            Let's start!
+            <div>
+                <img  src="{{ asset('build/images/website/mouse.png') }}" alt="mouse" width="50" height="auto">
             </div>
         </div>
-    </div>
+    </section>
+    <section class="vh-100 d-flex justify-content-center align-items-center bg-primary">
+        <h2 class="text-center fw-bold pb-5 pt-5 text-white bg-black">Name</h2>
+    </section>  
+    <section class="vh-100 d-flex justify-content-center align-items-center bg-dark">
+        <h2 class="text-center fw-bold pb-5 pt-5 text-white bg-black">Name</h2>
+    </section>
+</div>
 {% endblock %}

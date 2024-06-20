@@ -14,8 +14,16 @@ $main-color-yellow: #F5C677;
 $main-color-yellow-light: #f5c67780;
 $main-color-red: #FF6B6B;
 
+$nav-height: 65px;
+
 html, body {
     font-family: Rubik, sans-serif;
+}
+
+nav {
+    height: $nav-height;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 a {
@@ -71,5 +79,22 @@ a {
     }
 }
 
+.edit-information-title-section {
+    height: calc(100vh - $nav-height) !important;
+}
 
+#scroll-down-mouse {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: go-down 1.3s infinite ease-in-out;
+}
+
+@keyframes go-down {
+    0%   {bottom: 0px;}
+    50%  {bottom: 50px;}
+    100% {bottom: 0px;}
+  }
 

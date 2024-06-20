@@ -8,9 +8,12 @@
     color: white;
 }   
 
-.hover-login-button {
+.login-button {
     transition: all 200ms ease-in-out;
     &:hover {
+        background-color: $main-color-yellow;
+    }
+    &:focus {
         background-color: $main-color-yellow;
     }
 }  

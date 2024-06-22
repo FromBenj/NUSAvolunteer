@@ -34,7 +34,7 @@ class SecurityController extends AbstractController
                 $entityManager->flush();
                 $providerKey = 'secured_area';
                 $token = new UsernamePasswordToken($user, $providerKey, $user->getRoles());
-                $this->container->get('security.token_storage')->setToken($token);                
+                $this->container->get('security.token_storage')->setToken($token);
             }
 
             if ($user->getVolunteer() && !$user->getOrganisation()) {
@@ -42,7 +42,7 @@ class SecurityController extends AbstractController
             } elseif ($user->getOrganisation() && !$user->getVolunteer()) {
                 return $this->redirectToRoute('organisation_home');
             } else {
-                return $this->redirectToRoute('app_home');            
+                return $this->redirectToRoute('app_home');
             }
         }
 
@@ -55,23 +55,25 @@ class SecurityController extends AbstractController
     public function loginDistribution(): RedirectResponse
     {
         $user = $this->getUser();
-    
+
         if ($user->getVolunteer() && !$user->getOrganisation()) {
             return $this->redirectToRoute('volunteer_home');
         } elseif ($user->getOrganisation() && !$user->getVolunteer()) {
             return $this->redirectToRoute('organisation_home');
         } else {
-            return $this->redirectToRoute('app_home');            
-        } 
+            return $this->redirectToRoute('app_home');
+        }
     }
 
     #[Route(path: '/login/{userCategory}', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, ?string $userCategory = null): Response
     {
         if ($userCategory === "organisation") {
-            $bodyColor = "organisation-login";
+            $bodyColor = "main-organisation-bg";
+            $buttonColor = "main-volunteer-button";
         } elseif ($userCategory === "volunteer") {
-            $bodyColor = "volunteer-login";
+            $bodyColor = "main-volunteer-bg";
+            $buttonColor = "main-organisation-button";
         } else {
             return $this->redirectToRoute('app_home');
         }
@@ -87,6 +89,7 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
             "bodyColor" => $bodyColor,
+            "buttonColor" => $buttonColor,
             "userCategory" => $userCategory,
         ]);
     }

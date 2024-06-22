@@ -6,7 +6,7 @@ use App\Entity\Organisation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Faker;
 use Doctrine\Persistence\ObjectManager;
-use FixturesManager;
+use App\Service\FixturesManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class OrganisationFixtures extends Fixture

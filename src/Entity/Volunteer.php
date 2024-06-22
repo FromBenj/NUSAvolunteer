@@ -9,11 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: VolunteerRepository::class)]
 class Volunteer
 {
-    private const DISPONIBILITYCHOICES = [
-        "sometime",
-        "some hours per week",
-        "some hours per month",
-        "I am flexible"
+    public const DISPONIBILITYCHOICES = [
+        "sometimes" => "sometimes",
+        "hoursWeek" => "some hours per week",
+        "hoursMonth" => "some hours per month",
+        "flexible" => "I am flexible"
     ];
 
     #[ORM\Id]
@@ -31,7 +31,7 @@ class Volunteer
     private ?string $address = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $volunteerPictureName = null;
+    private ?string $pictureName = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -86,14 +86,14 @@ class Volunteer
         return $this;
     }
 
-    public function getVolunteerPictureName(): ?string
+    public function getPictureName(): ?string
     {
-        return $this->volunteerPictureName;
+        return $this->pictureName;
     }
 
-    public function setVolunteerPictureName(?string $volunteerPictureName): self
+    public function setPictureName(?string $pictureName): self
     {
-        $this->volunteerPictureName = $volunteerPictureName;
+        $this->pictureName = $pictureName;
 
         return $this;
     }

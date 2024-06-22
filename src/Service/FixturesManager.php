@@ -1,6 +1,7 @@
 <?php
 namespace App\Service;
 use App\Entity\Volunteer;
+use Faker;
 
 Class FixturesManager
 {

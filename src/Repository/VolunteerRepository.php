@@ -16,28 +16,45 @@ class VolunteerRepository extends ServiceEntityRepository
         parent::__construct($registry, Volunteer::class);
     }
 
-    //    /**
-    //     * @return Volunteer[] Returns an array of Volunteer objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+         * @return Volunteer[] Returns an array of Volunteer objects
+    */
+    public function findByVolunteerName(array $data): array
+    {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.firstName like :name')
+            ->orWhere('v.lastName like :name')
+            ->setParameter('name', '%' . $data['name'] . '%')
+            ->orderBy('v.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
-    //    public function findOneBySomeField($value): ?Volunteer
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findByWordsInText(array $data): ?array
+    {
+        $descriptionSearch = $data['description'];
+        $descriptionWordsList = array_filter((explode(' ', $descriptionSearch)), function($word) {
+            return $word !== '';
+        });
+        $query = $this->createQueryBuilder('v');
+        foreach($descriptionWordsList as $word) {
+            $query->orWhere('v.description LIKE :word')
+                ->setParameter('word', '%' . $word . '%');
+        }
+        return $query->getQuery()
+            ->getResult();
+    }
+
+    public function findByDisponibilities(array $data): ?array
+    {
+        $disponibilitySearched = $data['disponibilities'];
+        $query = $this->createQueryBuilder('v');
+        foreach($disponibilitySearched as $disponibility) {
+            $query->orWhere(':disponibility MEMBER OF v.disponibilities')
+                ->setParameter('disponibility', "$disponibility");
+        }
+        return $query->getQuery()
+            ->getResult();
+    }
 }

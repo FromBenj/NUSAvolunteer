@@ -31,9 +31,37 @@ a {
     color: black;
 }
 
+.main-organisation-bg {
+    background-color: $main-color-blue;
+}
+
+.main-volunteer-bg {
+    background-color: $main-color-green;
+}
+
+.main-volunteer-button {
+    background-color: $main-color-green;
+    color: white;
+}
+
+.main-organisation-button {
+    background-color: $main-color-blue;
+    color: white;
+}
+
+.main-button {
+    transition: all 200ms ease-in-out;
+    &:hover {
+        background-color: $main-color-yellow;
+    }
+    &:focus {
+        background-color: $main-color-yellow;
+    }
+}
+
 .nav-buttons {
     transition: all 200ms ease-in-out;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     &:hover {
         transform: scale(1.05);
         font-weight: 450;
@@ -79,8 +107,20 @@ a {
     }
 }
 
+#edit-information-container {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    height: 100vh;
+}
+
+#edit-information-container > section {
+    scroll-snap-align: start;
+}
+
 .edit-information-title-section {
     height: calc(100vh - $nav-height) !important;
+    position: relative;
 }
 
 #scroll-down-mouse {

@@ -6,7 +6,7 @@ use Faker;
 use App\Entity\Volunteer;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use FixturesManager;
+use App\Service\FixturesManager;;
 
 class VolunteerFixtures extends Fixture
 {
@@ -24,7 +24,7 @@ class VolunteerFixtures extends Fixture
             $volunteer->setFirstName($this->faker->firstName);
             $volunteer->setLastName($this->faker->lastName);
             $volunteer->setAddress($this->faker->address);
-            $volunteer->setVolunteerPictureName("https://i.pravatar.cc/150?img=" . rand(1, 70));
+            $volunteer->setpictureName("https://i.pravatar.cc/150?img=" . rand(1, 70));
             $volunteer->setDescription($this->faker->text);
             $volunteer->setDisponibilities($this->fixturesManager->getDisponibilities());
             $volunteer->setKeywords($this->fixturesManager->getKeywords());
@@ -35,7 +35,7 @@ class VolunteerFixtures extends Fixture
         $volunteer->setFirstName($this->faker->firstName);
         $volunteer->setLastName($this->faker->lastName);
         $volunteer->setAddress($this->faker->address);
-        $volunteer->setVolunteerPictureName("https://i.pravatar.cc/150?img=" . rand(1, 70));
+        $volunteer->setpictureName("https://i.pravatar.cc/150?img=" . rand(1, 70));
         $volunteer->setDescription($this->faker->text);
         $volunteer->setDisponibilities($this->fixturesManager->getDisponibilities());
         $volunteer->setKeywords($this->fixturesManager->getKeywords());

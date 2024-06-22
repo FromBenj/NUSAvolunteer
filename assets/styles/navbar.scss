@@ -1,0 +1,10 @@
+@media (max-width: 991px) {
+    .home-navbar-collapse {
+      background-color: white;
+      border-bottom: solid black 2px;
+    }
+    .organisation-navbar-collapse {
+      background-color: $main-color-blue;
+      border-bottom: solid black 2px;
+    }
+}

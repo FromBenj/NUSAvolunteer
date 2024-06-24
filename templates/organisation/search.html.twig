@@ -8,27 +8,94 @@
 
 {% block body %}
     <div>
-        {{ form_start(form) }}
-        {{ form_row(form.description) }}
-        {{ form_row(form.disponibilities) }}
-        {{ form_row(form.name) }}
+        {{ form_start(form, { 'attr': {'class': 'px-5 pt-2 green-light-bg'} }) }}
+        <div class="d-flex justify-content-center">
+            <div class="w-100">
+                {{ form_row(form.description, {
+                    'attr': {'class': 'w-75'},
+                    'label_attr': {'class': 'fw-bold'}
+                }) }}
+            </div>
+            <div class="w-100">
+                {{ form_row(form.name, {
+                    'attr': {'class': 'w-75'},
+                    'label_attr': {'class': 'fw-bold'}
+                }) }}
+            </div>
+        </div>
+        {{ form_row(form.disponibilities, {
+            'attr': {'class': 'd-flex justify-content-around w-100'},
+            'label_attr': {'class': 'fw-bold'}
+        }) }}
         {{ form_row(form._token) }}
         <div class="d-flex justify-content-center">
-            <button type="submit" class="btn main-button main-volunteer-button">Search</button>
+            <button type="submit" class="btn main-button main-volunteer-button mb-5 mt-3 fw-bold">Search</button>
+            <button class="btn main-button mb-5 mt-3 fw-bold">
+                <a href="{{ path("organisation_search") }}">All</a>
+            </button>
         </div>
         {{ form_end(form) }}
     </div>
     <div class="d-flex flex-wrap justify-content-center position-relative">
         {% for volunteer in volunteers %}
-            <div class="card m-4" style="width: 18rem;">
+            <div class="card m-4 volunteer-card" style="width: 18rem;" data-bs-toggle="modal" data-bs-target="#{{ volunteer.id }}">
                 <img class="card-img-top" src="{{ volunteer.pictureName }}" alt="Volunteer avatar image">
                 <div class="card-body">
                     <h5 class="card-title text-center">{{ volunteer.FullName }}</h5>
-                    <p class="card-text">{{ volunteer.description | slice(0, 200) ~ '...' }}</p>
+                    <p class="card-text text-justify">{{ volunteer.description | slice(0, 200) ~ '...' }}</p>
                     <div class="d-flex flex-wrap justify-content-around">
                         {% for keyword in volunteer.keywords %}
                             <div class="m-1">{{ keyword }}</div>
                         {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Volunteer Modal -->
+            <div class="modal fade" id="{{ volunteer.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ volunteer.id ~ '-' ~ volunteer.fullName|replace({' ': ''}) }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header border-0 justify-content-end">
+                            <button type="button" class="close border-0 bg-inherit" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="fw-bold">&times;</span>
+                            </button>
+                        </div>
+                        <div class="d-flex flex-column justify-content-center align-items-center p-3">
+                            <img class="img-fluid rounded-circle object-fit-cover py-3" src="{{ volunteer.pictureName }}" alt="Volunteer avatar image" width="100" height="100">
+                            <h5 class="volunteer-modal-title modal-title" id="{{ volunteer.id ~ '-' ~ volunteer.fullName|replace({' ': ''}) }}">{{ volunteer.fullName }}</h5>
+                        </div>
+                        <div class="p-3">
+                            <h6 class="fw-bold">Disponibilities</h6>
+                            <div class="ms-4 d-flex flex-column justify-content-start">
+                                <ul class="list-group list-group-flush">
+                                    {% for disponibility in volunteer.disponibilities %}
+                                        <li>{{ disponibility }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <h6 class="fw-bold">Description</h6>
+                            <p class="text-justify">{{ volunteer.description }}</p>
+                        </div>
+                        <div class="p-3">
+                            <h6 class="fw-bold">Interests</h6>
+                            <div class="ms-4 d-flex flex-column justify-content-start">
+                                <div class="d-flex justify-content-around">
+                                    {% for keyword in volunteer.keywords %}
+                                        <div>{{ keyword }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer mb-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn main-button main-volunteer-button me-0">
+                                <a></a>
+                                Contact
+
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

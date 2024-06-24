@@ -17,11 +17,11 @@ class SearchVolunteersType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'required'   => false,
-                'label'      => 'Name',
+                'label'      => 'Names (even partial names)',
             ])
             ->add('description', TextType::class, [
                 'required'   => false,
-                'label'      => 'description keywords',
+                'label'      => 'Description Keywords',
             ])
             ->add('disponibilities', ChoiceType::class, [
                 'choices'    => array_flip(Volunteer::DISPONIBILITYCHOICES),

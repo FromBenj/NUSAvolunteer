@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VolunteerRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: VolunteerRepository::class)]
 class Volunteer
@@ -45,6 +46,9 @@ class Volunteer
     #[ORM\OneToOne(mappedBy: 'volunteer', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,6 +62,7 @@ class Volunteer
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
+        $this->changeSlug();
 
         return $this;
     }
@@ -70,6 +75,7 @@ class Volunteer
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+        $this->changeSlug();
 
         return $this;
     }
@@ -204,8 +210,23 @@ class Volunteer
         return $this;
     }
 
-    public function getDisponibilityChoices(): array
-     {
-        return self::DISPONIBILITYCHOICES;
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function changeSlug(): static
+    {
+        $slugger = new AsciiSlugger();
+        $this->slug = $slugger->slug($this->getFullName())->lower();
+
+        return $this;
     }
 }

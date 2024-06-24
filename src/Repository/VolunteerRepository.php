@@ -51,7 +51,7 @@ class VolunteerRepository extends ServiceEntityRepository
         $disponibilitySearched = $data['disponibilities'];
         $query = $this->createQueryBuilder('v');
         foreach($disponibilitySearched as $disponibility) {
-            $query->orWhere(':disponibility MEMBER OF v.disponibilities')
+            $query->orWhere(':disponibility IN (v.disponibilities)')
                 ->setParameter('disponibility', "$disponibility");
         }
         return $query->getQuery()

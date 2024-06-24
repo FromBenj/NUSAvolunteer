@@ -23,6 +23,7 @@ class VolunteerFixtures extends Fixture
             $volunteer = new Volunteer();
             $volunteer->setFirstName($this->faker->firstName);
             $volunteer->setLastName($this->faker->lastName);
+            $volunteer->changeSlug();
             $volunteer->setAddress($this->faker->address);
             $volunteer->setpictureName("https://i.pravatar.cc/150?img=" . rand(1, 70));
             $volunteer->setDescription($this->faker->text);
@@ -34,6 +35,7 @@ class VolunteerFixtures extends Fixture
         $volunteer = new Volunteer();
         $volunteer->setFirstName($this->faker->firstName);
         $volunteer->setLastName($this->faker->lastName);
+        $volunteer->changeSlug();
         $volunteer->setAddress($this->faker->address);
         $volunteer->setpictureName("https://i.pravatar.cc/150?img=" . rand(1, 70));
         $volunteer->setDescription($this->faker->text);

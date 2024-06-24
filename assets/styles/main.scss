@@ -9,10 +9,12 @@
 }
 
 $main-color-green: #08946D;
+$main-color-green-light: #55B59E;
 $main-color-blue: #0A6883;
 $main-color-yellow: #F5C677;
 $main-color-yellow-light: #f5c67780;
 $main-color-red: #FF6B6B;
+$main-color-grey-light: #dbdbdb61;
 
 $nav-height: 65px;
 
@@ -107,6 +109,10 @@ a {
     }
 }
 
+.green-light-bg {
+    background-color: $main-color-green-light;
+}
+
 #edit-information-container {
     scroll-snap-type: y mandatory;
     overflow-y: scroll;
@@ -121,6 +127,14 @@ a {
 .edit-information-title-section {
     height: calc(100vh - $nav-height) !important;
     position: relative;
+}
+
+.bg-inherit {
+    background-color: inherit;
+}
+
+.text-justify {
+    text-align: justify;
 }
 
 #scroll-down-mouse {

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Organisation;
+use App\Entity\Volunteer;
 use App\Form\SearchVolunteersType;
 use App\Repository\OrganisationRepository;
 use App\Repository\VolunteerRepository;
@@ -65,6 +66,17 @@ class OrganisationController extends AbstractController
         return $this->render('organisation/search.html.twig', [
             'volunteers' => $volunteers,
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/chat/{id}', name: 'chat')]
+    public function chat(Volunteer $volunteer): Response
+    {
+        $user = $this->getUser();
+
+        return $this->render('organisation/chat.html.twig', [
+            'volunteer' => $volunteer,
+            'organisation' => $user->getOrganisation(),
         ]);
     }
 }

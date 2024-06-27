@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrganisationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -44,9 +46,16 @@ class Organisation
     #[ORM\OneToOne(mappedBy: 'organisation', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    /**
+     * @var Collection<int, Matching>
+     */
+    #[ORM\OneToMany(targetEntity: Matching::class, mappedBy: 'organisation')]
+    private Collection $matchings;
+
     public function __construct() {
         $this->keywords = [];
         $this->links = [];
+        $this->matchings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -189,6 +198,36 @@ class Organisation
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Matching>
+     */
+    public function getMatchings(): Collection
+    {
+        return $this->matchings;
+    }
+
+    public function addMatching(Matching $matching): static
+    {
+        if (!$this->matchings->contains($matching)) {
+            $this->matchings->add($matching);
+            $matching->setOrganisation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatching(Matching $matching): static
+    {
+        if ($this->matchings->removeElement($matching)) {
+            // set the owning side to null (unless already changed)
+            if ($matching->getOrganisation() === $this) {
+                $matching->setOrganisation(null);
+            }
+        }
 
         return $this;
     }

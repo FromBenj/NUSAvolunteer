@@ -69,7 +69,7 @@ class OrganisationController extends AbstractController
         ]);
     }
 
-    #[Route('/chat/{id}', name: 'chat')]
+    #[Route('/chat/{slug}', name: 'chat')]
     public function chat(Volunteer $volunteer): Response
     {
         $user = $this->getUser();

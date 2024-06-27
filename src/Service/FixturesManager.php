@@ -49,11 +49,10 @@ Class FixturesManager
     {
         $disponibilities = [];
         $disponibilityChoices = Volunteer::DISPONIBILITYCHOICES;
-        $randomValuesNumber = random_int(1, count($disponibilityChoices));
+        $randomValuesNumber = random_int(2, count($disponibilityChoices));
         $randKeys = array_rand($disponibilityChoices, $randomValuesNumber);
-        for($i = 0; $i <= $randomValuesNumber - 1; $i++) {
-            $disponibilities[] = $disponibilityChoices[$randKeys[$i]];
-            dd($disponibilityChoices[$randKeys[1]]);
+        foreach($randKeys as $key) {
+            $disponibilities[] = $disponibilityChoices[$key];
         }
 
         return $disponibilities;

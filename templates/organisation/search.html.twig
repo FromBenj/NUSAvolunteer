@@ -38,9 +38,14 @@
     </div>
     <div class="d-flex flex-wrap justify-content-center position-relative">
         {% for volunteer in volunteers %}
-            <div class="card m-4 volunteer-card" style="width: 18rem;" data-bs-toggle="modal" data-bs-target="#{{ volunteer.id }}">
-                <img class="card-img-top" src="{{ volunteer.pictureName }}" alt="Volunteer avatar image">
-                <div class="card-body">
+            <!-- Volunteer Card -->
+            <div id="card-container-{{ volunteer.id }}" class="card m-4 volunteer-card" style="width: 18rem;" data-bs-toggle="modal" data-bs-target="#modal-{{ volunteer.id }}">
+                <div class="position-relative">
+                    <img id="match-button-filled-{{ volunteer.id }}" class="match-star d-none" src="{{ asset('build/images/website/star-filled.svg') }}" alt="match button filled">
+                    <img id="match-button-empty-{{ volunteer.id }}" class="match-star" src="{{ asset('build/images/website/star-empty.svg') }}" alt="match button empty">
+                    <img class="card-img-top" src="{{ volunteer.pictureName }}" alt="Volunteer avatar image">
+                </div>
+                <div id="card-body-{{ volunteer.id }}" class="card-body">
                     <h5 class="card-title text-center">{{ volunteer.FullName }}</h5>
                     <p class="card-text text-justify">{{ volunteer.description | slice(0, 200) ~ '...' }}</p>
                     <div class="d-flex flex-wrap justify-content-around">
@@ -50,9 +55,8 @@
                     </div>
                 </div>
             </div>
-
             <!-- Volunteer Modal -->
-            <div class="modal fade" id="{{ volunteer.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ volunteer.id ~ '-' ~ volunteer.fullName|replace({' ': ''}) }}" aria-hidden="true">
+            <div class="modal fade" id="modal-{{ volunteer.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ volunteer.id ~ '-' ~ volunteer.fullName|replace({' ': ''}) }}" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header border-0 justify-content-end">
@@ -80,8 +84,8 @@
                         </div>
                         <div class="p-3">
                             <h6 class="fw-bold">Interests</h6>
-                            <div class="ms-4 d-flex flex-column justify-content-start">
-                                <div class="d-flex justify-content-around">
+                            <div class="d-flex flex-column justify-content-start">
+                                <div class="d-flex justify-content-around flex-wrap">
                                     {% for keyword in volunteer.keywords %}
                                         <div>{{ keyword }}</div>
                                     {% endfor %}
@@ -89,11 +93,11 @@
                             </div>
                         </div>
                         <div class="modal-footer mb-2">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
                             <button type="button" class="btn main-button main-volunteer-button me-0">
-                                <a></a>
-                                Contact
-
+                                <a href="{{ path("organisation_chat", {'slug': volunteer.slug}) }}" class="text-white">
+                                    Contact
+                                </a>
                             </button>
                         </div>
                     </div>
@@ -101,4 +105,41 @@
             </div>
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        function revealStar(Id1, Id2){
+            const btn1= document.getElementById(Id1);
+            const btn2= document.getElementById(Id2);
+            if(btn1.classList.contains("d-none")) {
+                btn1.classList.remove("d-none");
+                btn2.classList.add("d-none");
+            } else {
+                btn2.classList.remove("d-none");
+                btn1.classList.add("d-none");
+            }
+        }
+
+        {% for volunteer in volunteers %}
+            function starsGestion(volunteerId) {
+                let cardContainer = document.getElementById("card-container-" + volunteerId);
+                cardContainer.removeAttribute('data-bs-toggle');
+                cardContainer.addEventListener('click', (e) => {
+                    if (e.target.classList.contains("match-star")) {
+                        console.log("star");
+                        revealStar("match-button-empty-" + volunteerId, "match-button-filled-" + volunteerId);
+                    } else {
+                        console.log("modal");
+                        cardContainer.setAttribute('data-bs-toggle', 'modal');
+                        let cardBody = document.getElementById("card-body-" + volunteerId);
+                        cardBody.click();
+                    }
+                    cardContainer.removeAttribute('data-bs-toggle');
+                })
+            }
+            starsGestion({{volunteer.id }});
+        {% endfor %}
+    </script>
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VolunteerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -48,6 +50,17 @@ class Volunteer
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
+
+    /**
+     * @var Collection<int, Matching>
+     */
+    #[ORM\OneToMany(targetEntity: Matching::class, mappedBy: 'volunteer')]
+    private Collection $matchings;
+
+    public function __construct()
+    {
+        $this->matchings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -226,6 +239,36 @@ class Volunteer
     {
         $slugger = new AsciiSlugger();
         $this->slug = $slugger->slug($this->getFullName())->lower();
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Matching>
+     */
+    public function getMatchings(): Collection
+    {
+        return $this->matchings;
+    }
+
+    public function addMatching(Matching $matching): static
+    {
+        if (!$this->matchings->contains($matching)) {
+            $this->matchings->add($matching);
+            $matching->setVolunteer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatching(Matching $matching): static
+    {
+        if ($this->matchings->removeElement($matching)) {
+            // set the owning side to null (unless already changed)
+            if ($matching->getVolunteer() === $this) {
+                $matching->setVolunteer(null);
+            }
+        }
 
         return $this;
     }

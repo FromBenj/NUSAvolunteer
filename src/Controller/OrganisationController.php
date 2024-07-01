@@ -2,11 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Organisation;
-use App\Entity\Volunteer;
 use App\Form\SearchVolunteersType;
-use App\Repository\OrganisationRepository;
+use App\Repository\MatchingRepository;
 use App\Repository\VolunteerRepository;
+use App\Service\MatchingManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -35,9 +34,11 @@ class OrganisationController extends AbstractController
     }
 
     #[Route('/search', name: 'search')]
-    public function searchVolunteers(VolunteerRepository $volunteerRepository, Request $request): Response
+    public function searchVolunteers(VolunteerRepository $volunteerRepository, MatchingRepository $matchingRepository,
+                                     MatchingManager $matchingManager, Request $request): Response
     {
         $volunteers = $volunteerRepository->findAll();
+        $volunteerStarClasses = $matchingManager->volunteerStarClasses($volunteers, $this->getUser()->getOrganisation(), $matchingRepository);
 
         $form = $this->createForm(SearchVolunteersType::class);
         $form->handleRequest($request);
@@ -56,27 +57,42 @@ class OrganisationController extends AbstractController
                 $volunteer = $volunteerRepository->find($volunteerId);
                 if (array_count_values($allVolunteersSearchedId)[$volunteerId] > 1 && !in_array($volunteer, $volunteers, true)) {
                     $volunteers[] = $volunteer;
+                    $volunteerStarClasses[$volunteer->getId()] = [
+                        'empty' => 'match-star',
+                        'filled' => 'match-star d-none'
+                    ];
+                    $matching = $matchingRepository->find([
+                        'volunteer'=> $volunteer,
+                        'organisation'=> $this->getUser()->getOrganisation()
+                    ]);
+                    if ($matching) {
+                        $volunteerStarClasses[$volunteer->getId()] = [
+                            'empty' => 'match-star d-none',
+                            'filled' => 'match-star'
+                        ];
+                    }
                 }
             }
-            if(count($volunteers) === 0) {
-                $volunteers = $allVolunteersSearched;
-            }
         }
+
 
         return $this->render('organisation/search.html.twig', [
             'volunteers' => $volunteers,
             'form' => $form->createView(),
+            'starClasses' => $volunteerStarClasses,
         ]);
     }
 
-    #[Route('/chat/{slug}', name: 'chat')]
-    public function chat(Volunteer $volunteer): Response
+    #[Route('/matches', name: 'matches')]
+    public function matching(MatchingRepository $matchingRepository): Response
     {
-        $user = $this->getUser();
+        $matches = $matchingRepository->findBy(
+            ['organisation' => $this->getUser()->getOrganisation()],
+            ['volunteer.lastName' => 'ASC']
+        );
 
-        return $this->render('organisation/chat.html.twig', [
-            'volunteer' => $volunteer,
-            'organisation' => $user->getOrganisation(),
+        return $this->render('organisation/matches.html.twig', [
+            'matches' => $matches,
         ]);
     }
 }

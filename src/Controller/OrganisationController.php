@@ -86,10 +86,7 @@ class OrganisationController extends AbstractController
     #[Route('/matches', name: 'matches')]
     public function matching(MatchingRepository $matchingRepository): Response
     {
-        $matches = $matchingRepository->findBy(
-            ['organisation' => $this->getUser()->getOrganisation()],
-            ['volunteer.lastName' => 'ASC']
-        );
+        $matches = $matchingRepository->findByOrganisationAndOrdered($this->getUser()->getOrganisation());
 
         return $this->render('organisation/matches.html.twig', [
             'matches' => $matches,

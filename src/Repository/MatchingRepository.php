@@ -16,20 +16,17 @@ class MatchingRepository extends ServiceEntityRepository
         parent::__construct($registry, Matching::class);
     }
 
-    //    /**
-    //     * @return Matching[] Returns an array of Matching objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('m')
-    //            ->andWhere('m.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('m.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByOrganisationAndOrdered($organisation): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.organisation = :org')
+            ->setParameter('org', $organisation)
+            ->innerJoin('m.volunteer', 'v')
+            ->orderBy('v.lastName', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     //    public function findOneBySomeField($value): ?Matching
     //    {

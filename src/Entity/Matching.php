@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MatchingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MatchingRepository::class)]
@@ -20,6 +22,17 @@ class Matching
     #[ORM\ManyToOne(inversedBy: 'matchings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Volunteer $volunteer = null;
+
+    /**
+     * @var Collection<int, Message>
+     */
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'matching')]
+    private Collection $messages;
+
+    public function __construct()
+    {
+        $this->messages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -46,6 +59,36 @@ class Matching
     public function setVolunteer(?Volunteer $volunteer): static
     {
         $this->volunteer = $volunteer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): static
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages->add($message);
+            $message->setMatching($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): static
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getMatching() === $this) {
+                $message->setMatching(null);
+            }
+        }
 
         return $this;
     }

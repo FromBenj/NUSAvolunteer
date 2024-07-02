@@ -4,12 +4,13 @@ namespace App\DataFixtures;
 
 use App\Entity\Organisation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Faker;
 use Doctrine\Persistence\ObjectManager;
 use App\Service\FixturesManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-class OrganisationFixtures extends Fixture
+class OrganisationFixtures extends Fixture implements DependentFixtureInterface
 {
     private Faker\Generator $faker;
     private SluggerInterface $slugger;
@@ -34,6 +35,7 @@ class OrganisationFixtures extends Fixture
             for ($j=0; $j<4; $j++) {
                 $organisation->addLink($this->faker->url);
             }
+            $organisation->setUser($this->getReference("user_organisation_" . $i));
             $manager->persist($organisation);
         }
 
@@ -47,9 +49,17 @@ class OrganisationFixtures extends Fixture
         for ($j=0; $j<4; $j++) {
             $organisation->addLink($this->faker->url);
         }
+        $organisation->setUser($this->getReference("user_organisation_test"));
         $manager->persist($organisation);
         $this->addReference('organisation_test', $organisation);
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            UserFixtures::class
+        ];
     }
 }

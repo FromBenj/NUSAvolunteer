@@ -2,13 +2,14 @@
 
 namespace App\DataFixtures;
 
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Faker;
 use App\Entity\Volunteer;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use App\Service\FixturesManager;;
+use App\Service\FixturesManager;
 
-class VolunteerFixtures extends Fixture
+class VolunteerFixtures extends Fixture implements DependentFixtureInterface
 {
     private Faker\Generator $faker;
     private FixturesManager $fixturesManager;
@@ -29,6 +30,7 @@ class VolunteerFixtures extends Fixture
             $volunteer->setDescription($this->faker->text);
             $volunteer->setDisponibilities($this->fixturesManager->getDisponibilities());
             $volunteer->setKeywords($this->fixturesManager->getKeywords());
+            $volunteer->setUser($this->getReference("user_volunteer_" . $i));
             $manager->persist($volunteer);
         }
 
@@ -41,9 +43,17 @@ class VolunteerFixtures extends Fixture
         $volunteer->setDescription($this->faker->text);
         $volunteer->setDisponibilities($this->fixturesManager->getDisponibilities());
         $volunteer->setKeywords($this->fixturesManager->getKeywords());
+        $volunteer->setUser($this->getReference("user_volunteer_test"));
         $manager->persist($volunteer);
-        $this->addReference('volunteer_test', $volunteer);
+        $this->addReference("volunteer_test", $volunteer);
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            UserFixtures::class
+        ];
     }
 }

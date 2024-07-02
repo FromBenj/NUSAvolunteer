@@ -2,7 +2,10 @@
 
 {% block title %}Volunteer home page{% endblock %}
 
-{% block nav %}{% endblock %}
+{% block nav %}
+    {% include 'volunteer/navbar.html.twig' %}
+{% endblock %}
+
 {% block body %}
 <h3> Hello {{ user.email }} I am a Volunteer</h3>
 {% endblock %}

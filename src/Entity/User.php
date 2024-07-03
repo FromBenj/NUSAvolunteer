@@ -172,16 +172,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         } elseif ($userCategory === "volunteer") {
             $this->setRoles(["ROLE_VOLUNTEER"]);
             $this->setVolunteer(new Volunteer());
-        } else {
         }
-        
+
         return $this;
     }
 
     public function getUserProfile(): Organisation|Volunteer
     {
 
-        return $this->organisation ?? $this->volunteer;  
+        return $this->organisation ?? $this->volunteer;
+    }
+
+    public function getFullName(): string
+    {
+        $fullName = '';
+        $this->getUserCategory() === "organisation" ?
+            $fullName = $this->organisation->getName() :
+            $fullName = $this->volunteer->getFullName();
+
+        return $fullName;
+    }
+
+    public function getMatchingUsers(): array
+    {
+        $matchingUsers = [];
+        $userProfile = $this->getUserProfile();
+        foreach($userProfile->getMatchings() as $matching) {
+            if ($this->getUserCategory() === "organisation") {
+                $matchingUsers[] = $matching->getVolunteer();
+            } else {
+                $matchingUsers[] = $matching->getOrganisation();
+            }
+        }
+
+        return $matchingUsers;
     }
 
     /**
@@ -213,4 +237,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
 }

@@ -3,20 +3,22 @@
 namespace App\Controller;
 
 use App\Entity\Matching;
+use App\Entity\Organisation;
+use App\Entity\Volunteer;
 use App\Repository\MatchingRepository;
 use App\Repository\OrganisationRepository;
 use App\Repository\VolunteerRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/matching', name: 'matching_')]
 class MatchingController extends AbstractController
 {
-    #[Route('/management', name: 'management',methods: ['POST'])]
+    #[Route('/matching/management', name: 'matching_management',methods: ['POST'])]
     public function matchingManagement(Request $request, OrganisationRepository $organisationRepository,
     VolunteerRepository $volunteerRepository, MatchingRepository $matchingRepository, EntityManagerInterface $entityManager
     ) : JsonResponse
@@ -59,5 +61,31 @@ class MatchingController extends AbstractController
             'action' => $data["action"],
             ]
         );
+    }
+
+    #[Route('chat/{organisation_id}/{volunteer_id}', name: 'chat')]
+    public function chat(
+        #[MapEntity(mapping: ['organisation_id' => 'id'])]
+        Organisation $organisation,
+        #[MapEntity(mapping: ['volunteer_id' => 'id'])]
+        Volunteer $volunteer,
+        MatchingRepository $matchingRepository): Response
+    {
+        $matching = $matchingRepository->findOneBy( [
+            "organisation" => $organisation,
+            "volunteer" => $volunteer
+        ]);
+
+        if (!$matching) {
+            return $this->redirectToRoute('app_home');
+        }
+
+        $userProfile = $this->getUser()->getUserProfile();
+
+
+        return $this->render('matching/chat.html.twig', [
+            'matching' => $matching,
+            'userMatchings' => $userProfile->getMatchings(),
+        ]);
     }
 }

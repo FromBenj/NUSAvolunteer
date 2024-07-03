@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ChatController!{% endblock %}
+
+{%  set userCategory = app.user.UserCategory %}
+
+{% block nav %}
+    {% if userCategory == 'volunteer' %}
+        {% include 'volunteer/navbar.html.twig' %}
+    {% else %}
+        {% include 'organisation/navbar.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center">
+        <div class="col-6">
+            {% if userCategory == 'volunteer' %}
+                <h2>Organisation</h2>
+            {% else %}
+                <h2>Volunteers</h2>
+            {% endif %}
+            {% for matchingUser in app.user.matchingUsers %}
+                {{ matchingUser.fullName }}
+            {% endfor %}
+        </div>
+        <div class="col-6"></div>
+    </div>
+{% endblock %}

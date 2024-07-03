@@ -36,9 +36,11 @@
                                 <button id="modal-button-{{ volunteer.id }}" type="button" class="btn main-button main-volunteer-button fw-bold me-4" data-bs-toggle="modal" data-bs-target="#modal-{{ volunteer.id }}">
                                     Profile
                                 </button>
-                                <button id="modal-button-{{ volunteer.id }}" type="button" class="btn main-button main-volunteer-button fw-bold" data-bs-toggle="modal" data-bs-target="#modal-{{ volunteer.id }}">
-                                    Chat
-                                </button>
+                                <a href="{{ path('chat', {'organisation_id': app.user.organisation.id, 'volunteer_id': volunteer.id}) }}">
+                                    <button id="modal-button-{{ volunteer.id }}" type="button" class="btn main-button main-volunteer-button fw-bold">
+                                        Chat
+                                    </button>
+                                </a>
                             </div>
                         </div>
                     </div>

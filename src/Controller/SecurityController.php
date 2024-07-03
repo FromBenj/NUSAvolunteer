@@ -18,6 +18,8 @@ class SecurityController extends AbstractController
     #[Route(path: '/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        $bodyColor = "register-bg";
+        $buttonColor = "register-button";
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -48,6 +50,8 @@ class SecurityController extends AbstractController
 
         return $this->render('security/register.html.twig', [
             'registrationForm' => $form,
+            "bodyColor" => $bodyColor,
+            "buttonColor" => $buttonColor,
         ]);
     }
 

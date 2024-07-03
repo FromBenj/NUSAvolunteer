@@ -9,7 +9,13 @@ On the other hand, NGOs and associations can contact volunteers that propose a r
 
 NUSAvolunteer propose features that help both NGOs and people that want to be involved in such organisations.
 
-_(Currently working on the Organisation side)_
+``` 
+Currently working on the Organisation side.
+To test the project as an Organisation:
+Email: "o@o.com"
+Password: "o"
+```
+
 
 ## Technologies
 

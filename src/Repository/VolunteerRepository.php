@@ -19,42 +19,33 @@ class VolunteerRepository extends ServiceEntityRepository
     /**
          * @return Volunteer[] Returns an array of Volunteer objects
     */
-    public function findByVolunteerName(array $data): array
+    public function findByVolunteerName(?string $name): array
     {
         return $this->createQueryBuilder('v')
             ->andWhere('v.firstName like :name')
             ->orWhere('v.lastName like :name')
-            ->setParameter('name', '%' . $data['name'] . '%')
+            ->setParameter('name', '%' . $name . '%')
             ->orderBy('v.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function findByWordsInText(array $data): ?array
+    public function findByWordInDescription(string $word): ?array
     {
-        $descriptionSearch = $data['description'];
-        $descriptionWordsList = array_filter((explode(' ', $descriptionSearch)), function($word) {
-            return $word !== '';
-        });
-        $query = $this->createQueryBuilder('v');
-        foreach($descriptionWordsList as $word) {
-            $query->orWhere('v.description LIKE :word')
-                ->setParameter('word', '%' . $word . '%');
-        }
-        return $query->getQuery()
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.description like :word')
+            ->setParameter('word', '%' . $word . '%')
+            ->getQuery()
             ->getResult();
     }
 
-    public function findByDisponibilities(array $data): ?array
+    public function findByDisponibilities(string $disponibility): ?array
     {
-        $disponibilitySearched = $data['disponibilities'];
-        $query = $this->createQueryBuilder('v');
-        foreach($disponibilitySearched as $disponibility) {
-            $query->orWhere(':disponibility IN (v.disponibilities)')
-                ->setParameter('disponibility', "$disponibility");
-        }
-        return $query->getQuery()
+        return $this->createQueryBuilder('v')
+            ->andWhere(':disponibility IN (v.disponibilities)')
+            ->setParameter('disponibility', $disponibility)
+            ->getQuery()
             ->getResult();
     }
 }

@@ -4,9 +4,17 @@ namespace App\Service;
 
 use App\Entity\Organisation;
 use App\Repository\MatchingRepository;
+use App\Repository\VolunteerRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 class MatchingManager
 {
+    private VolunteerRepository $volunteerRepository;
+
+    public function __construct(VolunteerRepository $volunteerRepository)
+    {
+        $this->volunteerRepository = $volunteerRepository;
+    }
     public function volunteerStarClasses(Array $volunteers, Organisation $organisation,
                                          MatchingRepository $matchingRepository) : array
     {
@@ -32,5 +40,37 @@ class MatchingManager
         }
 
     return $volunteerStarClasses;
+    }
+
+    public function getVolunteersByDescriptionWords(?string $words): array
+    {
+        $volunteers = [];
+        $descriptionWordsList = array_filter((explode(' ', $words)), function($word) {
+            return $word !== '';
+        });
+        foreach ($descriptionWordsList as $word) {
+            $volunteersByWord = $this->volunteerRepository->findByWordInDescription($word);
+            foreach($volunteersByWord as $volunteer) {
+                if (!in_array($volunteer, $volunteers, true)) {
+                    $volunteers[] = $volunteer;
+                }
+            }
+        }
+
+        return $volunteers;
+    }
+
+    public function getVolunteersByDisponibilities(?array $disponibilities): array
+    {
+        $volunteers = [];
+        foreach($disponibilities as $disponibility) {
+            $volunteersByDisponibility = $this->volunteerRepository->findByDisponibilities($disponibility);
+            foreach($volunteersByDisponibility as $volunteer) {
+                if (!in_array($volunteer, $volunteers, true)) {
+                    $volunteers[] = $volunteer;
+                }
+            }
+        }
+        return $volunteers;
     }
 }

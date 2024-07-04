@@ -44,24 +44,19 @@ class OrganisationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $volunteers = [];
-            $allVolunteersSearchedId = [];
             $volunteersSearch = $form->getData();
-            $volunteersFromName = $volunteerRepository->findByVolunteerName($volunteersSearch);
-            $volunteersFromDescription = $volunteerRepository->findByWordsInText($volunteersSearch);
-            $volunteersFromDisponibilities = $volunteerRepository->findByDisponibilities($volunteersSearch);
-            $allVolunteersSearched = array_merge($volunteersFromName, $volunteersFromDescription, $volunteersFromDisponibilities);
-            foreach($allVolunteersSearched as $volunteer) {
-                $allVolunteersSearchedId[] = $volunteer->getId();
-            }
-            foreach($allVolunteersSearchedId as $volunteerId) {
-                $volunteer = $volunteerRepository->find($volunteerId);
-                if (array_count_values($allVolunteersSearchedId)[$volunteerId] > 1 && !in_array($volunteer, $volunteers, true)) {
+            $volunteersFromName = $volunteerRepository->findByVolunteerName($volunteersSearch['name']);
+            $volunteersFromDescription = $matchingManager->getVolunteersByDescriptionWords($volunteersSearch['description']);
+            $volunteersFromDisponibilities = $matchingManager->getVolunteersByDisponibilities($volunteersSearch['disponibilities']);
+            $mergedVolunteers = array_merge($volunteersFromName, $volunteersFromDescription, $volunteersFromDisponibilities);
+            foreach($mergedVolunteers as $volunteer) {
+                if(!in_array($volunteer, $volunteers, true)) {
                     $volunteers[] = $volunteer;
                     $volunteerStarClasses[$volunteer->getId()] = [
                         'empty' => 'match-star',
                         'filled' => 'match-star d-none'
                     ];
-                    $matching = $matchingRepository->find([
+                    $matching = $matchingRepository->findOneBy([
                         'volunteer'=> $volunteer,
                         'organisation'=> $this->getUser()->getOrganisation()
                     ]);

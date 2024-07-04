@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Matching;
 use App\Entity\Organisation;
 use App\Entity\Volunteer;
+use App\Form\ChatType;
 use App\Repository\MatchingRepository;
 use App\Repository\OrganisationRepository;
 use App\Repository\VolunteerRepository;
@@ -75,17 +76,18 @@ class MatchingController extends AbstractController
             "organisation" => $organisation,
             "volunteer" => $volunteer
         ]);
-
         if (!$matching) {
             return $this->redirectToRoute('app_home');
         }
 
+        $chatForm = $this->createForm(ChatType::class);
         $userProfile = $this->getUser()->getUserProfile();
 
 
         return $this->render('matching/chat.html.twig', [
-            'matching' => $matching,
+            'matching'          => $matching,
             'userMatchings' => $userProfile->getMatchings(),
+            'chatForm'      => $chatForm->createView(),
         ]);
     }
 }

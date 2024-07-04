@@ -22,20 +22,35 @@
             {% endif %}
             <div>
                 {% for matchingUser in app.user.matchingUsers %}
-                    <div class="py-3 border rounded d-flex flex-column align-items-center
-                        {% if matchingUser == matching.volunteer %} green-lighter-bg {% endif %}">
-                        <img class="img-fluid rounded-circle object-fit-cover" src="{{ matchingUser.pictureName }}"
-                             alt="{{ matchingUser.FUllName }} Avatar" width="50" height="50">
-                        <p class="pt-2 mb-0 {% if matchingUser == matching.volunteer %} fw-bold {% endif %}">
-                            {{ matchingUser.fullName }}</p>
-                    </div>
+                    <a href="{{ path('chat', {'organisation_id': app.user.organisation.id, 'volunteer_id': matchingUser.id}) }}">
+                        <div class="py-3 border rounded d-flex flex-column align-items-center
+                            {% if matchingUser == matching.volunteer %} green-lighter-bg {% endif %}">
+                            <img class="img-fluid rounded-circle object-fit-cover" src="{{ matchingUser.pictureName }}"
+                                 alt="{{ matchingUser.FUllName }} Avatar" width="50" height="50">
+                            <p class="pt-2 mb-0 {% if matchingUser == matching.volunteer %} fw-bold {% endif %}">
+                                {{ matchingUser.fullName }}</p>
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
         </div>
-        <div class="col-9 overflow-y-scroll">
+        <div class="col-9 overflow-y-scroll position-relative">
             <h2 class="px-3">{{ matching.volunteer.fullName }}</h2>
-            <div id="discussion"  class="card">
-
+            <div>
+                <div id="discussion" class="border-top">
+                </div>
+                <div class="container row bg-white position-absolute bottom-0">
+                    <div class="col-3"></div>
+                    <div class="col-9">
+                        {{ form_start(chatForm) }}
+                        {{ form_widget(chatForm) }}
+                        {{ form_errors(chatForm) }}
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn main-button main-volunteer-button me-3 ms-3 mb-1">Envoyer</button>
+                        </div>
+                        {{ form_end(chatForm) }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

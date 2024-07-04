@@ -10,6 +10,7 @@
 
 $main-color-green: #08946D;
 $main-color-green-light: #55B59E;
+$main-color-green-lighter: #D4ECE7;
 $main-color-blue: #0A6883;
 $main-color-yellow: #F5C677;
 $main-color-yellow-light: #FAE2BB;
@@ -31,6 +32,10 @@ nav {
 a {
     text-decoration: none;
     color: black;
+}
+
+.available-height {
+    height: calc(100vh - 65px);
 }
 
 .main-organisation-bg {
@@ -113,6 +118,10 @@ a {
     background-color: $main-color-green-light;
 }
 
+.green-lighter-bg {
+    background-color: $main-color-green-lighter;
+}
+
 #edit-information-container {
     scroll-snap-type: y mandatory;
     overflow-y: scroll;
@@ -135,6 +144,19 @@ a {
 
 .text-justify {
     text-align: justify;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #e7e7e7;
+    border: 1px solid #cacaca;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: $main-color-green-light;
 }
 
 #scroll-down-mouse {

@@ -84,7 +84,7 @@
                             <div class="modal-footer mb-2">
                                 <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
                                 <button type="button" class="btn main-button main-volunteer-button me-0">
-                                    <a href="" class="text-white">
+                                    <a href="{{ path('chat', {'organisation_id': app.user.organisation.id, 'volunteer_id': volunteer.id}) }}" class="text-white">
                                         Chat
                                     </a>
                                 </button>

@@ -13,17 +13,30 @@
 {% endblock %}
 
 {% block body %}
-    <div class="d-flex justify-content-center">
-        <div class="col-6">
+    <div class="container d-flex p-0 py-4 available-height">
+        <div class="col-3 overflow-y-scroll">
             {% if userCategory == 'volunteer' %}
                 <h2>Organisation</h2>
             {% else %}
                 <h2>Volunteers</h2>
             {% endif %}
-            {% for matchingUser in app.user.matchingUsers %}
-                {{ matchingUser.fullName }}
-            {% endfor %}
+            <div>
+                {% for matchingUser in app.user.matchingUsers %}
+                    <div class="py-3 border rounded d-flex flex-column align-items-center
+                        {% if matchingUser == matching.volunteer %} green-lighter-bg {% endif %}">
+                        <img class="img-fluid rounded-circle object-fit-cover" src="{{ matchingUser.pictureName }}"
+                             alt="{{ matchingUser.FUllName }} Avatar" width="50" height="50">
+                        <p class="pt-2 mb-0 {% if matchingUser == matching.volunteer %} fw-bold {% endif %}">
+                            {{ matchingUser.fullName }}</p>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-        <div class="col-6"></div>
+        <div class="col-9 overflow-y-scroll">
+            <h2 class="px-3">{{ matching.volunteer.fullName }}</h2>
+            <div id="discussion"  class="card">
+
+            </div>
+        </div>
     </div>
 {% endblock %}

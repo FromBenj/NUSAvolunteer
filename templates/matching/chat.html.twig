@@ -39,14 +39,14 @@
             <div>
                 <div id="discussion" class="border-top">
                 </div>
-                <div class="container row bg-white position-absolute bottom-0">
+                <div class="container row bg-white position-sticky bottom-0 left-0 mt-5">
                     <div class="col-3"></div>
                     <div class="col-9">
                         {{ form_start(chatForm) }}
                         {{ form_widget(chatForm) }}
                         {{ form_errors(chatForm) }}
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn main-button main-volunteer-button me-3 ms-3 mb-1">Envoyer</button>
+                            <button type="submit" class="btn main-button main-volunteer-button me-3 ms-3 mb-1">Envoyer</button>
                         </div>
                         {{ form_end(chatForm) }}
                     </div>

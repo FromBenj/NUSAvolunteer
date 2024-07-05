@@ -12,6 +12,7 @@ $main-color-green: #08946D;
 $main-color-green-light: #55B59E;
 $main-color-green-lighter: #D4ECE7;
 $main-color-blue: #0A6883;
+$main-color-blue-lighter: #C2D9E0;
 $main-color-yellow: #F5C677;
 $main-color-yellow-light: #FAE2BB;
 $main-color-red: #FF6B6B;
@@ -40,6 +41,10 @@ a {
 
 .main-organisation-bg {
     background-color: $main-color-blue;
+}
+
+.main-organisation-lighter-bg {
+    background-color: $main-color-blue-lighter;
 }
 
 .main-volunteer-bg {
@@ -144,6 +149,10 @@ a {
 
 .text-justify {
     text-align: justify;
+}
+
+.left-0 {
+    left: 0;
 }
 
 .form-control:focus {

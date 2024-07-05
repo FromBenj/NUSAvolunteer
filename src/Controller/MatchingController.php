@@ -70,8 +70,20 @@ class MatchingController extends AbstractController
         Organisation $organisation,
         #[MapEntity(mapping: ['volunteer_id' => 'id'])]
         Volunteer $volunteer,
-        MatchingRepository $matchingRepository): Response
+        MatchingRepository $matchingRepository, Request $request): Response
     {
+        $chatForm = $this->createForm(ChatType::class);
+        $chatForm->handleRequest($request);
+        if ($chatForm->isSubmitted() && $chatForm->isValid()) {
+            return new Response($this->renderView('matching/message.html.twig', [
+                    'message' => $chatForm->getData(),
+                    'user' => $this->getUser()
+                ]),
+            200,
+                ['Content-Type' => 'text/vnd.turbo-stream.html']
+            );
+        }
+
         $matching = $matchingRepository->findOneBy( [
             "organisation" => $organisation,
             "volunteer" => $volunteer
@@ -80,7 +92,6 @@ class MatchingController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $chatForm = $this->createForm(ChatType::class);
         $userProfile = $this->getUser()->getUserProfile();
 
 

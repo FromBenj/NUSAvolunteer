@@ -1,3 +1,4 @@
+import './bootstrap.js';
 import './styles/app.scss';
 
 import './js/home-title';
@@ -8,6 +9,7 @@ import './js/edit-scroll';
 
 // Transfer to public/js folder because it is only used in the home page
 //import './js/lorem_orelsum.min';
+
 
 const $ = require('jquery');
 import * as bootstrap from 'bootstrap';

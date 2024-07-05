@@ -42,30 +42,44 @@ class OrganisationController extends AbstractController
 
         $form = $this->createForm(SearchVolunteersType::class);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && !empty(array_filter($form->getData()))) {
             $volunteers = [];
             $volunteersSearch = $form->getData();
+            $nbreCriteria = count(array_filter($volunteersSearch));
             $volunteersFromName = $volunteerRepository->findByVolunteerName($volunteersSearch['name']);
             $volunteersFromDescription = $matchingManager->getVolunteersByDescriptionWords($volunteersSearch['description']);
             $volunteersFromDisponibilities = $matchingManager->getVolunteersByDisponibilities($volunteersSearch['disponibilities']);
             $mergedVolunteers = array_merge($volunteersFromName, $volunteersFromDescription, $volunteersFromDisponibilities);
-            foreach($mergedVolunteers as $volunteer) {
-                if(!in_array($volunteer, $volunteers, true)) {
-                    $volunteers[] = $volunteer;
-                    $volunteerStarClasses[$volunteer->getId()] = [
-                        'empty' => 'match-star',
-                        'filled' => 'match-star d-none'
-                    ];
-                    $matching = $matchingRepository->findOneBy([
-                        'volunteer'=> $volunteer,
-                        'organisation'=> $this->getUser()->getOrganisation()
-                    ]);
-                    if ($matching) {
-                        $volunteerStarClasses[$volunteer->getId()] = [
-                            'empty' => 'match-star d-none',
-                            'filled' => 'match-star'
-                        ];
+            if ($nbreCriteria === 1) {
+                foreach ($mergedVolunteers as $volunteer) {
+                    if (!in_array($volunteer, $volunteers, true)) {
+                        $volunteers[] = $volunteer;
                     }
+                }
+            } else {
+                $volunteersId = [];
+                foreach($mergedVolunteers as $volunteer) {
+                    $volunteersId[] = $volunteer->getId();
+                    if (!in_array($volunteer, $volunteers, true) && array_count_values($volunteersId)[$volunteer->getId()] > 1) {
+                        $volunteers[] = $volunteer;
+                    }
+                }
+            }
+
+            foreach($volunteers as $volunteer) {
+                $volunteerStarClasses[$volunteer->getId()] = [
+                    'empty' => 'match-star',
+                    'filled' => 'match-star d-none'
+                ];
+                $matching = $matchingRepository->findOneBy([
+                    'volunteer'=> $volunteer,
+                    'organisation'=> $this->getUser()->getOrganisation()
+                ]);
+                if ($matching) {
+                    $volunteerStarClasses[$volunteer->getId()] = [
+                        'empty' => 'match-star d-none',
+                        'filled' => 'match-star'
+                    ];
                 }
             }
         }

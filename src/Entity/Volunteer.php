@@ -13,9 +13,9 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 class Volunteer
 {
     public const DISPONIBILITYCHOICES = [
-        "sometimes" => "sometimes",
-        "hoursWeek" => "some hours per week",
-        "hoursMonth" => "some hours per month",
+        "sometimes" => "Sometimes",
+        "hoursWeek" => "Some hours per week",
+        "hoursMonth" => "Some hours per month",
         "flexible" => "I am flexible"
     ];
 
@@ -138,7 +138,7 @@ class Volunteer
     {
         $this->disponibilities = [];
         foreach ($disponibilities as $disponibility) {
-            if (in_array($disponibility, self::DISPONIBILITYCHOICES)) {
+            if (in_array($disponibility, array_flip((self::DISPONIBILITYCHOICES)))) {
                 $this->addDisponibility($disponibility);
             }
         }
@@ -148,7 +148,7 @@ class Volunteer
 
     public function addDisponibility(string $disponibility): self
     {
-        if (!in_array($disponibility, $this->disponibilities) && in_array($disponibility, self::DISPONIBILITYCHOICES)) {
+        if (!in_array($disponibility, $this->disponibilities) && in_array($disponibility, array_flip(self::DISPONIBILITYCHOICES))) {
             $this->disponibilities[] = $disponibility;
         }
 

@@ -62,15 +62,17 @@ class MatchingManager
 
     public function getVolunteersByDisponibilities(?array $disponibilities): array
     {
-        $volunteers = [];
-        foreach($disponibilities as $disponibility) {
-            $volunteersByDisponibility = $this->volunteerRepository->findByDisponibilities($disponibility);
-            foreach($volunteersByDisponibility as $volunteer) {
-                if (!in_array($volunteer, $volunteers, true)) {
-                    $volunteers[] = $volunteer;
+        $volunteers = $this->volunteerRepository->findAll();
+        $volunteersByDisponibilities = [];
+        foreach ($volunteers as $volunteer) {
+            foreach ($disponibilities as $disponibility) {
+                if (in_array($disponibility, $volunteer->getDisponibilities(), true)) {
+                    $volunteersByDisponibilities[] = $volunteer;
+                    break;
                 }
             }
         }
-        return $volunteers;
+
+        return $volunteersByDisponibilities;
     }
 }

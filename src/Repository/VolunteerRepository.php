@@ -21,6 +21,9 @@ class VolunteerRepository extends ServiceEntityRepository
     */
     public function findByVolunteerName(?string $name): array
     {
+        if ($name === null) {
+            return [];
+        }
         return $this->createQueryBuilder('v')
             ->andWhere('v.firstName like :name')
             ->orWhere('v.lastName like :name')
@@ -36,15 +39,6 @@ class VolunteerRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('v')
             ->andWhere('v.description like :word')
             ->setParameter('word', '%' . $word . '%')
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findByDisponibilities(string $disponibility): ?array
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere(':disponibility IN (v.disponibilities)')
-            ->setParameter('disponibility', $disponibility)
             ->getQuery()
             ->getResult();
     }

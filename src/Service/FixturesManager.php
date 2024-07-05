@@ -48,7 +48,7 @@ Class FixturesManager
     public function getDisponibilities(): array
     {
         $disponibilities = [];
-        $disponibilityChoices = Volunteer::DISPONIBILITYCHOICES;
+        $disponibilityChoices = array_flip(Volunteer::DISPONIBILITYCHOICES);
         $randomValuesNumber = random_int(2, count($disponibilityChoices));
         $randKeys = array_rand($disponibilityChoices, $randomValuesNumber);
         foreach($randKeys as $key) {
@@ -57,6 +57,5 @@ Class FixturesManager
 
         return $disponibilities;
     }
-
 }
 

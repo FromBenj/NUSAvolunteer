@@ -20,7 +20,6 @@ class OrganisationType extends AbstractType
             ->add('description')
             ->add('keywords')
             ->add('links')
-            ->add('slug')
         ;
     }
 

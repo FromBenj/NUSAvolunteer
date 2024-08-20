@@ -1,1 +1,0 @@
-// Make the mouse disappears when scrolling down

@@ -25,7 +25,7 @@ class Volunteer
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $firstName = null;
+    private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
@@ -67,14 +67,14 @@ class Volunteer
         return $this->id;
     }
 
-    public function getFirstName(): ?string
+    public function getname(): ?string
     {
-        return $this->firstName;
+        return $this->name;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setname(string $name): self
     {
-        $this->firstName = $firstName;
+        $this->name = $name;
         $this->changeSlug();
 
         return $this;
@@ -188,12 +188,12 @@ class Volunteer
 
     public function getFullName(): string
     {
-        if ($this->firstName && $this->lastName) {
-            $fullName = $this->firstName . ' ' . $this->lastName;
-        } elseif (!$this->firstName) {
+        if ($this->name && $this->lastName) {
+            $fullName = $this->name . ' ' . $this->lastName;
+        } elseif (!$this->name) {
             $fullName = $this->lastName;
         } elseif (!$this->lastName) {
-            $fullName = $this->firstName;
+            $fullName = $this->name;
         } else {
             $fullName = "";
         }

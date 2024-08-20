@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Form\OrganisationType;
 use App\Form\SearchVolunteersType;
 use App\Repository\MatchingRepository;
 use App\Repository\VolunteerRepository;
 use App\Service\MatchingManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,12 +26,20 @@ class OrganisationController extends AbstractController
     }
 
     #[Route('/edit', name: 'edit')]
-    public function edit(): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager): Response
     {
         $organisation = $this->getUser()->getOrganisation();
+        $editForm = $this->createForm(OrganisationType::class, $organisation);
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            dd($editForm->getData());
+            $entityManager->flush();
+            return $this->redirectToRoute('organisation_home');
+        }
 
         return $this->render('organisation/edit.html.twig', [
             'organisation' => $organisation,
+            'editForm' => $editForm->createView(),
         ]);
     }
 

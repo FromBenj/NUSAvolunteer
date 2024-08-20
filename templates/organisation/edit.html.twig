@@ -6,22 +6,31 @@
     {% include 'organisation/navbar.html.twig' %}
 {% endblock %}
 
+{% form_theme editForm 'bootstrap_5_layout.html.twig' %}
 {% block body %}
 <div id="edit-information-container">
     <section class="edit-information-title-section vh-100 d-flex justify-content-center align-items-center">
         <h1 class="text-center fw-bold pb-5 pt-5">My informations</h1>
         <div id="scroll-down-mouse">
-            Let's start!
+            Tell me more about your organisation!
             <div>
                 <img  src="{{ asset('build/images/website/mouse.png') }}" alt="mouse" width="50" height="auto">
             </div>
         </div>
     </section>
-    <section class="vh-100 d-flex justify-content-center align-items-center bg-primary">
-        <h2 class="text-center fw-bold pb-5 pt-5 text-white bg-black">Name</h2>
-    </section>  
-    <section class="vh-100 d-flex justify-content-center align-items-center bg-dark">
-        <h2 class="text-center fw-bold pb-5 pt-5 text-white bg-black">Name</h2>
-    </section>
+    <div>
+        {{ form_start(editForm) }}
+        {{ form_row(editForm.name) }}
+        {{ form_row(editForm.address) }}
+        {{ form_row(editForm.representative) }}
+        {{ form_row(editForm.organisationPictureName) }}
+        {{ form_row(editForm.activityPictureName) }}
+        {{ form_row(editForm.description) }}
+        {{ form_row(editForm.keywords) }}
+        {{ form_row(editForm.links) }}
+        {{ form_errors(editForm) }}
+        <button type="submit">Save</button>
+        {{ form_end(editForm) }}
+    </div>
 </div>
 {% endblock %}

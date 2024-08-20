@@ -156,8 +156,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $userCategory = null;
         if ($this->organisation) {
             $userCategory = "organisation";
-        }
-        if ($this->volunteer) {
+        } elseif ($this->volunteer) {
             $userCategory = "volunteer";
         }
 

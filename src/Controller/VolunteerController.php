@@ -18,4 +18,12 @@ class VolunteerController extends AbstractController
             'user' => $this->getUser(),
         ]);
     }
+
+    #[Route('/edit', name: 'edit')]
+    public function edit(): Response
+    {
+        return $this->render('', [
+            'user' => $this->getUser(),
+        ]);
+    }
 }

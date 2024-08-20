@@ -55,20 +55,6 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/login/distribution', name: 'app_login_distribution')]
-    public function loginDistribution(): RedirectResponse
-    {
-        $user = $this->getUser();
-
-        if ($user->getVolunteer() && !$user->getOrganisation()) {
-            return $this->redirectToRoute('volunteer_home');
-        } elseif ($user->getOrganisation() && !$user->getVolunteer()) {
-            return $this->redirectToRoute('organisation_home');
-        } else {
-            return $this->redirectToRoute('app_home');
-        }
-    }
-
     #[Route(path: '/login/{userCategory}', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, ?string $userCategory = null): Response
     {
@@ -96,6 +82,21 @@ class SecurityController extends AbstractController
             "buttonColor" => $buttonColor,
             "userCategory" => $userCategory,
         ]);
+    }
+
+    #[Route(path: '/login/distribution', name: 'app_login_distribution')]
+    public function loginDistribution(): RedirectResponse
+    {
+        $user = $this->getUser();
+        if ($user && !is_null($user->getUserCategory())) {
+            $routePath = $user->getUserCategory() . '_' . 'home';
+        } elseif ($user && is_null($user->getUserCategory())) {
+            $routePath = $user->getUserCategory() . '_' . 'edit';
+        } else {
+            $routePath = 'app_home';
+        }
+
+        return $this->redirectToRoute($routePath);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

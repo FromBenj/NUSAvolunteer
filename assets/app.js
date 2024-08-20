@@ -1,7 +1,5 @@
 import './styles/app.scss';
-
 import './js/home-title';
-import './js/edit-scroll';
 
 // For the moment, directly declare on the organisation/search.html.twig file
 // import './js/match-button';

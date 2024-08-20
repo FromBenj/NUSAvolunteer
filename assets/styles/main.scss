@@ -122,22 +122,6 @@ a {
     background-color: $main-color-green-lighter;
 }
 
-#edit-information-container {
-    scroll-snap-type: y mandatory;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    height: 100vh;
-}
-
-#edit-information-container > section {
-    scroll-snap-align: start;
-}
-
-.edit-information-title-section {
-    height: calc(100vh - $nav-height) !important;
-    position: relative;
-}
-
 .bg-inherit {
     background-color: inherit;
 }

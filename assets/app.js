@@ -1,6 +1,7 @@
 import './styles/app.scss';
 import './js/home-title';
-
+import './js/profile-scroll';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 // For the moment, directly declare on the organisation/search.html.twig file
 // import './js/match-button';
 

@@ -53,8 +53,8 @@ class Organisation
     private Collection $matchings;
 
     public function __construct() {
-        $this->keywords = [];
-        $this->links = [];
+        $this->keywords = ['',];
+        $this->links = ['',];
         $this->matchings = new ArrayCollection();
     }
 

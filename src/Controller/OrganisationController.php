@@ -20,6 +20,10 @@ class OrganisationController extends AbstractController
     #[Route('/home', name: 'home')]
     public function index(): Response
     {
+        if (!$this->getUser()->getOrganisation()->getName()) {
+            return $this->redirectToRoute('organisation_edit');
+        }
+
         return $this->render('organisation/home.html.twig', [
             'user' => $this->getUser(),
         ]);
@@ -32,7 +36,6 @@ class OrganisationController extends AbstractController
         $editForm = $this->createForm(OrganisationType::class, $organisation);
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            dd($editForm->getData());
             $entityManager->flush();
             return $this->redirectToRoute('organisation_home');
         }

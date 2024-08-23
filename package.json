@@ -25,9 +25,11 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^6.6.0",
         "@popperjs/core": "^2.11.8",
         "@splinetool/runtime": "^1.2.4",
         "animejs": "^3.2.2",
+        "aos": "^3.0.0-beta.6",
         "bootstrap": "^5.3.3",
         "gsap": "^3.12.5",
         "jquery": "^3.7.1",

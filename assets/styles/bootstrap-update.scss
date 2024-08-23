@@ -1,0 +1,25 @@
+@include media-breakpoint-up(sm) {
+  .w-sm-75 {
+    width: 75% !important;
+  }
+}
+@include media-breakpoint-up(md) {
+  .w-md-75 {
+    width: 75% !important;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .w-lg-50 {
+    width: 50% !important;
+  }
+}
+@include media-breakpoint-up(xl) {
+  .w-xl-25 {
+    width: 25% !important;
+  }
+}
+@include media-breakpoint-up(xxl) {
+  .w-xxl-25 {
+    width: 25% !important;
+  }
+}

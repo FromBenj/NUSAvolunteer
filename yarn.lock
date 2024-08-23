@@ -1364,6 +1364,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fortawesome/fontawesome-free@npm:^6.6.0":
+  version: 6.6.0
+  resolution: "@fortawesome/fontawesome-free@npm:6.6.0"
+  checksum: 10c0/35c55bfecac9eb4943cf94f4380093dbe286fa29ce593488252644322b83e28eecbac757cef3eabdff7b3df67fc531c4f6dce6a3b00236f5de0174e186a9b5bb
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.0.1, @gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -2453,6 +2460,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"aos@npm:^3.0.0-beta.6":
+  version: 3.0.0-beta.6
+  resolution: "aos@npm:3.0.0-beta.6"
+  dependencies:
+    classlist-polyfill: "npm:^1.2.0"
+    lodash.debounce: "npm:^4.0.8"
+    lodash.throttle: "npm:^4.1.1"
+  checksum: 10c0/e64840f87275a06626c8bc66aa47ddc9974b14bb67f88ba628987575d213d6a00fa028aa301ecfa1f081fdea9782234289896f01cb09763860ed0e6fe22e6d10
+  languageName: node
+  linkType: hard
+
 "aproba@npm:^1.0.3 || ^2.0.0":
   version: 2.0.0
   resolution: "aproba@npm:2.0.0"
@@ -2893,6 +2911,13 @@ __metadata:
   version: 3.9.0
   resolution: "ci-info@npm:3.9.0"
   checksum: 10c0/6f0109e36e111684291d46123d491bc4e7b7a1934c3a20dea28cba89f1d4a03acd892f5f6a81ed3855c38647e285a150e3c9ba062e38943bef57fee6c1554c3a
+  languageName: node
+  linkType: hard
+
+"classlist-polyfill@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "classlist-polyfill@npm:1.2.0"
+  checksum: 10c0/97a6c6865daa1f74e6219f24bb5971c6b418aa9dcec0dcaab38283dbd9388af1c0057e9bd281b7236959059d971c55705bc055ee8382ee89f0c2d70749794cf3
   languageName: node
   linkType: hard
 
@@ -5029,6 +5054,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.throttle@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "lodash.throttle@npm:4.1.1"
+  checksum: 10c0/14628013e9e7f65ac904fc82fd8ecb0e55a9c4c2416434b1dd9cf64ae70a8937f0b15376a39a68248530adc64887ed0fe2b75204b2c9ec3eea1cb2d66ddd125d
+  languageName: node
+  linkType: hard
+
 "lodash.uniq@npm:^4.5.0":
   version: 4.5.0
   resolution: "lodash.uniq@npm:4.5.0"
@@ -6786,6 +6818,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.17.0"
     "@babel/preset-env": "npm:^7.16.0"
+    "@fortawesome/fontawesome-free": "npm:^6.6.0"
     "@hotwired/stimulus": "npm:^3.0.0"
     "@hotwired/turbo": "npm:^7.1.1 || ^8.0"
     "@popperjs/core": "npm:^2.11.8"
@@ -6793,6 +6826,7 @@ __metadata:
     "@symfony/stimulus-bridge": "npm:^3.2.0"
     "@symfony/webpack-encore": "npm:^4.0.0"
     animejs: "npm:^3.2.2"
+    aos: "npm:^3.0.0-beta.6"
     bootstrap: "npm:^5.3.3"
     core-js: "npm:^3.23.0"
     file-loader: "npm:^6.0.0"

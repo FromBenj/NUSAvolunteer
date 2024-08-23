@@ -88,10 +88,12 @@ class SecurityController extends AbstractController
     public function loginDistribution(): RedirectResponse
     {
         $user = $this->getUser();
-        if ($user && !is_null($user->getUserCategory())) {
-            $routePath = $user->getUserCategory() . '_' . 'home';
-        } elseif ($user && is_null($user->getUserCategory())) {
-            $routePath = $user->getUserCategory() . '_' . 'edit';
+        if ($user && !is_null($user->getUserProfile())) {
+            $userCategory = $user->getUserCategory();
+            $userName = $user->getUserProfile()->getName();
+            isset($userName) ?
+            $routePath = $userCategory . '_' . 'home' :
+            $routePath = $userCategory. '_' . 'create';
         } else {
             $routePath = 'app_home';
         }

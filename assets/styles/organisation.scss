@@ -40,19 +40,26 @@
   cursor: pointer;
 }
 
-.organisation-remove-keyword, .organisation-remove-link {
+.organisation-remove-item {
   position: absolute;
   right: -0.4rem;
   top: -0.75rem;
   font-weight: 400;
   color: $main-color-blue;
   font-size: 1.2rem;
-  padding-left: 0.3rem;
   cursor: pointer;
 
   &:hover {
     font-weight: bold;
   }
+}
+
+.organisation-remove-item > .fa-xmark {
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  background-color: white;
+  border-radius: 0.375rem;
 }
 
 form[name="organisation"] label, form[name="organisation"] legend {

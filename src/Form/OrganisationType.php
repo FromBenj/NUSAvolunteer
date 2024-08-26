@@ -24,6 +24,7 @@ class OrganisationType extends AbstractType
                 'entry_type' => TextType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
+                'required' => false,
             ])
             ->add('links')
         ;

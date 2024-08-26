@@ -50,7 +50,9 @@
                     {% for keyword in editForm.keywords %}
                         <li class="my-3 position-relative">
                             {{ form_widget(keyword) }}
-                            <span class="organisation-remove-keyword">x</span>
+                            <span class="organisation-remove-item">
+                                <i class="fa-solid fa-xmark"></i>
+                            </span>
                         </li>
                     {% endfor %}
                     <li id="keyword-add-button" class="list-group-item mt-4 d-flex justify-content-center">
@@ -65,7 +67,7 @@
                     {% for link in editForm.links %}
                         <li class="my-3 position-relative">
                             {{ form_widget(link) }}
-                            <span class="organisation-remove-link">
+                            <span class="organisation-remove-item">
                                 <i class="fa-solid fa-xmark"></i>
                             </span>
                         </li>
@@ -78,7 +80,7 @@
             {{ form_errors(editForm) }}
             <div class="d-flex mb-4">
                 <div class="w-75"></div>
-            <button class="validation-button" type="submit">Save</button>
+                <button class="validation-button" type="submit">Save</button>
             </div>
             {{ form_end(editForm) }}
         </div>
@@ -87,24 +89,25 @@
 
 {% block javascripts %}
     <script>
-        // Add a new keyword
-        const keywordAddButton = document.getElementById("keyword-add-button");
-        keywordAddButton.addEventListener("click", (event) => {
-            const keywordsList = event.target.closest('ul');
-            const keywordsListChildren = keywordsList.children;
-            const lastKeyword = keywordsListChildren[keywordsListChildren.length - 2];
-            const lastKeywordValue = lastKeyword.querySelector("input").value;
-            if(noSpaceNoEmpty(lastKeywordValue)) {
-                const newKeyword = lastKeyword.cloneNode(true);
-                let newKeywordInput = newKeyword.querySelector("input");
-                newKeywordInput.id = newInputId(lastKeyword);
-                newKeywordInput.name = newInputName(lastKeyword);
-                newKeywordInput.value = "";
-                lastKeyword.after(newKeyword);
-            }
-        })
+        // Add a new keyword or link
+        function addNewItem(addButton) {
+            addButton.addEventListener("click", (event) => {
+                const itemsList = event.target.closest('ul');
+                const itemsListChildren = itemsList.children;
+                const lastItem = itemsListChildren[itemsListChildren.length - 2];
+                const lastItemValue = lastItem.querySelector("input").value;
+                if (noSpaceNoEmpty(lastItemValue)) {
+                    const newItem = lastItem.cloneNode(true);
+                    let newItemInput = newItem.querySelector("input");
+                    newItemInput.id = newInputId(lastItem);
+                    newItemInput.name = newInputName(lastItem);
+                    newItemInput.value = "";
+                    lastItem.after(newItem);
+                }
+            })
+        }
 
-        function noSpaceNoEmpty(value)  {
+        function noSpaceNoEmpty(value) {
             const removeSpace = value.replace(/\s/g, '');
             return removeSpace.length;
         }
@@ -128,21 +131,55 @@
             return `${nameBase}[${newInputNumber}]`;
         }
 
-        //Remove a keyword & make it impossible to remove all the keywords
-        let keywordsList = document.getElementById('organisation-keywords-list');
-        let removeKeywordIcons = document.getElementsByClassName("organisation-remove-keyword");
-        for (let i = 0; i < removeKeywordIcons.length; i++) {
-            removeKeywordIcons[i].addEventListener("click", (event) => {
-                if (keywordsList.children.length > 2) {
-                    const keywordItem = event.target.closest("li");
-                    keywordItem.remove();
-                } else {
-                    removeKeywordIcons[0].remove();
-                }
-                removeKeywordIcons = document.getElementsByClassName("organisation-remove-keyword");
-            })
+        //Add a keyword
+        const keywordAddButton = document.getElementById("keyword-add-button");
+        addNewItem(keywordAddButton);
+        //Add a link
+        const linkAddButton = document.getElementById("link-add-button");
+        addNewItem(linkAddButton);
+
+
+        //Remove a keyword or link
+        function removeItem(itemsList, itemType) {
+            const removeIcons = itemsList.getElementsByClassName("organisation-remove-item");
+            for (let i = 0; i < removeIcons.length; i++) {
+                removeIcons[i].addEventListener("click", (event) => {
+                    if (itemsList.children.length > 2) {
+                        const item = event.target.closest("li");
+                        item.remove();
+                    }
+                    // make it impossible to remove all the keywords or links
+                    if (itemsList.children.length === 2) {
+                        let newItem = document.createElement('input');
+                        newItem.classList.add("my-3", "position-relative");
+                        itemsList.prepend(newItem);
+                        let newItemInput = document.createElement('input');
+                        newItemInput.type = "text";
+                        newItemInput.id = `organisation_${itemType}_0`;
+                        newItemInput.name = `organisation[${itemType}][0]`;
+                        newItemInput.value = "";
+                        newItemInput.classList.add('form-control');
+                        newItem.append(newItemInput);
+                        let newRemoveContainer = document.createElement('span');
+                        newRemoveContainer.classList.add("organisation-remove-link");
+                        newRemoveContainer.append(newItem);
+                        let NewRemoveIcon = document.createElement('i');
+                        NewRemoveIcon.classList.add("fa-solid", "fa-xmark");
+                        newRemoveContainer.append(NewRemoveIcon);
+                    }
+                })
+            }
         }
 
-
+        //Remove a keyword
+        keywordAddButton.addEventListener("click", () => {
+            let keywordsList = document.getElementById('organisation-keywords-list');
+            removeItem(keywordsList, "keywords");
+        })
+        //Remove a link
+        linkAddButton.addEventListener("click", () => {
+            let linksList = document.getElementById('organisation-links-list');
+            removeItem(linksList, "links");
+        })
     </script>
 {% endblock %}

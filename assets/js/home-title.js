@@ -1,5 +1,5 @@
 import {gsap} from "gsap";
-import {SplitTextJS} from "./SplitTextJS";
+import {SplitTextJS} from "./split-text";
 
 
 const titles = gsap.utils.toArray('.title-animation');

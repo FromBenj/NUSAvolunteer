@@ -22,7 +22,7 @@ class VolunteerFixtures extends Fixture implements DependentFixtureInterface
     {
         for ($i=0; $i<10; $i++) {
             $volunteer = new Volunteer();
-            $volunteer->setFirstName($this->faker->firstName);
+            $volunteer->setname($this->faker->firstName);
             $volunteer->setLastName($this->faker->lastName);
             $volunteer->changeSlug();
             $volunteer->setAddress($this->faker->address);
@@ -35,7 +35,7 @@ class VolunteerFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $volunteer = new Volunteer();
-        $volunteer->setFirstName($this->faker->firstName);
+        $volunteer->setname($this->faker->firstName);
         $volunteer->setLastName($this->faker->lastName);
         $volunteer->changeSlug();
         $volunteer->setAddress($this->faker->address);

@@ -1,6 +1,9 @@
 ### My notes ###
 notes.md
 
+### Images ###
+/assets/images/
+
 ###> PhpStorm ###
 .idea/
 ###> symfony/framework-bundle ###

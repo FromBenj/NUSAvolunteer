@@ -1,0 +1,13 @@
+vich_uploader:
+    db_driver: orm
+
+    metadata:
+        type: attribute
+
+    mappings:
+        # Organisations #
+        organisation_avatar_file:
+            uri_prefix: /uploads/images/organisations/avatars
+            upload_destination: '%upload_directory_organisation_images%/avatars'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            delete_on_update: true

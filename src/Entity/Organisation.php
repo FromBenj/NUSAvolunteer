@@ -3,12 +3,17 @@
 namespace App\Entity;
 
 use App\Repository\OrganisationRepository;
+use DateTime;
+use DateTimeInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: OrganisationRepository::class)]
+#[Vich\Uploadable]
 class Organisation
 {
     #[ORM\Id]
@@ -26,7 +31,14 @@ class Organisation
     private ?string $representative = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $organisationPictureName = null;
+    private ?string $avatarName = null;
+
+    #[Vich\UploadableField(mapping: 'organisation_avatar_file', fileNameProperty: 'avatarName')]
+    #[Assert\File(
+        maxSize: '2M',
+        mimeTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'],
+    )]
+    private ?File $avatarFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $activityPictureName = null;
@@ -52,6 +64,8 @@ class Organisation
     #[ORM\OneToMany(targetEntity: Matching::class, mappedBy: 'organisation')]
     private Collection $matchings;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DatetimeInterface $updatedAt = null;
     public function __construct() {
         $this->keywords = ['',];
         $this->links = ['',];
@@ -99,14 +113,14 @@ class Organisation
         return $this;
     }
 
-    public function getOrganisationPictureName(): ?string
+    public function getAvatarName(): ?string
     {
-        return $this->organisationPictureName;
+        return $this->avatarName;
     }
 
-    public function setOrganisationPictureName(?string $organisationPictureName): self
+    public function setAvatarName(?string $avatarName): self
     {
-        $this->organisationPictureName = $organisationPictureName;
+        $this->avatarName = $avatarName;
 
         return $this;
     }
@@ -114,6 +128,21 @@ class Organisation
     public function getActivityPictureName(): ?string
     {
         return $this->activityPictureName;
+    }
+
+    public function setAvatarFile(File $image = null): Organisation
+    {
+        $this->avatarFile = $image;
+        if ($image !== null) {
+            $this->updatedAt = new DateTime('now');
+        }
+
+        return $this;
+    }
+
+    public function getAvatarFile(): ?File
+    {
+        return $this->avatarFile;
     }
 
     public function setActivityPictureName(?string $activityPictureName): self
@@ -142,6 +171,11 @@ class Organisation
 
     public function setKeywords(?array $keywords): self
     {
+        foreach($keywords as $index => $keyword) {
+            if ($keyword[0] !== '#') {
+                $keywords[$index] = '#' . $keyword;
+            }
+        }
         $this->keywords = $keywords;
 
         return $this;
@@ -228,6 +262,18 @@ class Organisation
                 $matching->setOrganisation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?DateTimeInterface $date): ?self
+    {
+        $this->updatedAt = $date;
 
         return $this;
     }

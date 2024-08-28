@@ -37,6 +37,9 @@ class OrganisationController extends AbstractController
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $entityManager->flush();
+            $organisation->setAvatarFile(null);
+            $entityManager->flush();
+
             return $this->redirectToRoute('organisation_home');
         }
 

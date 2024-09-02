@@ -5,24 +5,40 @@ namespace App\Form;
 use App\Entity\Organisation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vich\UploaderBundle\Form\Type\VichFileType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class OrganisationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length(min: 2, max: 255),
+//                    new Assert\Unique(message: 'An organization with this name already exists.'),
+                ]
+            ])
             ->add('address')
             ->add('representative')
-            ->add('avatarFile', VichFileType::class, [
-                'required' => true,
-                'allow_delete' => true, // not mandatory, default is true
-                'download_uri' => true, // not mandatory, default is true
-                'label' => 'Organisation Picture',
+            ->add('avatarFile', FileType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\file([
+                        'maxSize' => '2M',
+                        'mimeTypes' => [
+                            'image/jpg',
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp'
+                        ],
+                        'mimeTypesMessage' => 'Sorry, your picture is not valid.',
+                    ])
+                ]
             ])
             ->add('activityPictureName')
             ->add('description')

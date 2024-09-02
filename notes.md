@@ -10,3 +10,7 @@ Les algos de recherche pour trouver des volontaires ne marchent pas bien.
 Add RevealStar function in a specific JS file
 
 Rajouter les flash message for success, delete, ....
+
+2 organisations ne peuvent pas avoir le même nom 
+
+Accept only - _ letters and numbers in picture names

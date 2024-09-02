@@ -25,26 +25,54 @@
         </div>
         <div>
             {{ form_start(editForm) }}
-            <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container">
+            <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
                 {{ form_row(editForm.name) }}
+                <span class="organisation-form-required">
+                    {{ editForm.name.vars.required ? '*' : '' }}
+                </span>
             </div>
-            <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container">
+            <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
                 {{ form_row(editForm.address) }}
+                <span class="organisation-form-required">
+                    {{ editForm.address.vars.required ? '*' : '' }}
+                </span>
             </div>
-            <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container">
-                {{ form_row(editForm.avatarFile) }}
+            <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
+                {% if organisation.avatarName is null or organisation.avatarName is empty %}
+                    {{ form_row(editForm.avatarName, {required: true}) }}
+                {%  else %}
+                    {{ form_row(editForm.avatarFile) }}
+                {% endif %}
+                <span class="organisation-form-required">
+                    {{ editForm.avatarFile.vars.required ? '*' : '' }}
+                </span>
+                <a href="{{ asset('uploads/images/organisations/avatars/' ~ organisation.avatarName) }}" target="_blank">
+                    <div class="fst-italic text-decoration-underline">Previous picture</div>
+                </a>
             </div>
-            <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container">
+            <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
                 {{ form_row(editForm.activityPictureName) }}
+                <span class="organisation-form-required">
+                    {{ editForm.activityPictureName.vars.required ? '*' : '' }}
+                </span>
             </div>
-            <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container">
+            <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
                 {{ form_row(editForm.representative) }}
+                <span class="organisation-form-required">
+                    {{ editForm.representative.vars.required ? '*' : '' }}
+                </span>
             </div>
-            <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container">
+            <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
                 {{ form_row(editForm.description) }}
+                <span class="organisation-form-required">
+                    {{ editForm.description.vars.required ? '*' : '' }}
+                </span>
             </div>
-            <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container">
+            <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
                 {{ form_label(editForm.keywords) }}
+                <span class="organisation-form-required">
+                    {{ editForm.keywords.vars.required ? '*' : '' }}
+                </span>
                 {{ form_errors(editForm.keywords) }}
                 <ul id="organisation-keywords-list">
                     {% for keyword in editForm.keywords %}
@@ -60,8 +88,11 @@
                     </li>
                 </ul>
             </div>
-            <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container">
+            <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
                 {{ form_label(editForm.links) }}
+                <span class="organisation-form-required">
+                    {{ editForm.links.vars.required ? '*' : '' }}
+                </span>
                 {{ form_errors(editForm.links) }}
                 <ul id="organisation-links-list">
                     {% for link in editForm.links %}
@@ -77,7 +108,6 @@
                     </li>
                 </ul>
             </div>
-            {{ form_errors(editForm) }}
             <div class="d-flex mb-4">
                 <div class="w-75"></div>
                 <button class="validation-button" type="submit">Save</button>
@@ -88,98 +118,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        // Add a new keyword or link
-        function addNewItem(addButton) {
-            addButton.addEventListener("click", (event) => {
-                const itemsList = event.target.closest('ul');
-                const itemsListChildren = itemsList.children;
-                const lastItem = itemsListChildren[itemsListChildren.length - 2];
-                const lastItemValue = lastItem.querySelector("input").value;
-                if (noSpaceNoEmpty(lastItemValue)) {
-                    const newItem = lastItem.cloneNode(true);
-                    let newItemInput = newItem.querySelector("input");
-                    newItemInput.id = newInputId(lastItem);
-                    newItemInput.name = newInputName(lastItem);
-                    newItemInput.value = "";
-                    lastItem.after(newItem);
-                }
-            })
-        }
-
-        function noSpaceNoEmpty(value) {
-            const removeSpace = value.replace(/\s/g, '');
-            return removeSpace.length;
-        }
-
-        function newInputId(lastKeyword) {
-            const lastInputId = lastKeyword.querySelector("input").id;
-            const lastIdNumber = lastInputId.match(/\d+$/)[0];
-            const idBase = lastInputId.substring(0, lastInputId.length - lastIdNumber.length);
-            const newIdNumber = parseInt(lastIdNumber) + 1;
-
-            return `${idBase}${newIdNumber}`;
-        }
-
-        function newInputName(lastKeyword) {
-            const lasInputName = lastKeyword.querySelector("input").name;
-            const lastInputBracket = lasInputName.match(/\[(\d+)\]$/)[0];
-            const nameBase = lasInputName.substring(0, lasInputName.length - lastInputBracket.length);
-            const lastNameNumber = lasInputName.match(/\[(\d+)\]$/)[1];
-            const newInputNumber = parseInt(lastNameNumber) + 1;
-
-            return `${nameBase}[${newInputNumber}]`;
-        }
-
-        //Add a keyword
-        const keywordAddButton = document.getElementById("keyword-add-button");
-        addNewItem(keywordAddButton);
-        //Add a link
-        const linkAddButton = document.getElementById("link-add-button");
-        addNewItem(linkAddButton);
-
-
-        //Remove a keyword or link
-        function removeItem(itemsList, itemType) {
-            const removeIcons = itemsList.getElementsByClassName("organisation-remove-item");
-            for (let i = 0; i < removeIcons.length; i++) {
-                removeIcons[i].addEventListener("click", (event) => {
-                    if (itemsList.children.length > 2) {
-                        const item = event.target.closest("li");
-                        item.remove();
-                    }
-                    // make it impossible to remove all the keywords or links
-                    if (itemsList.children.length === 2) {
-                        let newItem = document.createElement('input');
-                        newItem.classList.add("my-3", "position-relative");
-                        itemsList.prepend(newItem);
-                        let newItemInput = document.createElement('input');
-                        newItemInput.type = "text";
-                        newItemInput.id = `organisation_${itemType}_0`;
-                        newItemInput.name = `organisation[${itemType}][0]`;
-                        newItemInput.value = "";
-                        newItemInput.classList.add('form-control');
-                        newItem.append(newItemInput);
-                        let newRemoveContainer = document.createElement('span');
-                        newRemoveContainer.classList.add("organisation-remove-link");
-                        newRemoveContainer.append(newItem);
-                        let NewRemoveIcon = document.createElement('i');
-                        NewRemoveIcon.classList.add("fa-solid", "fa-xmark");
-                        newRemoveContainer.append(NewRemoveIcon);
-                    }
-                })
-            }
-        }
-
-        //Remove a keyword
-        keywordAddButton.addEventListener("click", () => {
-            let keywordsList = document.getElementById('organisation-keywords-list');
-            removeItem(keywordsList, "keywords");
-        })
-        //Remove a link
-        linkAddButton.addEventListener("click", () => {
-            let linksList = document.getElementById('organisation-links-list');
-            removeItem(linksList, "links");
-        })
-    </script>
+    <script src="{{ asset('js/organisation-form.js') }}" type="text/javascript"></script>
 {% endblock %}

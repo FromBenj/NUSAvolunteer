@@ -7,7 +7,9 @@ use App\Form\SearchVolunteersType;
 use App\Repository\MatchingRepository;
 use App\Repository\VolunteerRepository;
 use App\Service\MatchingManager;
+use App\Service\PictureManager;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Param;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,15 +32,24 @@ class OrganisationController extends AbstractController
     }
 
     #[Route('/edit', name: 'edit')]
-    public function edit(Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager, PictureManager $pictureManager): Response
     {
         $organisation = $this->getUser()->getOrganisation();
         $editForm = $this->createForm(OrganisationType::class, $organisation);
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $data = $editForm->getData();
+            if ($data->getAvatarFile()) {
+                $avatarName = $pictureManager->getUniqueName($data->getAvatarFile()->getClientOriginalName());
+                $file = $data->getAvatarFile();
+                $parameters = $pictureManager->getParameters();
+                $file->move($parameters->get("upload_directory_organisation_images") ."/avatars", $avatarName);
+                $data->setAvatarName($avatarName);
+                $data->removeAvatarFile();
+            }
+
             $entityManager->flush();
-            $organisation->setAvatarFile(null);
-            $entityManager->flush();
+
 
             return $this->redirectToRoute('organisation_home');
         }

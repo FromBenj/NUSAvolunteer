@@ -14,3 +14,4 @@ Rajouter les flash message for success, delete, ....
 2 organisations ne peuvent pas avoir le même nom 
 
 Accept only - _ letters and numbers in picture names
+

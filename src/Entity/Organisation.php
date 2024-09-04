@@ -3,17 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\OrganisationRepository;
+use App\Service\PictureManager;
 use DateTime;
 use DateTimeInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: OrganisationRepository::class)]
-#[Vich\Uploadable]
+#[UniqueEntity(fields: ['name'], message: 'An organization with this name already exists.')]
 class Organisation
 {
     #[ORM\Id]
@@ -33,7 +35,6 @@ class Organisation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatarName = null;
 
-    #[Vich\UploadableField(mapping: 'organisation_avatar_file', fileNameProperty: 'avatarName')]
     #[Assert\File(
         maxSize: '2M',
         mimeTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'],
@@ -66,7 +67,9 @@ class Organisation
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DatetimeInterface $updatedAt = null;
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->keywords = ['',];
         $this->links = ['',];
         $this->matchings = new ArrayCollection();
@@ -130,10 +133,10 @@ class Organisation
         return $this->activityPictureName;
     }
 
-    public function setAvatarFile(File $image = null): Organisation
+    public function setAvatarFile(?File $image = null): Organisation
     {
-        $this->avatarFile = $image;
         if ($image !== null) {
+            $this->avatarFile = $image;
             $this->updatedAt = new DateTime('now');
         }
 
@@ -143,6 +146,11 @@ class Organisation
     public function getAvatarFile(): ?File
     {
         return $this->avatarFile;
+    }
+
+    public function removeAvatarFile(): void
+    {
+        $this->avatarFile = null;
     }
 
     public function setActivityPictureName(?string $activityPictureName): self
@@ -171,7 +179,7 @@ class Organisation
 
     public function setKeywords(?array $keywords): self
     {
-        foreach($keywords as $index => $keyword) {
+        foreach ($keywords as $index => $keyword) {
             if ($keyword[0] !== '#') {
                 $keywords[$index] = '#' . $keyword;
             }

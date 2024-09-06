@@ -2,19 +2,15 @@
 
 namespace App\Service;
 
+use App\Entity\Organisation;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class PictureManager
 {
-    private ParameterBagInterface $parameters;
+    private ParameterManager $parameters;
 
-    public function __construct(ParameterBagInterface $parameters) {
+    public function __construct(ParameterManager $parameters) {
         $this->parameters = $parameters;
-    }
-
-    public function getParameters(): ParameterBagInterface
-    {
-        return $this->parameters;
     }
 
     public function getUniqueName(string $pictureName): string
@@ -22,7 +18,24 @@ class PictureManager
         $extension = pathinfo($pictureName, PATHINFO_EXTENSION);
         $extensionLength = strlen($extension) + 1;
         $name = substr($pictureName, 0, - $extensionLength);
+        $cleanName = preg_replace('/[^a-zA-Z0-9_\-]/', 'x', $name);
 
-        return uniqid($name, false) . '.' . $extension;
+        return uniqid($cleanName, false) . '.' . $extension;
+    }
+
+    public function checkOrganisationPictures(Organisation $organisation): void
+    {
+        if (!$organisation->getavatarName()) {
+            $defaultAvatarName = $this->parameters->getOrganisationImagesParameter() . "/avatars/" . "default_avatarName" . "jpg";
+            $organisation->setAvatarName($defaultAvatarName);
+        }
+        if ( !$organisation->getActivityPictureName()) {
+            $defaultActivityPictureName = $this->parameters->getOrganisationImagesParameter() . "/activity-pictures/" . "default_activityPictureName" . "jpg";
+            $organisation->setActivityPictureName($defaultActivityPictureName);
+        }
+        if (!$organisation->getRepresentativePictureName()) {
+                $defaultRepresentativePictureName = $this->parameters->getOrganisationImagesParameter() . "/representative-pictures/" . "default_representativePictureName" . "jpg";
+                $organisation->setRepresentativePictureName($defaultRepresentativePictureName);
+        }
     }
 }

@@ -3,9 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\OrganisationRepository;
-use App\Service\PictureManager;
-use DateTime;
-use DateTimeInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,6 +10,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
+CONST DEFAULT_AVATAR = 'default_organisation_avatar.png';
+const DEFAULT_ACTIVITY_PICTURE = 'default_organisation_activity_picture.jpg';
 
 #[ORM\Entity(repositoryClass: OrganisationRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'An organization with this name already exists.')]
@@ -33,6 +33,9 @@ class Organisation
     private ?string $representative = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $representativePictureName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatarName = null;
 
     #[Assert\File(
@@ -44,8 +47,14 @@ class Organisation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $activityPictureName = null;
 
+    #[Assert\File(
+        maxSize: '2M',
+        mimeTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'],
+    )]
+    private ?File $activityPictureFile = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
+    private ?string $presentation = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $keywords;
@@ -65,8 +74,7 @@ class Organisation
     #[ORM\OneToMany(targetEntity: Matching::class, mappedBy: 'organisation')]
     private Collection $matchings;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?DatetimeInterface $updatedAt = null;
+
 
     public function __construct()
     {
@@ -128,16 +136,10 @@ class Organisation
         return $this;
     }
 
-    public function getActivityPictureName(): ?string
-    {
-        return $this->activityPictureName;
-    }
-
     public function setAvatarFile(?File $image = null): Organisation
     {
         if ($image !== null) {
             $this->avatarFile = $image;
-            $this->updatedAt = new DateTime('now');
         }
 
         return $this;
@@ -153,6 +155,11 @@ class Organisation
         $this->avatarFile = null;
     }
 
+    public function getActivityPictureName(): ?string
+    {
+        return $this->activityPictureName;
+    }
+
     public function setActivityPictureName(?string $activityPictureName): self
     {
         $this->activityPictureName = $activityPictureName;
@@ -160,14 +167,33 @@ class Organisation
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function setActivityPictureFile(?File $image = null): Organisation
     {
-        return $this->description;
+        if ($image !== null) {
+            $this->activityPictureFile = $image;
+        }
+
+        return $this;
     }
 
-    public function setDescription(string $description): self
+    public function getActivityPictureFile(): ?File
     {
-        $this->description = $description;
+        return $this->activityPictureFile;
+    }
+
+    public function removeActivityPictureFile(): void
+    {
+        $this->activityPictureFile = null;
+    }
+
+    public function getPresentation(): ?string
+    {
+        return $this->presentation;
+    }
+
+    public function setPresentation(string $presentation): self
+    {
+        $this->presentation = $presentation;
 
         return $this;
     }
@@ -274,14 +300,14 @@ class Organisation
         return $this;
     }
 
-    public function getUpdatedAt(): ?DateTimeInterface
+    public function getRepresentativePictureName(): ?string
     {
-        return $this->updatedAt;
+        return $this->representativePictureName;
     }
 
-    public function setUpdatedAt(?DateTimeInterface $date): ?self
+    public function setRepresentativePictureName(?string $representativePictureName): static
     {
-        $this->updatedAt = $date;
+        $this->representativePictureName = $representativePictureName;
 
         return $this;
     }

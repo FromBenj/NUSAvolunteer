@@ -41,11 +41,13 @@ class SecurityController extends AbstractController
 
             if ($user->getVolunteer() && !$user->getOrganisation()) {
             return $this->redirectToRoute('volunteer_home');
-            } elseif ($user->getOrganisation() && !$user->getVolunteer()) {
-                return $this->redirectToRoute('organisation_home');
-            } else {
-                return $this->redirectToRoute('app_home');
             }
+
+            if ($user->getOrganisation() && !$user->getVolunteer()) {
+                return $this->redirectToRoute('organisation_home');
+            }
+
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('security/register.html.twig', [

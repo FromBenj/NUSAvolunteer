@@ -38,23 +38,26 @@
                 </span>
             </div>
             <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
-                {% if organisation.avatarName is null or organisation.avatarName is empty %}
-                    {{ form_row(editForm.avatarName, {required: true}) }}
-                {%  else %}
-                    {{ form_row(editForm.avatarFile) }}
-                {% endif %}
+                {{ form_row(editForm.avatarFile) }}
                 <span class="organisation-form-required">
                     {{ editForm.avatarFile.vars.required ? '*' : '' }}
                 </span>
-                <a href="{{ asset('uploads/images/organisations/avatars/' ~ organisation.avatarName) }}" target="_blank">
-                    <div class="fst-italic text-decoration-underline">Previous picture</div>
-                </a>
+                {% if organisation.avatarName is not null and organisation.avatarName is not empty %}
+                    <a href="{{ asset('uploads/images/organisations/avatars/' ~ organisation.avatarName) }}" target="_blank">
+                        <div class="fst-italic text-decoration-underline">Previous picture</div>
+                    </a>
+                {% endif %}
             </div>
             <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
-                {{ form_row(editForm.activityPictureName) }}
+                {{ form_row(editForm.activityPictureFile) }}
                 <span class="organisation-form-required">
-                    {{ editForm.activityPictureName.vars.required ? '*' : '' }}
+                    {{ editForm.activityPictureFile.vars.required ? '*' : '' }}
                 </span>
+                {% if organisation.activityPictureName is not null and organisation.activityPictureName is not empty %}
+                    <a href="{{ asset('uploads/images/organisations/activity-pictures/' ~ organisation.avatarName) }}" target="_blank">
+                        <div class="fst-italic text-decoration-underline">Previous picture</div>
+                    </a>
+                {% endif %}
             </div>
             <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
                 {{ form_row(editForm.representative) }}
@@ -63,9 +66,9 @@
                 </span>
             </div>
             <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
-                {{ form_row(editForm.description) }}
+                {{ form_row(editForm.presentation) }}
                 <span class="organisation-form-required">
-                    {{ editForm.description.vars.required ? '*' : '' }}
+                    {{ editForm.presentation.vars.required ? '*' : '' }}
                 </span>
             </div>
             <div data-aos="fade-right" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">

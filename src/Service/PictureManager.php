@@ -2,19 +2,16 @@
 
 namespace App\Service;
 
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use App\Entity\Organisation;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PictureManager
 {
-    private ParameterBagInterface $parameters;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(ParameterBagInterface $parameters) {
-        $this->parameters = $parameters;
-    }
-
-    public function getParameters(): ParameterBagInterface
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        return $this->parameters;
+        $this->entityManager = $entityManager;
     }
 
     public function getUniqueName(string $pictureName): string
@@ -22,7 +19,27 @@ class PictureManager
         $extension = pathinfo($pictureName, PATHINFO_EXTENSION);
         $extensionLength = strlen($extension) + 1;
         $name = substr($pictureName, 0, - $extensionLength);
+        $cleanName = preg_replace('/[^a-zA-Z0-9_\-]/', 'x', $name);
 
-        return uniqid($name, false) . '.' . $extension;
+        return uniqid($cleanName, false) . '.' . $extension;
+    }
+
+    public function checkOrganisationPictures(Organisation $organisation): void
+    {
+        if( !$organisation->getavatarName() || !$organisation->getActivityPictureName() || !$organisation->getRepresentativePictureName()) {
+            if (!$organisation->getavatarName()) {
+                $defaultAvatarName = "default_avatarName.jpg";
+                $organisation->setAvatarName($defaultAvatarName);
+            }
+            if (!$organisation->getActivityPictureName()) {
+                $defaultActivityPictureName = "default_activityPictureName.jpg";
+                $organisation->setActivityPictureName($defaultActivityPictureName);
+            }
+            if (!$organisation->getRepresentativePictureName()) {
+                $defaultRepresentativePictureName = "default_representativePictureName.jpg";
+                $organisation->setRepresentativePictureName($defaultRepresentativePictureName);
+            }
+            $this->entityManager->flush();
+        }
     }
 }

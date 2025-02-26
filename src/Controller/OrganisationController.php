@@ -9,7 +9,6 @@ use App\Repository\VolunteerRepository;
 use App\Service\MatchingManager;
 use App\Service\PictureManager;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpParser\Node\Param;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -20,9 +19,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class OrganisationController extends AbstractController
 {
     #[Route('/home', name: 'home')]
-    public function index(): Response
+    public function index(PictureManager $pictureManager): Response
     {
-        if (!$this->getUser()->getOrganisation()->getName()) {
+        $organisation = $this->getUser()->getOrganisation();
+        $pictureManager->checkOrganisationPictures($organisation);
+        if (!$organisation->getName()) {
             return $this->redirectToRoute('organisation_edit');
         }
 

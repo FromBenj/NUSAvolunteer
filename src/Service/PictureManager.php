@@ -3,14 +3,15 @@
 namespace App\Service;
 
 use App\Entity\Organisation;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PictureManager
 {
-    private ParameterManager $parameters;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(ParameterManager $parameters) {
-        $this->parameters = $parameters;
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
     }
 
     public function getUniqueName(string $pictureName): string
@@ -25,17 +26,20 @@ class PictureManager
 
     public function checkOrganisationPictures(Organisation $organisation): void
     {
-        if (!$organisation->getavatarName()) {
-            $defaultAvatarName = $this->parameters->getOrganisationImagesParameter() . "/avatars/" . "default_avatarName" . "jpg";
-            $organisation->setAvatarName($defaultAvatarName);
-        }
-        if ( !$organisation->getActivityPictureName()) {
-            $defaultActivityPictureName = $this->parameters->getOrganisationImagesParameter() . "/activity-pictures/" . "default_activityPictureName" . "jpg";
-            $organisation->setActivityPictureName($defaultActivityPictureName);
-        }
-        if (!$organisation->getRepresentativePictureName()) {
-                $defaultRepresentativePictureName = $this->parameters->getOrganisationImagesParameter() . "/representative-pictures/" . "default_representativePictureName" . "jpg";
+        if( !$organisation->getavatarName() || !$organisation->getActivityPictureName() || !$organisation->getRepresentativePictureName()) {
+            if (!$organisation->getavatarName()) {
+                $defaultAvatarName = "default_avatarName.jpg";
+                $organisation->setAvatarName($defaultAvatarName);
+            }
+            if (!$organisation->getActivityPictureName()) {
+                $defaultActivityPictureName = "default_activityPictureName.jpg";
+                $organisation->setActivityPictureName($defaultActivityPictureName);
+            }
+            if (!$organisation->getRepresentativePictureName()) {
+                $defaultRepresentativePictureName = "default_representativePictureName.jpg";
                 $organisation->setRepresentativePictureName($defaultRepresentativePictureName);
+            }
+            $this->entityManager->flush();
         }
     }
 }

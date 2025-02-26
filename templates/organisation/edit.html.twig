@@ -54,7 +54,7 @@
                     {{ editForm.activityPictureFile.vars.required ? '*' : '' }}
                 </span>
                 {% if organisation.activityPictureName is not null and organisation.activityPictureName is not empty %}
-                    <a href="{{ asset('uploads/images/organisations/activity-pictures/' ~ organisation.avatarName) }}" target="_blank">
+                    <a href="{{ asset('uploads/images/organisations/activity-pictures/' ~ organisation.activityPictureName) }}" target="_blank">
                         <div class="fst-italic text-decoration-underline">Previous picture</div>
                     </a>
                 {% endif %}

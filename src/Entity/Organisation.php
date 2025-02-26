@@ -35,6 +35,12 @@ class Organisation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $representativePictureName = null;
 
+    #[Assert\File(
+        maxSize: '2M',
+        mimeTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'],
+    )]
+    private ?File $representativePictureFile = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $avatarName = null;
 
@@ -186,6 +192,37 @@ class Organisation
         $this->activityPictureFile = null;
     }
 
+    public function getRepresentativePictureName(): ?string
+    {
+        return $this->representativePictureName;
+    }
+
+    public function setRepresentativePictureName(?string $representativePictureName): static
+    {
+        $this->representativePictureName = $representativePictureName;
+
+        return $this;
+    }
+
+    public function setRepresentativePictureFile(?File $image = null): Organisation
+    {
+        if ($image !== null) {
+            $this->activityPictureFile = $image;
+        }
+
+        return $this;
+    }
+
+    public function getRepresentativePictureFile(): ?File
+    {
+        return $this->representativePictureFile;
+    }
+
+    public function removeRepresentativePictureFile(): void
+    {
+        $this->representativePictureFile = null;
+    }
+
     public function getPresentation(): ?string
     {
         return $this->presentation;
@@ -296,18 +333,6 @@ class Organisation
                 $matching->setOrganisation(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getRepresentativePictureName(): ?string
-    {
-        return $this->representativePictureName;
-    }
-
-    public function setRepresentativePictureName(?string $representativePictureName): static
-    {
-        $this->representativePictureName = $representativePictureName;
 
         return $this;
     }

@@ -28,8 +28,10 @@ titles.forEach((title) => {
 function afterAnimation() {
     const container = document.getElementById('title-animation-container');
     const navTitle = document.getElementById("anime-title");
-    container.remove();
-    navTitle.id = "anime-title-appear";
+    if (container && navTitle) {
+        container.remove();
+        navTitle.id = "anime-title-appear";
+    }
 }
 
 tl.eventCallback("onComplete", afterAnimation);

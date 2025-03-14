@@ -36,6 +36,7 @@
                 <span class="organisation-form-required">
                     {{ editForm.address.vars.required ? '*' : '' }}
                 </span>
+                {{ form_widget(editForm.addressCoordonates, { 'attr': { 'class': 'opacity-0' }}) }}
             </div>
             <div data-aos="fade-left" class="w-75 w-lg-50 w-xxl-25 profile-form-row-container position-relative">
                 {{ form_row(editForm.avatarFile) }}

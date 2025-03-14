@@ -31,7 +31,7 @@
         <div class="d-flex justify-content-center">
             <button type="submit" class="btn main-button main-volunteer-button mb-5 mt-3 fw-bold">Search</button>
             <button class="btn main-button mb-5 mt-3 fw-bold">
-                <a href="{{ path("organisation_search") }}">All</a>
+                <a href="{{ path("organisation_volunteers_search") }}">All</a>
             </button>
         </div>
         {{ form_end(form) }}
@@ -40,7 +40,7 @@
         {% if volunteers is empty %}
             <div class="d-flex flex-column justify-content-center align-items-center">
                 <h5 class="fw-light my-5">No volunteer corresponding to your criteria...for the moment!</h5>
-                <a href="{{ path("organisation_search") }}">
+                <a href="{{ path("organisation_volunteers_search") }}">
                     <button type="submit" class="btn main-button main-volunteer-button mb-5 mt-3 fw-bold">
                         Find again
                     </button>

@@ -24,7 +24,12 @@ class OrganisationType extends AbstractType
 //                    new Assert\Unique(message: 'An organization with this name already exists.'),
                 ]
             ])
-            ->add('address')
+            ->add('address', TextType::class, [
+                'required' => true,
+            ])
+            ->add('addressCoordonates', TextType::class, [
+                'required' => false,
+            ])
             ->add('representative', TextType::class, [
                 'required' => false,
             ])

@@ -29,6 +29,9 @@ class Organisation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $address = null;
 
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private ?array $addressCoordonates = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $representative = null;
 
@@ -114,6 +117,18 @@ class Organisation
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getAddressCoordonates(): ?array
+    {
+        return $this->addressCoordonates;
+    }
+
+    public function setAddressCoordonates(?array $addressCoordonates): static
+    {
+        $this->addressCoordonates = $addressCoordonates;
 
         return $this;
     }

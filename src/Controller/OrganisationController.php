@@ -61,7 +61,7 @@ class OrganisationController extends AbstractController
         ]);
     }
 
-    #[Route('/search', name: 'search')]
+    #[Route('/volunteers', name: 'volunteers_search')]
     public function searchVolunteers(VolunteerRepository $volunteerRepository, MatchingRepository $matchingRepository,
                                      MatchingManager $matchingManager, Request $request): Response
     {
@@ -112,7 +112,7 @@ class OrganisationController extends AbstractController
             }
         }
 
-        return $this->render('organisation/search.html.twig', [
+        return $this->render('organisation/volunteers-search.html.twig', [
             'volunteers' => $volunteers,
             'form' => $form->createView(),
             'starClasses' => $volunteerStarClasses,

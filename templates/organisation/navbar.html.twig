@@ -1,36 +1,37 @@
 <nav id="organisation-nav" class="navbar sticky-top navbar-expand-lg">
     <div class="container-fluid px-5">
         <div class="navbar-brand p-0 m-0">
-        <a href={{ path('organisation_home') }}>
-            <img class="rounded-circle p-1 bg-white" src="{{ asset('build/images/website/NUSAvolunteer_logo_final.svg') }}" alt="NUSAvolunteer logo" width="50" height="auto">
-        </a>
+            <a href={{ path('organisation_home') }}>
+                <img class="rounded-circle p-1 bg-white" src="{{ asset('build/images/website/NUSAvolunteer_logo_final.svg') }}" alt="NUSAvolunteer logo" width="50" height="auto">
+            </a>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse organisation-navbar-collapse" id="navbarSupportedContent">
-        <div class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-end align-items-center">
-            <div class="nav-item">
-                <a class="nav-link active nav-buttons text-white" href="{{ path("organisation_search") }}">Volunteers</a>
+            <div class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-end align-items-center">
+                <div class="nav-item">
+                    <a class="nav-link active nav-buttons text-white" href="{{ path("organisation_volunteers_search") }}">Volunteers</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link active nav-buttons text-white" href="{{ path("organisation_matches") }}">Matches</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link active nav-buttons text-white" href="{{ path("organisation_home") }}">My Space</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link active nav-buttons text-white" aria-current="page"
+                            {% if app.user %}
+                       href="{{ path('app_logout') }}">
+                        Logout
+                        {% else %}
+                            href="{{ path('app_register') }}">
+                            Sign in
+                        {% endif %}
+                    </a>
+                </div>
             </div>
-            <div class="nav-item">
-                <a class="nav-link active nav-buttons text-white" href="{{ path("organisation_matches") }}">Matches</a>
-            </div>
-            <div class="nav-item">
-                <a class="nav-link active nav-buttons text-white" href="{{ path("organisation_home") }}">My Space</a>
-            </div>
-            <div class="nav-item">
-                <a class="nav-link active nav-buttons text-white" aria-current="page"
-                    {% if app.user %}
-                    href="{{path('app_logout')}}">
-                    Logout
-                    {% else %}
-                    href="{{path('app_register')}}">
-                    Sign in
-                    {% endif %}
-                </a>
-            </div>
-        </div>
         </div>
     </div>
 </nav>

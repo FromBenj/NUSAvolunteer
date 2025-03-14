@@ -20,9 +20,11 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
         for ($i=1; $i<=10; $i++) {
             $message = new Message();
             $message->setContent($this->faker->text);
+            $matching = $this->getReference("matching_test");
+            $organisation = $matching->getOrganisation();
+            $volunteer = $matching->getVolunteer();
             $message->setMatching($this->getReference("matching_test"));
-            $organisation = $message->getMatching()->getOrganisation();
-            $volunteer = $message->getMatching()->getVolunteer();
+            $matching->addMessage($message);
             $i%2 === 0 ? $message->setAuthor($organisation->getUser()): $message->setAuthor($volunteer->getUser());
             $manager->persist($message);
         }

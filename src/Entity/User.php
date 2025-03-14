@@ -184,7 +184,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFullName(): string
     {
-        $fullName = '';
         $this->getUserCategory() === "organisation" ?
             $fullName = $this->organisation->getName() :
             $fullName = $this->volunteer->getFullName();

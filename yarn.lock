@@ -1619,6 +1619,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@symfony/ux-leaflet-map@file:vendor/symfony/ux-leaflet-map/assets::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 1.0.0
+  resolution: "@symfony/ux-leaflet-map@file:vendor/symfony/ux-leaflet-map/assets#vendor/symfony/ux-leaflet-map/assets::hash=64b4f1&locator=root-workspace-0b6124%40workspace%3A."
+  peerDependencies:
+    "@hotwired/stimulus": ^3.0.0
+    leaflet: ^1.9.4
+  peerDependenciesMeta:
+    leaflet:
+      optional: false
+  checksum: 10c0/5fcdaade53eddafdfa8a9ee85ef627be713accbe7b30cd6c2544944aab561b840cb8ff7c45bec97f6c10175bfd2c0b3d367d25802a517cb983787dc78580c251
+  languageName: node
+  linkType: hard
+
+"@symfony/ux-map@file:vendor/symfony/ux-map/assets::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 1.0.0
+  resolution: "@symfony/ux-map@file:vendor/symfony/ux-map/assets#vendor/symfony/ux-map/assets::hash=b5fccf&locator=root-workspace-0b6124%40workspace%3A."
+  peerDependencies:
+    "@hotwired/stimulus": ^3.0.0
+  checksum: 10c0/8ebf2120ce758737c4be408ba2f1fb140c287c5eabc46c702da14efb432cdc04afacd35c952555e990e9838ac0ac9c96b65da2700bce0a17de219d4ee4b4e7b3
+  languageName: node
+  linkType: hard
+
 "@symfony/webpack-encore@npm:^4.0.0":
   version: 4.6.1
   resolution: "@symfony/webpack-encore@npm:4.6.1"
@@ -4980,6 +5002,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"leaflet@npm:^1.9.4":
+  version: 1.9.4
+  resolution: "leaflet@npm:1.9.4"
+  checksum: 10c0/f639441dbb7eb9ae3fcd29ffd7d3508f6c6106892441634b0232fafb9ffb1588b05a8244ec7085de2c98b5ed703894df246898477836cfd0ce5b96d4717b5ca1
+  languageName: node
+  linkType: hard
+
 "lilconfig@npm:^3.1.1":
   version: 3.1.1
   resolution: "lilconfig@npm:3.1.1"
@@ -6824,6 +6853,8 @@ __metadata:
     "@popperjs/core": "npm:^2.11.8"
     "@splinetool/runtime": "npm:^1.2.4"
     "@symfony/stimulus-bridge": "npm:^3.2.0"
+    "@symfony/ux-leaflet-map": "file:vendor/symfony/ux-leaflet-map/assets"
+    "@symfony/ux-map": "file:vendor/symfony/ux-map/assets"
     "@symfony/webpack-encore": "npm:^4.0.0"
     animejs: "npm:^3.2.2"
     aos: "npm:^3.0.0-beta.6"
@@ -6832,6 +6863,7 @@ __metadata:
     file-loader: "npm:^6.0.0"
     gsap: "npm:^3.12.5"
     jquery: "npm:^3.7.1"
+    leaflet: "npm:^1.9.4"
     node-sass: "npm:^9.0.0"
     regenerator-runtime: "npm:^0.13.9"
     sass: "npm:^1.74.1"

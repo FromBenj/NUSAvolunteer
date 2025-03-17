@@ -128,7 +128,9 @@ class Organisation
 
     public function setAddressCoordonates(?array $addressCoordonates): static
     {
-        $this->addressCoordonates = $addressCoordonates;
+        if( isset($addressCoordonates) && count($addressCoordonates) === 2) {
+            $this->addressCoordonates = $addressCoordonates;
+        }
 
         return $this;
     }

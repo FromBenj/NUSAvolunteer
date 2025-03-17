@@ -37,19 +37,26 @@ class VolunteerController extends AbstractController
     {
         $organisationsMap = (new Map())
             ->fitBoundsToMarkers()
-            ->zoom(6);
-
-        $organisationsMap
-            ->addMarker(new Marker(
-                position: new Point(45.7640, 4.8357),
-                title: 'Lyon',
-                infoWindow: new InfoWindow(
-                    headerContent: '<b>Lyon</b>',
-                    content: 'The French town in the historic Rhône-Alpes region, located at the junction of the Rhône and Saône rivers.'
-                )
-            ));
+            ->zoom(2);
 
         $organisations = $organisationRepository->findAll();
+        foreach ($organisations as $organisation) {
+            $organisationName = $organisation->getName();
+            $organisationPresentation = $organisation->getPresentation();
+            $organisationAddress = $organisation->getAddress();
+            $lat = $organisation->getAddressCoordonates()[0];
+            $lon = $organisation->getAddressCoordonates()[1];
+            $organisationsMap
+                ->addMarker(new Marker(
+                    position: new Point($lat, $lon),
+                    title: $organisationName,
+                    infoWindow: new InfoWindow(
+                        headerContent: '<b>' . $organisationName . '</b>',
+                        content: '<p>' . $organisationPresentation . '</p><i>' . $organisationAddress . '</i>'
+                    )
+                ));
+        }
+
         return $this->render('volunteer/organisations-search.html.twig', [
             'organisations' => $organisations,
             'organisations_map' => $organisationsMap

@@ -15,5 +15,7 @@
     {% for organisation in organisations %}
         {{ organisation.name }}
     {% endfor %}
-    {{ ux_map(organisations_map, { style: 'height: 600px' }) }}
+    <div class="d-flex justify-content-center">
+        {{ ux_map(organisations_map, { style: 'height: 600px', id:"organisation-map", class: 'w-75 m-4' }) }}
+    </div>
 {% endblock %}

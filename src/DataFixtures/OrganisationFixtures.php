@@ -29,8 +29,9 @@ class OrganisationFixtures extends Fixture implements DependentFixtureInterface
     }
 
     public function randomCoordinates(): array {
-        $latitude = random_int(self::BDXCOORDINATES["NE"][0], self::BDXCOORDINATES["SW"][0]);
-        $longitude = random_int(self::BDXCOORDINATES["NE"][1], self::BDXCOORDINATES["SW"][1]);
+        $latitude = (random_int(self::BDXCOORDINATES["SW"][0]*1000, self::BDXCOORDINATES["NE"][0]*1000))/1000;
+        $longitude = (random_int( self::BDXCOORDINATES["NE"][1]*1000, self::BDXCOORDINATES["SW"][1]*1000))/1000;
+
         return [$latitude, $longitude];
     }
 
@@ -55,6 +56,7 @@ class OrganisationFixtures extends Fixture implements DependentFixtureInterface
         $organisation = new Organisation();
         $organisation->setName("ASTI");
         $organisation->setAddress($this->faker->address);
+        $organisation->setAddressCoordonates($this->randomCoordinates());
         $organisation->setRepresentative("Beatriz Liu");
         $organisation->setSlug($this->slugger->slug($organisation->getName()));
         $organisation->setPresentation($this->faker->text);

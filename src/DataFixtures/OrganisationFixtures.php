@@ -9,13 +9,13 @@ use Faker;
 use Doctrine\Persistence\ObjectManager;
 use App\Service\FixturesManager;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Entity\User;
 
 class OrganisationFixtures extends Fixture implements DependentFixtureInterface
 {
     const BDXCOORDINATES = [
-        "NE" => [44.915, -0.775],
-        "SW" => [44.725, -0.315],
+        "NE" => [44.989, -0.179],
+        "SW" => [44.506, -0.900],
     ];
 
     private Faker\Generator $faker;
@@ -29,8 +29,12 @@ class OrganisationFixtures extends Fixture implements DependentFixtureInterface
     }
 
     public function randomCoordinates(): array {
-        $latitude = (random_int(self::BDXCOORDINATES["SW"][0]*1000, self::BDXCOORDINATES["NE"][0]*1000))/1000;
-        $longitude = (random_int( self::BDXCOORDINATES["NE"][1]*1000, self::BDXCOORDINATES["SW"][1]*1000))/1000;
+        $latSW = self::BDXCOORDINATES["SW"][0];
+        $latNE = self::BDXCOORDINATES["NE"][0];
+        $lonSW = self::BDXCOORDINATES["SW"][1];
+        $lonNE = self::BDXCOORDINATES["NE"][1];
+        $latitude = random_int(min($latSW, $latNE)*1000, max($latSW, $latNE)*1000)/1000; //random_int($latSW*1000, $latNE*1000)/1000;
+        $longitude = random_int( min($lonSW, $lonNE)*1000, max($lonSW, $lonNE)*1000)/1000;
 
         return [$latitude, $longitude];
     }
@@ -49,7 +53,7 @@ class OrganisationFixtures extends Fixture implements DependentFixtureInterface
             for ($j=0; $j<4; $j++) {
                 $organisation->addLink($this->faker->url);
             }
-            $organisation->setUser($this->getReference("user_organisation_" . $i));
+            $organisation->setUser($this->getReference("user_organisation_" . $i, User::class));
             $manager->persist($organisation);
         }
 
@@ -64,7 +68,7 @@ class OrganisationFixtures extends Fixture implements DependentFixtureInterface
         for ($j=0; $j<4; $j++) {
             $organisation->addLink($this->faker->url);
         }
-        $organisation->setUser($this->getReference("user_organisation_test"));
+        $organisation->setUser($this->getReference("user_organisation_test", User::class));
         $manager->persist($organisation);
         $this->addReference('organisation_test', $organisation);
 

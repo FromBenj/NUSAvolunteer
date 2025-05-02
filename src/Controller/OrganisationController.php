@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Volunteer;
 use App\Form\OrganisationType;
 use App\Form\SearchVolunteersType;
 use App\Repository\MatchingRepository;
@@ -9,6 +10,7 @@ use App\Repository\VolunteerRepository;
 use App\Service\MatchingManager;
 use App\Service\PictureManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -126,6 +128,17 @@ class OrganisationController extends AbstractController
 
         return $this->render('organisation/matches.html.twig', [
             'matches' => $matches,
+        ]);
+    }
+
+    #[Route('/chat/{volunteer_id}', name: 'chat')]
+    public function chat(
+        #[MapEntity(mapping: ['volunteer_id' => 'id'])]
+        Volunteer $volunteer): Response
+    {
+        return $this->render('organisation/chat.html.twig', [
+            'organisation'          => $this->getUser()->getOrganisation(),
+            'volunteer' => $volunteer,
         ]);
     }
 }

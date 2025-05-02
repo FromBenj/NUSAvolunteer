@@ -63,42 +63,4 @@ class MatchingController extends AbstractController
             ]
         );
     }
-
-    #[Route('chat/{organisation_id}/{volunteer_id}', name: 'chat')]
-    public function chat(
-        #[MapEntity(mapping: ['organisation_id' => 'id'])]
-        Organisation $organisation,
-        #[MapEntity(mapping: ['volunteer_id' => 'id'])]
-        Volunteer $volunteer,
-        MatchingRepository $matchingRepository, Request $request): Response
-    {
-        $chatForm = $this->createForm(ChatType::class);
-        $chatForm->handleRequest($request);
-        if ($chatForm->isSubmitted() && $chatForm->isValid()) {
-            return new Response($this->renderView('matching/message.html.twig', [
-                    'message' => $chatForm->getData(),
-                    'user' => $this->getUser()
-                ]),
-            200,
-                ['Content-Type' => 'text/vnd.turbo-stream.html']
-            );
-        }
-
-        $matching = $matchingRepository->findOneBy( [
-            "organisation" => $organisation,
-            "volunteer" => $volunteer
-        ]);
-        if (!$matching) {
-            return $this->redirectToRoute('app_home');
-        }
-
-        $userProfile = $this->getUser()->getUserProfile();
-
-
-        return $this->render('matching/chat.html.twig', [
-            'matching'          => $matching,
-            'userMatchings' => $userProfile->getMatchings(),
-            'chatForm'      => $chatForm->createView(),
-        ]);
-    }
 }

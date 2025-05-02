@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Organisation;
 use App\Repository\OrganisationRepository;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -62,4 +63,16 @@ class VolunteerController extends AbstractController
             'organisations_map' => $organisationsMap
         ]);
     }
+
+    #[Route('/chat/{organisation_id}', name: 'chat')]
+    public function chat(
+        #[MapEntity(mapping: ['organisation_id' => 'id'])]
+        Organisation $organisation,): Response
+    {
+        return $this->render('organisation/chat.html.twig', [
+            'volunteer'       => $this->getUser()->getVolunteer(),
+            'organisation' => $organisation,
+        ]);
+    }
+
 }

@@ -1,11 +1,8 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Organisation chat with volunteers{% endblock %}
-
 {% block nav %}
     {% include 'organisation/navbar.html.twig' %}
 {% endblock %}
 
 {% block body %}
     My name is {{ organisation.name }} and I am talking with {{ volunteer.fullName }}
+    {% include 'chat/chat.html.twig' %}
 {% endblock %}

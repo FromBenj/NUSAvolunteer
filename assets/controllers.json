@@ -1,13 +1,9 @@
 {
     "controllers": {
-        "@symfony/ux-turbo": {
-            "turbo-core": {
+        "@symfony/ux-leaflet-map": {
+            "map": {
                 "enabled": true,
-                "fetch": "eager"
-            },
-            "mercure-turbo-stream": {
-                "enabled": false,
-                "fetch": "eager"
+                "fetch": "lazy"
             }
         }
     },

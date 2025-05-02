@@ -2,9 +2,14 @@
   <div class="container-fluid px-5">
     <div class="navbar-brand p-0 m-0">
       <a href={{ path('app_home') }}>
-        <img class="rounded-circle p-1" src="{{ asset('build/images/NUSAvolunteer/NUSAvolunteer_logo_final.svg') }}" alt="NUSAvolunteer logo" width="60" height="auto">
+        <img class="rounded-circle p-1" src="{{ asset('build/images/website/NUSAvolunteer_logo_final.svg') }}" alt="NUSAvolunteer logo" width="60" height="auto">
       </a>
     </div>
+    {% if not app.user %}
+      <a href="{{ path('app_register') }}">
+        <div class="d-lg-none text-black-50 text-decoration-underline">Sign in here!</div>
+      </a>
+    {% endif %}
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>

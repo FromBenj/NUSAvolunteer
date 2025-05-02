@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Matching;
 use App\Entity\Message;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Faker;
@@ -20,9 +21,11 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
         for ($i=1; $i<=10; $i++) {
             $message = new Message();
             $message->setContent($this->faker->text);
-            $message->setMatching($this->getReference("matching_test"));
-            $organisation = $message->getMatching()->getOrganisation();
-            $volunteer = $message->getMatching()->getVolunteer();
+            $matching = $this->getReference("matching_test", Matching::class);
+            $organisation = $matching->getOrganisation();
+            $volunteer = $matching->getVolunteer();
+            $message->setMatching($this->getReference("matching_test", Matching::class));
+            $matching->addMessage($message);
             $i%2 === 0 ? $message->setAuthor($organisation->getUser()): $message->setAuthor($volunteer->getUser());
             $manager->persist($message);
         }

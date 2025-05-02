@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Form\OrganisationType;
 use App\Form\SearchVolunteersType;
 use App\Repository\MatchingRepository;
 use App\Repository\VolunteerRepository;
 use App\Service\MatchingManager;
+use App\Service\PictureManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,24 +19,49 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class OrganisationController extends AbstractController
 {
     #[Route('/home', name: 'home')]
-    public function index(): Response
+    public function index(PictureManager $pictureManager): Response
     {
+        $organisation = $this->getUser()->getOrganisation();
+        $pictureManager->checkOrganisationPictures($organisation);
+        if (!$organisation->getName()) {
+            return $this->redirectToRoute('organisation_edit');
+        }
+
         return $this->render('organisation/home.html.twig', [
             'user' => $this->getUser(),
         ]);
     }
 
     #[Route('/edit', name: 'edit')]
-    public function edit(): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager, PictureManager $pictureManager): Response
     {
         $organisation = $this->getUser()->getOrganisation();
+        $editForm = $this->createForm(OrganisationType::class, $organisation);
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $data = $editForm->getData();
+            if ($data->getAvatarFile()) {
+                $avatarName = $pictureManager->getUniqueName($data->getAvatarFile()->getClientOriginalName());
+                $file = $data->getAvatarFile();
+                $parameters = $pictureManager->getParameters();
+                $file->move($parameters->get("upload_directory_organisation_images") ."/avatars", $avatarName);
+                $data->setAvatarName($avatarName);
+                $data->removeAvatarFile();
+            }
+
+            $entityManager->flush();
+
+
+            return $this->redirectToRoute('organisation_home');
+        }
 
         return $this->render('organisation/edit.html.twig', [
             'organisation' => $organisation,
+            'editForm' => $editForm->createView(),
         ]);
     }
 
-    #[Route('/search', name: 'search')]
+    #[Route('/volunteers', name: 'volunteers_search')]
     public function searchVolunteers(VolunteerRepository $volunteerRepository, MatchingRepository $matchingRepository,
                                      MatchingManager $matchingManager, Request $request): Response
     {
@@ -84,7 +112,7 @@ class OrganisationController extends AbstractController
             }
         }
 
-        return $this->render('organisation/search.html.twig', [
+        return $this->render('organisation/volunteers-search.html.twig', [
             'volunteers' => $volunteers,
             'form' => $form->createView(),
             'starClasses' => $volunteerStarClasses,

@@ -23,11 +23,10 @@ class RegistrationFormType extends AbstractType
                     'a super volunteer' => 'volunteer',
                     'an awesome organisation' => 'organisation',
                 ],
-                'label' => 'I am:', 
+                'label' => 'I am:',
                 'expanded' => true,
                 'multiple' => false,
-                'required' => false,
-                'empty_data' => null,
+                'required' => true,
             ])
             ->add('email')
             ->add('plainPassword', PasswordType::class, [

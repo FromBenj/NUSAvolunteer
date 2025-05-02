@@ -81,8 +81,10 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
 
-    // turbo configuration
-    .addEntry('turbo', '@hotwired/turbo')
+    // For using Leaflet maps
+    .addAliases({
+        'leaflet/dist/leaflet.min.css': 'leaflet/dist/leaflet.css',
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();

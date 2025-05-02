@@ -1,6 +1,9 @@
 ### My notes ###
 notes.md
 
+### Images ###
+/assets/images/
+
 ###> PhpStorm ###
 .idea/
 ###> symfony/framework-bundle ###
@@ -30,3 +33,5 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 
+
+.qodo

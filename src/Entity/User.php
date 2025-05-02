@@ -156,8 +156,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $userCategory = null;
         if ($this->organisation) {
             $userCategory = "organisation";
-        }
-        if ($this->volunteer) {
+        } elseif ($this->volunteer) {
             $userCategory = "volunteer";
         }
 
@@ -185,7 +184,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFullName(): string
     {
-        $fullName = '';
         $this->getUserCategory() === "organisation" ?
             $fullName = $this->organisation->getName() :
             $fullName = $this->volunteer->getFullName();

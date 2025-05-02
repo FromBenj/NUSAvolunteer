@@ -25,7 +25,7 @@ class VolunteerRepository extends ServiceEntityRepository
             return [];
         }
         return $this->createQueryBuilder('v')
-            ->andWhere('v.firstName like :name')
+            ->andWhere('v.name like :name')
             ->orWhere('v.lastName like :name')
             ->setParameter('name', '%' . $name . '%')
             ->orderBy('v.id', 'ASC')

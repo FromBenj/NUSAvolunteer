@@ -41,11 +41,13 @@ class SecurityController extends AbstractController
 
             if ($user->getVolunteer() && !$user->getOrganisation()) {
             return $this->redirectToRoute('volunteer_home');
-            } elseif ($user->getOrganisation() && !$user->getVolunteer()) {
-                return $this->redirectToRoute('organisation_home');
-            } else {
-                return $this->redirectToRoute('app_home');
             }
+
+            if ($user->getOrganisation() && !$user->getVolunteer()) {
+                return $this->redirectToRoute('organisation_home');
+            }
+
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('security/register.html.twig', [
@@ -53,20 +55,6 @@ class SecurityController extends AbstractController
             "bodyColor" => $bodyColor,
             "buttonColor" => $buttonColor,
         ]);
-    }
-
-    #[Route(path: '/login/distribution', name: 'app_login_distribution')]
-    public function loginDistribution(): RedirectResponse
-    {
-        $user = $this->getUser();
-
-        if ($user->getVolunteer() && !$user->getOrganisation()) {
-            return $this->redirectToRoute('volunteer_home');
-        } elseif ($user->getOrganisation() && !$user->getVolunteer()) {
-            return $this->redirectToRoute('organisation_home');
-        } else {
-            return $this->redirectToRoute('app_home');
-        }
     }
 
     #[Route(path: '/login/{userCategory}', name: 'app_login')]
@@ -96,6 +84,23 @@ class SecurityController extends AbstractController
             "buttonColor" => $buttonColor,
             "userCategory" => $userCategory,
         ]);
+    }
+
+    #[Route(path: '/login/distribution', name: 'app_login_distribution')]
+    public function loginDistribution(): RedirectResponse
+    {
+        $user = $this->getUser();
+        if ($user && !is_null($user->getUserProfile())) {
+            $userCategory = $user->getUserCategory();
+            $userName = $user->getUserProfile()->getName();
+            isset($userName) ?
+            $routePath = $userCategory . '_' . 'home' :
+            $routePath = $userCategory. '_' . 'create';
+        } else {
+            $routePath = 'app_home';
+        }
+
+        return $this->redirectToRoute($routePath);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

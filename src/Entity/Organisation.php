@@ -3,12 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\OrganisationRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+CONST DEFAULT_AVATAR = 'default_organisation_avatar.png';
+const DEFAULT_ACTIVITY_PICTURE = 'default_organisation_activity_picture.jpg';
 
 #[ORM\Entity(repositoryClass: OrganisationRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'An organization with this name already exists.')]
 class Organisation
 {
     #[ORM\Id]
@@ -22,17 +29,41 @@ class Organisation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $address = null;
 
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private ?array $addressCoordonates = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $representative = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $organisationPictureName = null;
+    private ?string $representativePictureName = null;
+
+    #[Assert\File(
+        maxSize: '2M',
+        mimeTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'],
+    )]
+    private ?File $representativePictureFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatarName = null;
+
+    #[Assert\File(
+        maxSize: '2M',
+        mimeTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'],
+    )]
+    private ?File $avatarFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $activityPictureName = null;
 
+    #[Assert\File(
+        maxSize: '2M',
+        mimeTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'],
+    )]
+    private ?File $activityPictureFile = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
+    private ?string $presentation = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $keywords;
@@ -52,9 +83,12 @@ class Organisation
     #[ORM\OneToMany(targetEntity: Matching::class, mappedBy: 'organisation')]
     private Collection $matchings;
 
-    public function __construct() {
-        $this->keywords = [];
-        $this->links = [];
+
+
+    public function __construct()
+    {
+        $this->keywords = ['',];
+        $this->links = ['',];
         $this->matchings = new ArrayCollection();
     }
 
@@ -87,6 +121,20 @@ class Organisation
         return $this;
     }
 
+    public function getAddressCoordonates(): ?array
+    {
+        return $this->addressCoordonates;
+    }
+
+    public function setAddressCoordonates(?array $addressCoordonates): static
+    {
+        if( isset($addressCoordonates) && count($addressCoordonates) === 2) {
+            $this->addressCoordonates = $addressCoordonates;
+        }
+
+        return $this;
+    }
+
     public function getRepresentative(): ?string
     {
         return $this->representative;
@@ -99,16 +147,35 @@ class Organisation
         return $this;
     }
 
-    public function getOrganisationPictureName(): ?string
+    public function getAvatarName(): ?string
     {
-        return $this->organisationPictureName;
+        return $this->avatarName;
     }
 
-    public function setOrganisationPictureName(?string $organisationPictureName): self
+    public function setAvatarName(?string $avatarName): self
     {
-        $this->organisationPictureName = $organisationPictureName;
+        $this->avatarName = $avatarName;
 
         return $this;
+    }
+
+    public function setAvatarFile(?File $image = null): Organisation
+    {
+        if ($image !== null) {
+            $this->avatarFile = $image;
+        }
+
+        return $this;
+    }
+
+    public function getAvatarFile(): ?File
+    {
+        return $this->avatarFile;
+    }
+
+    public function removeAvatarFile(): void
+    {
+        $this->avatarFile = null;
     }
 
     public function getActivityPictureName(): ?string
@@ -123,14 +190,64 @@ class Organisation
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function setActivityPictureFile(?File $image = null): Organisation
     {
-        return $this->description;
+        if ($image !== null) {
+            $this->activityPictureFile = $image;
+        }
+
+        return $this;
     }
 
-    public function setDescription(string $description): self
+    public function getActivityPictureFile(): ?File
     {
-        $this->description = $description;
+        return $this->activityPictureFile;
+    }
+
+    public function removeActivityPictureFile(): void
+    {
+        $this->activityPictureFile = null;
+    }
+
+    public function getRepresentativePictureName(): ?string
+    {
+        return $this->representativePictureName;
+    }
+
+    public function setRepresentativePictureName(?string $representativePictureName): static
+    {
+        $this->representativePictureName = $representativePictureName;
+
+        return $this;
+    }
+
+    public function setRepresentativePictureFile(?File $image = null): Organisation
+    {
+        if ($image !== null) {
+            $this->activityPictureFile = $image;
+        }
+
+        return $this;
+    }
+
+    public function getRepresentativePictureFile(): ?File
+    {
+        return $this->representativePictureFile;
+    }
+
+    public function removeRepresentativePictureFile(): void
+    {
+        $this->representativePictureFile = null;
+    }
+
+    public function getPresentation(): ?string
+    {
+        return $this->presentation;
+    }
+
+    public function setPresentation(string $presentation): self
+    {
+        $this->presentation = $presentation;
 
         return $this;
     }
@@ -142,6 +259,11 @@ class Organisation
 
     public function setKeywords(?array $keywords): self
     {
+        foreach ($keywords as $index => $keyword) {
+            if ($keyword[0] !== '#') {
+                $keywords[$index] = '#' . $keyword;
+            }
+        }
         $this->keywords = $keywords;
 
         return $this;

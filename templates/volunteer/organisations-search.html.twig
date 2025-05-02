@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Available organisations{% endblock %}
+
+{% block nav %}
+    {% include 'volunteer/navbar.html.twig' %}
+{% endblock %}
+{% block body %}
+    <div>
+        <div class="flex justify-content-center">
+            <div>Search</div>
+            <div>map</div>
+        </div>
+    </div>
+    {% for organisation in organisations %}
+        {{ organisation.name }}
+    {% endfor %}
+    <div class="d-flex justify-content-center">
+        {{ ux_map(organisations_map, { style: 'height: 600px', id:"organisation-map", class: 'w-75 m-4' }) }}
+    </div>
+{% endblock %}

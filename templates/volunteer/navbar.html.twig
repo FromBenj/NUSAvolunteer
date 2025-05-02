@@ -2,7 +2,7 @@
     <div class="container-fluid px-5">
         <div class="navbar-brand p-0 m-0">
         <a href={{ path('volunteer_home') }}>
-            <img class="rounded-circle p-1 bg-white" src="{{ asset('build/images/NUSAvolunteer/NUSAvolunteer_logo_final.svg') }}" alt="NUSAvolunteer logo" width="50" height="auto">
+            <img class="rounded-circle p-1 bg-white" src="{{ asset('build/images/website/NUSAvolunteer_logo_final.svg') }}" alt="NUSAvolunteer logo" width="50" height="auto">
         </a>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,7 +11,7 @@
         <div class="collapse navbar-collapse volunteer-navbar-collapse" id="navbarSupportedContent">
         <div class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-end align-items-center">
             <div class="nav-item">
-                <a class="nav-link active nav-buttons text-white" href="">Organisations</a>
+                <a class="nav-link active nav-buttons text-white" href="{{ path('volunteer_organisations_search') }}">Organisations</a>
             </div>
             <div class="nav-item">
                 <a class="nav-link active nav-buttons text-white" href="">Matches</a>

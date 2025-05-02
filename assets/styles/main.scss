@@ -12,7 +12,7 @@ $main-color-green: #08946D;
 $main-color-green-light: #55B59E;
 $main-color-green-lighter: #D4ECE7;
 $main-color-blue: #0A6883;
-$main-color-blue-lighter: #C2D9E0;
+$main-color-blue-light: #4EADC9FF;
 $main-color-yellow: #F5C677;
 $main-color-yellow-light: #FAE2BB;
 $main-color-red: #FF6B6B;
@@ -39,12 +39,16 @@ a {
     height: calc(100vh - 65px);
 }
 
-.main-organisation-bg {
-    background-color: $main-color-blue;
+.main-organisation-text {
+    color: $main-color-blue;
 }
 
-.main-organisation-lighter-bg {
-    background-color: $main-color-blue-lighter;
+.main-volunteer-text {
+    color: $main-color-green;
+}
+
+.main-organisation-bg {
+    background-color: $main-color-blue;
 }
 
 .main-volunteer-bg {
@@ -127,32 +131,12 @@ a {
     background-color: $main-color-green-lighter;
 }
 
-#edit-information-container {
-    scroll-snap-type: y mandatory;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    height: 100vh;
-}
-
-#edit-information-container > section {
-    scroll-snap-align: start;
-}
-
-.edit-information-title-section {
-    height: calc(100vh - $nav-height) !important;
-    position: relative;
-}
-
 .bg-inherit {
     background-color: inherit;
 }
 
 .text-justify {
     text-align: justify;
-}
-
-.left-0 {
-    left: 0;
 }
 
 .form-control:focus {
@@ -178,11 +162,16 @@ a {
 
 #scroll-down-mouse {
     position: absolute;
-    bottom: 0;
+    left: 50%;
+    translate: -50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     animation: go-down 1.3s infinite ease-in-out;
+}
+
+.profile-form-row-container{
+    margin: 10% auto;
 }
 
 @keyframes go-down {
@@ -190,4 +179,3 @@ a {
     50%  {bottom: 50px;}
     100% {bottom: 0px;}
   }
-

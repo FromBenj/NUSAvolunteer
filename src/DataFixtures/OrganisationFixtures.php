@@ -14,8 +14,8 @@ use App\Entity\User;
 class OrganisationFixtures extends Fixture implements DependentFixtureInterface
 {
     const BDXCOORDINATES = [
-        "NE" => [44.989, -0.179],
-        "SW" => [44.506, -0.900],
+        "NE" => [45.312, -0.058],
+        "SW" => [44.572, -1.115],
     ];
 
     private Faker\Generator $faker;
@@ -33,7 +33,7 @@ class OrganisationFixtures extends Fixture implements DependentFixtureInterface
         $latNE = self::BDXCOORDINATES["NE"][0];
         $lonSW = self::BDXCOORDINATES["SW"][1];
         $lonNE = self::BDXCOORDINATES["NE"][1];
-        $latitude = random_int(min($latSW, $latNE)*1000, max($latSW, $latNE)*1000)/1000; //random_int($latSW*1000, $latNE*1000)/1000;
+        $latitude = random_int(min($latSW, $latNE)*1000, max($latSW, $latNE)*1000)/1000;
         $longitude = random_int( min($lonSW, $lonNE)*1000, max($lonSW, $lonNE)*1000)/1000;
 
         return [$latitude, $longitude];

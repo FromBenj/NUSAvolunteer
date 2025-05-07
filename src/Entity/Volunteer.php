@@ -7,7 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VolunteerRepository::class)]
 class Volunteer
@@ -35,6 +37,12 @@ class Volunteer
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $pictureName = null;
+
+    #[Assert\File(
+        maxSize: '2M',
+        mimeTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'],
+    )]
+    private ?File $pictureNameFile = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -115,6 +123,20 @@ class Volunteer
         $this->pictureName = $pictureName;
 
         return $this;
+    }
+
+    public function setPictureNameFile(?File $image = null): Volunteer
+    {
+        if ($image !== null) {
+            $this->pictureNameFile = $image;
+        }
+
+        return $this;
+    }
+
+    public function getPictureNameFile(): ?File
+    {
+        return $this->pictureNameFile;
     }
 
     public function getDescription(): ?string

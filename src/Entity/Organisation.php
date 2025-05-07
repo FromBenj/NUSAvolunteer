@@ -58,7 +58,7 @@ class Organisation
 
     #[Assert\File(
         maxSize: '2M',
-        mimeTypes: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp'],
+        mimeTypes: ['image/jpg', 'image/jpeg', 'image/png'],
     )]
     private ?File $activityPictureFile = null;
 

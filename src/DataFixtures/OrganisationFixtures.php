@@ -47,6 +47,7 @@ class OrganisationFixtures extends Fixture implements DependentFixtureInterface
             $organisation->setAddress($this->faker->address);
             $organisation->setAddressCoordonates($this->randomCoordinates());
             $organisation->setRepresentative($this->fixturesManager->getFullName());
+            $organisation->setActivityPictureName("https://picsum.photos/id/". random_int(1, 230) . "/300/300");
             $organisation->setSlug($this->slugger->slug($organisation->getName()));
             $organisation->setPresentation($this->faker->text);
             $organisation->setKeywords($this->fixturesManager->getKeywords());
@@ -62,6 +63,7 @@ class OrganisationFixtures extends Fixture implements DependentFixtureInterface
         $organisation->setAddress($this->faker->address);
         $organisation->setAddressCoordonates($this->randomCoordinates());
         $organisation->setRepresentative("Beatriz Liu");
+        $organisation->setActivityPictureName("https://picsum.photos/id/". 231 . "/300/300");
         $organisation->setSlug($this->slugger->slug($organisation->getName()));
         $organisation->setPresentation($this->faker->text);
         $organisation->setKeywords($this->fixturesManager->getKeywords());

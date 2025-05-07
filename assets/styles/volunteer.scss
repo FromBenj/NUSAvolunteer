@@ -2,3 +2,14 @@
   background-color: $main-color-green;
   height: 65px;
 }
+
+.organisation-card {
+  cursor: pointer;
+  border: solid 2px $main-color-grey-light;
+  transition: all 300ms ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+    border-color: $main-color-blue;
+  }
+}

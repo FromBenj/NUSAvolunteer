@@ -5,17 +5,31 @@
 {% block nav %}
     {% include 'volunteer/navbar.html.twig' %}
 {% endblock %}
+
 {% block body %}
-    <div>
-        <div class="flex justify-content-center">
-            <div>Search</div>
-            <div>map</div>
-        </div>
-    </div>
-    {% for organisation in organisations %}
-        {{ organisation.name }}
-    {% endfor %}
     <div class="d-flex justify-content-center">
         {{ ux_map(organisations_map, { style: 'height: 600px', id:"organisation-map", class: 'w-75 m-4' }) }}
+    </div>
+    <div class="d-flex flex-wrap justify-content-center position-relative">
+        {% for organisation in organisations %}
+            <!-- Organisation Card -->
+            <div id="card-container-{{ organisation.id }}" class="card m-4 organisation-card" style="width: 18rem;" data-bs-toggle="modal"
+                 data-bs-target="#modal-{{ organisation.id }}">
+                <div class="position-relative">
+                    <img id="match-button-filled-{{ organisation.id }}" class="" src="{{ asset('build/images/website/star-filled.svg') }}" alt="match button filled">
+                    <img id="match-button-empty-{{ organisation.id }}" class="" src="{{ asset('build/images/website/star-empty.svg') }}" alt="match button empty">
+                    <img class="card-img-top" src="{{ organisation.activityPictureName }}" alt="Organisation activity picture">
+                </div>
+                <div id="card-body-{{ organisation.id }}" class="card-body">
+                    <h5 class="card-title text-center">{{ organisation.name }}</h5>
+                    <p class="card-text text-justify">{{ organisation.presentation | slice(0, 200) ~ '...' }}</p>
+                    <div class="d-flex flex-wrap justify-content-around">
+                        {% for keyword in organisation.keywords %}
+                            <div class="m-1">{{ keyword }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

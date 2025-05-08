@@ -33,3 +33,67 @@
         {% endfor %}
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        // Star buttons
+        function revealStar(Id1, Id2) {
+            const btn1 = document.getElementById(Id1);
+            const btn2 = document.getElementById(Id2);
+            if (btn1.classList.contains("d-none")) {
+                btn1.classList.remove("d-none");
+                btn2.classList.add("d-none");
+            } else {
+                btn2.classList.remove("d-none");
+                btn1.classList.add("d-none");
+            }
+        }
+
+        //AJAX Call to create or delete matching
+        function matchingActions(volunteerId, action) {
+            const data = {
+                'volunteerId': volunteerId,
+                'organisationId': {{ app.user.organisation.id }},
+                'action': action,
+            };
+            fetch('{{ path('matching_management') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(responseData => {
+                    console.log(responseData);
+                })
+                .catch(error => {
+                    console.error("Error when fetching the data:", error);
+                });
+        }
+        {% for organisation in organisations %}
+
+        function matchingManagement(organisationId) {
+            let cardContainer = document.getElementById("card-container-" + volunteerId);
+            cardContainer.removeAttribute('data-bs-toggle');
+            cardContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains("match-star")) {
+                    revealStar("match-button-empty-" + volunteerId, "match-button-filled-" + volunteerId);
+                    if (e.target.id === "match-button-empty-" + volunteerId) {
+                        matchingActions(volunteerId, "create");
+                    } else if (e.target.id === "match-button-filled-" + volunteerId) {
+                        matchingActions(volunteerId, "delete");
+                    } else {
+                    }
+                } else {
+                    cardContainer.setAttribute('data-bs-toggle', 'modal');
+                    let cardBody = document.getElementById("card-body-" + volunteerId);
+                    cardBody.click();
+                }
+                cardContainer.removeAttribute('data-bs-toggle');
+            })
+        }
+        matchingManagement({{volunteer.id }});
+        {% endfor %}
+    </script>
+{% endblock %}

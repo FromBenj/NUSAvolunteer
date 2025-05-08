@@ -19,6 +19,12 @@ class MatchingFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($matching);
         $this->addReference('matching_test', $matching);
 
+        // Test constraint
+        $matching = new Matching();
+        $matching->setVolunteer(null);
+        $matching->setOrganisation(null);
+        $manager->persist($matching);
+
         $manager->flush();
     }
 

@@ -7,7 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: MatchingRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Matching
 {
     #[ORM\Id]
@@ -16,11 +18,11 @@ class Matching
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'matchings')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Organisation $organisation = null;
 
     #[ORM\ManyToOne(inversedBy: 'matchings')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Volunteer $volunteer = null;
 
     /**
@@ -32,6 +34,22 @@ class Matching
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function validateBeforePersisting()
+    {
+        if ($this->organisation === null && $this->volunteer === null) {
+            throw new \InvalidArgumentException('Either organisation or volunteer must be set.');
+        }
+    }
+
+    #[ORM\PreUpdate]
+    public function validateBeforeUpdating()
+    {
+        if ($this->organisation === null && $this->volunteer === null) {
+            throw new \InvalidArgumentException('Either organisation or volunteer must be set.');
+        }
     }
 
     public function getId(): ?int

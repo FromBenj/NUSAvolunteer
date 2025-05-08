@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SecurityController extends AbstractController
 {
@@ -84,23 +83,6 @@ class SecurityController extends AbstractController
             "buttonColor" => $buttonColor,
             "userCategory" => $userCategory,
         ]);
-    }
-
-    #[Route(path: '/login/distribution', name: 'app_login_distribution')]
-    public function loginDistribution(): RedirectResponse
-    {
-        $user = $this->getUser();
-        if ($user && !is_null($user->getUserProfile())) {
-            $userCategory = $user->getUserCategory();
-            $userName = $user->getUserProfile()->getName();
-            isset($userName) ?
-            $routePath = $userCategory . '_' . 'home' :
-            $routePath = $userCategory. '_' . 'create';
-        } else {
-            $routePath = 'app_home';
-        }
-
-        return $this->redirectToRoute($routePath);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

@@ -15,6 +15,21 @@ class MatchingManager
     {
         $this->volunteerRepository = $volunteerRepository;
     }
+
+    public function matchingEntityValidation(MatchingRepository $matchingRepository): void
+{
+    $existingMatching = $matchingRepository->findOneBy([
+        'organisation' => $this->organisation,
+        'volunteer' => $this->volunteer,
+    ]);
+
+    if ($existingMatching !== null || ($this->organisation === null && $this->volunteer === null)) {
+        throw new \InvalidArgumentException('The matching already exists or both organisation and volunteer are not set.');
+    }
+}
+
+
+
     public function volunteerStarClasses(Array $volunteers, Organisation $organisation,
                                          MatchingRepository $matchingRepository) : array
     {

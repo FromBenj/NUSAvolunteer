@@ -56,6 +56,7 @@ class OrganisationFixtures extends Fixture implements DependentFixtureInterface
             }
             $organisation->setUser($this->getReference("user_organisation_" . $i, User::class));
             $manager->persist($organisation);
+            $this->addReference('organisation_'  . $i, $organisation);
         }
 
         $organisation = new Organisation();

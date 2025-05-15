@@ -37,18 +37,16 @@ class Matching
     }
 
     #[ORM\PrePersist]
-    public function validateBeforePersisting()
-    {
-        if ($this->organisation === null && $this->volunteer === null) {
-            throw new \InvalidArgumentException('Either organisation or volunteer must be set.');
-        }
-    }
-
     #[ORM\PreUpdate]
-    public function validateBeforeUpdating()
+    public function validateBeforePersistingAndUpdating(MatchingRepository $matchingRepository):void
     {
-        if ($this->organisation === null && $this->volunteer === null) {
-            throw new \InvalidArgumentException('Either organisation or volunteer must be set.');
+        $existingMatching = $matchingRepository->findOneBy([
+            'organisation' => $this->organisation,
+            'volunteer' => $this->volunteer,
+        ]);
+
+        if ($existingMatching !== null || ($this->organisation === null && $this->volunteer === null)) {
+            throw new \InvalidArgumentException('The matching already exists or both organisation and volunteer are not set.');
         }
     }
 

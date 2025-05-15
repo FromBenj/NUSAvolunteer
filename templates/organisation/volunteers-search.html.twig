@@ -52,8 +52,10 @@
             <!-- Volunteer Card -->
             <div id="card-container-{{ volunteer.id }}" class="card m-4 volunteer-card" style="width: 18rem;" data-bs-toggle="modal" data-bs-target="#modal-{{ volunteer.id }}">
                 <div class="position-relative">
-                    <img id="match-button-filled-{{ volunteer.id }}" class="{{  starClasses[volunteer.id]['filled'] }}" src="{{ asset('build/images/website/star-filled.svg') }}" alt="match button filled">
-                    <img id="match-button-empty-{{ volunteer.id }}" class="{{ starClasses[volunteer.id]['empty'] }}" src="{{ asset('build/images/website/star-empty.svg') }}" alt="match button empty">
+                    <img id="match-button-filled-{{ volunteer.id }}" class="{{ starClasses[volunteer.id]['filled'] }}" src="{{ asset('build/images/website/star-filled.svg') }}"
+                         alt="match button filled">
+                    <img id="match-button-empty-{{ volunteer.id }}" class="{{ starClasses[volunteer.id]['empty'] }}" src="{{ asset('build/images/website/star-empty.svg') }}"
+                         alt="match button empty">
                     <img class="card-img-top" src="{{ volunteer.pictureName }}" alt="Volunteer avatar image">
                 </div>
                 <div id="card-body-{{ volunteer.id }}" class="card-body">
@@ -67,7 +69,8 @@
                 </div>
             </div>
             <!-- Volunteer Modal -->
-            <div class="modal fade" id="modal-{{ volunteer.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ volunteer.id ~ '-' ~ volunteer.fullName|replace({' ': ''}) }}" aria-hidden="true">
+            <div class="modal fade" id="modal-{{ volunteer.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ volunteer.id ~ '-' ~ volunteer.fullName|replace({' ': ''}) }}"
+                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header border-0 justify-content-end">
@@ -119,66 +122,16 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('js/matching-management.js') }}" type="text/javascript"></script>
     <script>
-        // Star buttons
-        function revealStar(Id1, Id2) {
-            const btn1 = document.getElementById(Id1);
-            const btn2 = document.getElementById(Id2);
-            if (btn1.classList.contains("d-none")) {
-                btn1.classList.remove("d-none");
-                btn2.classList.add("d-none");
-            } else {
-                btn2.classList.remove("d-none");
-                btn1.classList.add("d-none");
-            }
-        }
-
-        //AJAX Call to create or delete matching
-        function matchingActions(volunteerId, action) {
-            const data = {
-                'volunteerId'   : volunteerId,
-                'organisationId': {{ app.user.organisation.id }},
-                'action'        : action,
-            };
-            fetch('{{ path('matching_management') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(responseData => {
-                console.log(responseData);
-            })
-            .catch(error => {
-                console.error("Error when fetching the data:", error);
-            });
-
-        }
-
+        const  organisationId = "{{ app.user.organisation.id }}";
+        const url = "{{url("matching_management") }}";
+        let volunteerId;
+        let targetId;
         {% for volunteer in volunteers %}
-            function matchingManagement(volunteerId) {
-                let cardContainer = document.getElementById("card-container-" + volunteerId);
-                cardContainer.removeAttribute('data-bs-toggle');
-                cardContainer.addEventListener('click', (e) => {
-                    if (e.target.classList.contains("match-star")) {
-                        revealStar("match-button-empty-" + volunteerId, "match-button-filled-" + volunteerId);
-                        if (e.target.id === "match-button-empty-" + volunteerId) {
-                            matchingActions(volunteerId, "create");
-                        } else if (e.target.id === "match-button-filled-" + volunteerId) {
-                            matchingActions(volunteerId, "delete");
-                        } else {
-                        }
-                    } else {
-                        cardContainer.setAttribute('data-bs-toggle', 'modal');
-                        let cardBody = document.getElementById("card-body-" + volunteerId);
-                        cardBody.click();
-                    }
-                    cardContainer.removeAttribute('data-bs-toggle');
-                })
-            }
-            matchingManagement({{volunteer.id }});
+            volunteerId = "{{ volunteer.id }}";
+            targetId = "{{ volunteer.id }}";
+                matchingManagement(volunteerId, organisationId, targetId, url);
         {% endfor %}
     </script>
 {% endblock %}

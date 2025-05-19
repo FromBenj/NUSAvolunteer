@@ -3,8 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\MatchingRepository;
+use App\Service\MatchingManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -37,16 +40,29 @@ class Matching
     }
 
     #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function validateBeforePersistingAndUpdating(MatchingRepository $matchingRepository):void
+    public function validateBeforePersisting(PrePersistEventArgs $args): void
     {
+        $organisation = $this->getOrganisation();
+        $volunteer = $this->getVolunteer();
+        $entityManager = $args->getObjectManager();
+        $matchingRepository = $entityManager->getRepository(__CLASS__);
         $existingMatching = $matchingRepository->findOneBy([
-            'organisation' => $this->organisation,
-            'volunteer' => $this->volunteer,
+            'organisation' => $organisation,
+            'volunteer' => $volunteer,
         ]);
 
-        if ($existingMatching !== null || ($this->organisation === null && $this->volunteer === null)) {
+        if ($existingMatching !== null || ($organisation === null && $volunteer === null)) {
             throw new \InvalidArgumentException('The matching already exists or both organisation and volunteer are not set.');
+        }
+    }
+
+    #[ORM\PreUpdate]
+    public function validateBeforeUpdating(): void
+    {
+        $organisation = $this->getOrganisation();
+        $volunteer = $this->getVolunteer();
+        if ($organisation === null && $volunteer === null) {
+            throw new \InvalidArgumentException('Both organisation and volunteer are not set.');
         }
     }
 

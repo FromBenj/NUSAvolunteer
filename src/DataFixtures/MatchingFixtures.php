@@ -11,32 +11,35 @@ use Doctrine\Persistence\ObjectManager;
 
 class MatchingFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function getRandomProfilesOrNull(): array
+    public function getMatchingParticipants($matching): void
     {
-        $randVolunteer = random_int(0,15);
-        $randOrganisation =  random_int(0,15);
-        $randVolunteer = $randVolunteer > 10 ? null : 'volunteer_' . $randVolunteer;
-        $randOrganisation = $randOrganisation> 10 ? null : 'organisation_' . $randOrganisation ;
-        if ($randVolunteer === null && $randOrganisation === null){
-            $randOrganisation =  'organisation_' . random_int(0,10);
+        $rand = random_int(0, 2);
+        switch ($rand) {
+            case 0:
+                $matching->setVolunteer($this->getReference('volunteer_' . random_int(0, 9), Volunteer::class));
+                break;
+            case 1:
+                $matching->setOrganisation($this->getReference('organisation_' . random_int(0, 9), Organisation::class));
+                break;
+            case 2:
+                $matching->setVolunteer($this->getReference('volunteer_' . random_int(0, 9), Volunteer::class));
+                $matching->setOrganisation($this->getReference('organisation_' . random_int(0, 9), Organisation::class));
+                break;
         }
-
-        return [$randVolunteer, $randOrganisation];
     }
+
     public function load(ObjectManager $manager): void
     {
-        for($i = 0; $i < 20; $i++) {
-            $rand = $this->getRandomProfilesOrNull();
+        for ($i = 0; $i < 20; $i++) {
             $matching = new Matching();
-            $matching->setVolunteer($this->getReference($rand[0], Volunteer::class));
-            $matching->setOrganisation($this->getReference($rand[1], Organisation::class));
+            $this->getMatchingParticipants($matching);
             $manager->persist($matching);
-            $this->addReference('matching_test', $matching);
+            $this->addReference('matching_' . $i, $matching);
         }
 
         $matching = new Matching();
-        $matching->setVolunteer($this->getReference("volunteer_test", Volunteer::class));
-        $matching->setOrganisation($this->getReference("organisation_test", Organisation::class));
+        $matching->setVolunteer($this->getReference("volunteer_11", Volunteer::class));
+        $matching->setOrganisation($this->getReference("organisation_11", Organisation::class));
         $manager->persist($matching);
         $this->addReference('matching_test', $matching);
 

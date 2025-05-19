@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Organisation;
+use App\Entity\Volunteer;
 use App\Repository\MatchingRepository;
 use App\Repository\VolunteerRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,18 +17,18 @@ class MatchingManager
         $this->volunteerRepository = $volunteerRepository;
     }
 
-    public function matchingEntityValidation(MatchingRepository $matchingRepository): void
+    public function matchingEntityValidation(
+        MatchingRepository $matchingRepository, Organisation $organisation, Volunteer $volunteer): void
 {
     $existingMatching = $matchingRepository->findOneBy([
-        'organisation' => $this->organisation,
-        'volunteer' => $this->volunteer,
+        'organisation' => $organisation,
+        'volunteer' => $volunteer,
     ]);
 
-    if ($existingMatching !== null || ($this->organisation === null && $this->volunteer === null)) {
+    if ($existingMatching !== null || ($organisation === null && $volunteer === null)) {
         throw new \InvalidArgumentException('The matching already exists or both organisation and volunteer are not set.');
     }
 }
-
 
 
     public function volunteerStarClasses(Array $volunteers, Organisation $organisation,

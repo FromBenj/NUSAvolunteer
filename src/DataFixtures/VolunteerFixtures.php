@@ -47,7 +47,7 @@ class VolunteerFixtures extends Fixture implements DependentFixtureInterface
         $volunteer->setKeywords($this->fixturesManager->getKeywords());
         $volunteer->setUser($this->getReference("user_volunteer_test", User::class));
         $manager->persist($volunteer);
-        $this->addReference("volunteer_test", $volunteer);
+        $this->addReference("volunteer_11", $volunteer);
 
         $manager->flush();
     }

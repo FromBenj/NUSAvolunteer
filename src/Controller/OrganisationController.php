@@ -64,11 +64,12 @@ class OrganisationController extends AbstractController
     }
 
     #[Route('/volunteers', name: 'volunteers_search')]
-    public function searchVolunteers(VolunteerRepository $volunteerRepository, MatchingRepository $matchingRepository,
-                                     MatchingManager $matchingManager, Request $request): Response
+    public function searchVolunteers(
+        VolunteerRepository $volunteerRepository, MatchingRepository $matchingRepository,
+        Request $request): Response
     {
         $volunteers = $volunteerRepository->findAll();
-        $volunteerStarClasses = $matchingManager->volunteerStarClasses($volunteers, $this->getUser()->getOrganisation(), $matchingRepository);
+        $volunteerStarClasses = $matchingManager->volunteerStarClasses($volunteers, $this->getUser()->getOrganisation());
 
         $form = $this->createForm(SearchVolunteersType::class);
         $form->handleRequest($request);

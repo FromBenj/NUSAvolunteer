@@ -34,6 +34,12 @@ class Matching
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'matching')]
     private Collection $messages;
 
+    #[ORM\Column]
+    private ?bool $orgaAccepts = null;
+
+    #[ORM\Column]
+    private ?bool $VoluntAccepts = null;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -121,6 +127,30 @@ class Matching
                 $message->setMatching(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isOrgaAccepst(): ?bool
+    {
+        return $this->orgaAccepts;
+    }
+
+    public function setOrgaAccepts(bool $orgaAccepts): static
+    {
+        $this->orgaAccepts = $orgaAccepts;
+
+        return $this;
+    }
+
+    public function isVoluntAccepts(): ?bool
+    {
+        return $this->VoluntAccepts;
+    }
+
+    public function setVoluntAccepts(bool $VoluntAccepts): static
+    {
+        $this->VoluntAccepts = $VoluntAccepts;
 
         return $this;
     }

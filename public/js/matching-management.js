@@ -12,11 +12,11 @@ function revealStar(Id1, Id2) {
 }
 
 //AJAX Call to create or delete matching
-function matchingActions(volunteerId, organisationId, action, url) {
+function matchingActions(targetId, profile, action, url) {
     const data = {
-        'volunteerId'     : volunteerId,
-        'organisationId': organisationId,
-        'action'               : action,
+        'targetId': targetId,
+        'profile': profile,
+        'action': action,
     };
     fetch(url, {
         method: 'POST',
@@ -25,25 +25,25 @@ function matchingActions(volunteerId, organisationId, action, url) {
         },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(responseData => {
-        console.log(responseData);
-    })
-    .catch(error => {
-        console.error("Error when fetching the data:", error);
-    });
+        .then(response => response.json())
+        .then(responseData => {
+            console.log(responseData);
+        })
+        .catch(error => {
+            console.error("Error when fetching the data:", error);
+        });
 }
 
-function matchingManagement(volunteerId, organisationId, targetId, url) {
+function matchingManagement(targetId, profile, url) {
     let cardContainer = document.getElementById("card-container-" + targetId);
     cardContainer.removeAttribute('data-bs-toggle');
     cardContainer.addEventListener('click', (e) => {
         if (e.target.classList.contains("match-star")) {
             revealStar("match-button-empty-" + targetId, "match-button-filled-" + targetId);
             if (e.target.id === "match-button-empty-" + targetId) {
-                matchingActions(volunteerId, organisationId, targetId, "create", url);
+                matchingActions(targetId, "create", url);
             } else if (e.target.id === "match-button-filled-" + targetId) {
-                matchingActions(volunteerId, organisationId, targetId, "delete", url);
+                matchingActions( targetId, profile, "remove", url);
             }
         } else {
             cardContainer.setAttribute('data-bs-toggle', 'modal');

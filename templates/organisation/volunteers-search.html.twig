@@ -124,14 +124,12 @@
 {% block javascripts %}
     <script src="{{ asset('js/matching-management.js') }}" type="text/javascript"></script>
     <script>
-        const  organisationId = "{{ app.user.organisation.id }}";
-        const url = "{{url("matching_management") }}";
-        let volunteerId;
+        const url = "{{ url("matching_management") }}";
+        const profile = "volunteer"
         let targetId;
         {% for volunteer in volunteers %}
-            volunteerId = "{{ volunteer.id }}";
-            targetId = "{{ volunteer.id }}";
-                matchingManagement(volunteerId, organisationId, targetId, url);
+            targetId = "{{ volunteer.id }}"
+            matchingManagement(targetId, profile, url);
         {% endfor %}
     </script>
 {% endblock %}

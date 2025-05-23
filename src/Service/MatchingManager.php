@@ -5,39 +5,31 @@ namespace App\Service;
 use App\Entity\Organisation;
 use App\Entity\Volunteer;
 use App\Repository\MatchingRepository;
+use App\Repository\OrganisationRepository;
 use App\Repository\VolunteerRepository;
-use Doctrine\Persistence\ManagerRegistry;
 
 class MatchingManager
 {
+    private OrganisationRepository $organisationRepository;
     private VolunteerRepository $volunteerRepository;
+    private MatchingRepository $matchingRepository;
 
-    public function __construct(VolunteerRepository $volunteerRepository)
+    public function __construct(
+        OrganisationRepository $organisationRepository, VolunteerRepository $volunteerRepository,
+        MatchingRepository $matchingRepository,
+    )
     {
+
         $this->volunteerRepository = $volunteerRepository;
+        $this->matchingRepository = $matchingRepository;
     }
 
-    public function matchingEntityValidation(
-        MatchingRepository $matchingRepository, Organisation $organisation, Volunteer $volunteer): void
-{
-    $existingMatching = $matchingRepository->findOneBy([
-        'organisation' => $organisation,
-        'volunteer' => $volunteer,
-    ]);
-
-    if ($existingMatching !== null || ($organisation === null && $volunteer === null)) {
-        throw new \InvalidArgumentException('The matching already exists or both organisation and volunteer are not set.');
-    }
-}
-
-
-    public function volunteerStarClasses(Array $volunteers, Organisation $organisation,
-                                         MatchingRepository $matchingRepository) : array
+    public function volunteerStarClasses(Array $volunteers, Organisation $organisation,) : array
     {
         $volunteerStarClasses =[];
         if ($volunteers && $organisation) {
             foreach ($volunteers as $volunteer) {
-                $matching = $matchingRepository->findOneBy([
+                $matching = $this->matchingRepository->findOneBy([
                     "organisation" => $organisation,
                     "volunteer" => $volunteer
                 ]);

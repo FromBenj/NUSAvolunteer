@@ -28,7 +28,7 @@ class MatchingController extends AbstractController
         $organisation = $organisationRepository->find($data["organisationId"]);
         $volunteer = $volunteerRepository->find($data["volunteerId"]);
         $dataActions = ["create", "delete"];
-        if (!in_array($data["action"], $dataActions) || !$organisation || !$volunteer) {
+        if (!in_array($data["action"], $dataActions) || (!$organisation && !$volunteer)) {
             return new JsonResponse(
                 [
                 'message' => "The request is incorrect",

@@ -11,7 +11,7 @@ function revealStar(Id1, Id2) {
     }
 }
 
-//AJAX Call to create or delete matching
+//AJAX Call to change or delete matching
 function matchingActions(targetId, profile, action, url) {
     const data = {
         'targetId': targetId,
@@ -41,7 +41,7 @@ function matchingManagement(targetId, profile, url) {
         if (e.target.classList.contains("match-star")) {
             revealStar("match-button-empty-" + targetId, "match-button-filled-" + targetId);
             if (e.target.id === "match-button-empty-" + targetId) {
-                matchingActions(targetId, "create", url);
+                matchingActions(targetId, profile, "match", url);
             } else if (e.target.id === "match-button-filled-" + targetId) {
                 matchingActions( targetId, profile, "remove", url);
             }

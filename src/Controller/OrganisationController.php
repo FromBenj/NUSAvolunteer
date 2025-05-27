@@ -65,7 +65,7 @@ class OrganisationController extends AbstractController
 
     #[Route('/volunteers', name: 'volunteers_search')]
     public function searchVolunteers(
-        VolunteerRepository $volunteerRepository, MatchingRepository $matchingRepository,
+        VolunteerRepository $volunteerRepository, MatchingRepository $matchingRepository, MatchingManager $matchingManager,
         Request $request): Response
     {
         $volunteers = $volunteerRepository->findAll();

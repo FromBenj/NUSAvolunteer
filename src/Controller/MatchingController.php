@@ -20,17 +20,25 @@ use Symfony\Component\Routing\Attribute\Route;
 class MatchingController extends AbstractController
 {
     #[Route('/matching/management', name: 'matching_management', methods: ['POST'])]
-    public function matchingManagement(Request  $request, OrganisationRepository $organisationRepository,
-                                       VolunteerRepository $volunteerRepository, MatchingRepository $matchingRepository,
-                                       EntityManagerInterface $entityManager ): JsonResponse
+    public function matchingManagement(Request                $request, OrganisationRepository $organisationRepository,
+                                       VolunteerRepository    $volunteerRepository, MatchingRepository $matchingRepository,
+                                       EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $targetId = $volunteerRepository->find($data["targetId"]);
+        $targetId = $data["targetId"];
         $profile = $data["profile"];
         $action = $data["action"];
         $availableActions = ["match", "remove", "delete"];
         $availableProfiles = ["volunteer", "organisation"];
-        if (!in_array($action, $availableActions, true) || !in_array($profile, $availableProfiles, true) || (!$targetId)) {
+        if ($profile === "volunteer") {
+            $target = $volunteerRepository->find($targetId);
+        } elseif ($profile === "organisation") {
+            $target = $organisationRepository->find($targetId);
+        } else {
+            $target = null;
+        }
+
+        if (!in_array($action, $availableActions, true) || !in_array($profile, $availableProfiles, true) || !$target) {
             return new JsonResponse(
                 [
                     'message' => "The request is incorrect",
@@ -39,12 +47,10 @@ class MatchingController extends AbstractController
             );
         }
         if ($profile === "volunteer") {
-            $target = $volunteerRepository->find($targetId);
             $matching = $matchingRepository->findOneBy([
                 "organisation" => $this->getUser()->getOrganisation(),
                 "volunteer" => $target]);
         } elseif ($profile === "organisation") {
-            $target = $organisationRepository->find($targetId);
             $matching = $matchingRepository->findOneBy([
                 "organisation" => $target,
                 "volunteer" => $this->getUser()->getOrganisation()]);
@@ -67,9 +73,9 @@ class MatchingController extends AbstractController
                     } elseif ($profile === "organisation") {
                         $matching->setVolunteer($this->getUser()->getOrganisation())->setVoluntAccepts(true);
                     }
-                    $entityManager->persist($matching);
-                    $entityManager->flush();
                 }
+                $entityManager->persist($matching);
+                $entityManager->flush();
                 break;
             case "remove":
                 if ($matching) {
@@ -79,6 +85,8 @@ class MatchingController extends AbstractController
                         $matching->setVoluntAccepts(false);
                     }
                 }
+                $entityManager->persist($matching);
+                $entityManager->flush();
                 break;
             case "delete":
                 if ($matching) {
@@ -90,7 +98,7 @@ class MatchingController extends AbstractController
         return new JsonResponse(
             [
                 'message' => "The request is a success",
-                'action' => $data["action"],
+                'action' => $data["action"]  . " | " . "Matching id:" . $matching->getId(),
             ]
         );
     }

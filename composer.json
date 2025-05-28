@@ -41,6 +41,7 @@
         "symfony/twig-bundle": "6.4.*",
         "symfony/ux-leaflet-map": "^2.23",
         "symfony/ux-map": "^2.23",
+        "symfony/ux-twig-component": "^2.25",
         "symfony/validator": "6.4.*",
         "symfony/web-link": "6.4.*",
         "symfony/webpack-encore-bundle": "^2.1",

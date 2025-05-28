@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="text-center pt-4 pb-5">My matches</h1>
+    <h1 class="my-matches-title">My matches</h1>
     {% if matches is empty %}
     <div class="d-flex flex-column justify-content-center align-items-center">
         <h2>Oups you have no match yet.</h2>
@@ -17,85 +17,26 @@
         </a>
     </div>
     {% else %}
-        <div class="d-flex flex-wrap justify-content-center pb-4">
-            {% for match in matches %}
-                {% set volunteer = match.volunteer %}
-                <div class="col-12 col-lg-5 d-flex justify-content-center">
-                    <div class="d-flex">
-                        <div class="card m-4 border-0" style="width: 14rem;">
-                            <div class="position-relative">
-                                <img id="volunteer-{{ volunteer.id }}-image" class="card-img-top" role='button' src="{{ volunteer.pictureName }}" alt="Volunteer avatar image">
-                            </div>
-                            <div id="card-body" class="card-body">
-                                <h5 class="card-title text-center">{{ volunteer.FullName }}</h5>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-between">
-                            <div class="mt-4">Last message: </div>
-                            <div class="d-flex mb-4">
-                                <button id="modal-button-{{ volunteer.id }}" type="button" class="btn main-button main-volunteer-button fw-bold me-4" data-bs-toggle="modal" data-bs-target="#modal-{{ volunteer.id }}">
-                                    Profile
-                                </button>
-                                <a href="{{ path('chat', {'organisation_id': app.user.organisation.id, 'volunteer_id': volunteer.id}) }}">
-                                    <button id="modal-button-{{ volunteer.id }}" type="button" class="btn main-button main-volunteer-button fw-bold">
-                                        Chat
-                                    </button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- Volunteer Modal -->
-                <div class="modal fade" id="modal-{{ volunteer.id }}" tabindex="-1" role="dialog" aria-labelledby="{{ volunteer.id ~ '-' ~ volunteer.fullName|replace({' ': ''}) }}" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header border-0 justify-content-end">
-                                <button type="button" class="close border-0 bg-inherit" data-bs-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true" class="fw-bold">&times;</span>
-                                </button>
-                            </div>
-                            <div class="d-flex flex-column justify-content-center align-items-center p-3">
-                                <img class="img-fluid rounded-circle object-fit-cover py-3" src="{{ volunteer.pictureName }}" alt="Volunteer avatar image" width="100" height="100">
-                                <h5 class="volunteer-modal-title modal-title" id="{{ volunteer.id ~ '-' ~ volunteer.fullName|replace({' ': ''}) }}">{{ volunteer.fullName }}</h5>
-                            </div>
-                            <div class="p-3">
-                                <h6 class="fw-bold">Disponibilities</h6>
-                                <div class="ms-4 d-flex flex-column justify-content-start">
-                                    <ul class="list-group list-group-flush">
-                                        {% for disponibility in volunteer.disponibilities %}
-                                            <li>{{ disponibility }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="p-3">
-                                <h6 class="fw-bold">Description</h6>
-                                <p class="text-justify">{{ volunteer.description }}</p>
-                            </div>
-                            <div class="p-3">
-                                <h6 class="fw-bold">Interests</h6>
-                                <div class="d-flex flex-column justify-content-start">
-                                    <div class="d-flex justify-content-around flex-wrap">
-                                        {% for keyword in volunteer.keywords %}
-                                            <div>{{ keyword }}</div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer mb-2">
-                                <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn main-button main-volunteer-button me-0">
-                                    <a href="{{ path('chat', {'organisation_id': app.user.organisation.id, 'volunteer_id': volunteer.id}) }}" class="text-white">
-                                        Chat
-                                    </a>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+        <twig:organisation-prospects :matchings="matches"  :lastMessage="true"/>
     {% endif %}
-    <h2 class="text-center pt-4 pb-5 h1">Messages from new volunteers</h2>
+    <h2 class="my-pending-title h1 pt-5 pb-3">Pending</h2>
+    {% if pending is empty %}
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <h2>You have no pending matches.</h2>
+            <h5>For sure, you will find soon new awesome volunteers!</h5>
+        </div>
+    {% else %}
+        <twig:organisation-prospects :matchings="pending" />
+    {% endif %}
+    <h2 class="my-propositions-title h1 pt-5 pb-3">Propositions</h2>
+    {% if propositions is empty %}
+        <div class="d-flex flex-column justify-content-center align-items-center mb-5">
+            <h2>You have no match propositions.</h2>
+            <h5>Just wait!</h5>
+        </div>
+    {% else %}
+        <twig:organisation-prospects :matchings="propositions" :needAcceptation="true" />
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

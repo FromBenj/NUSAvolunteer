@@ -38,7 +38,7 @@ class Matching
     private ?bool $orgaAccepts = null;
 
     #[ORM\Column]
-    private ?bool $VoluntAccepts = null;
+    private ?bool $voluntAccepts = null;
 
     public function __construct()
     {
@@ -131,7 +131,7 @@ class Matching
         return $this;
     }
 
-    public function isOrgaAccepst(): ?bool
+    public function isOrgaAccepts(): ?bool
     {
         return $this->orgaAccepts;
     }
@@ -145,12 +145,12 @@ class Matching
 
     public function isVoluntAccepts(): ?bool
     {
-        return $this->VoluntAccepts;
+        return $this->voluntAccepts;
     }
 
-    public function setVoluntAccepts(bool $VoluntAccepts): static
+    public function setVoluntAccepts(bool $voluntAccepts): static
     {
-        $this->VoluntAccepts = $VoluntAccepts;
+        $this->voluntAccepts = $voluntAccepts;
 
         return $this;
     }
